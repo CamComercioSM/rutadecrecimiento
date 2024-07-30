@@ -21,3 +21,5 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+public_html/public/videos/testimonio-1.mp4
+public_html/public/videos/testimonio-2.mp4
