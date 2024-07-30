@@ -1,0 +1,50 @@
+. 2018-06-01 02:57:46.331 --------------------------------------------------------------------------
+. 2018-06-01 02:57:46.331 WinSCP Versión 5.13.1 (Compilación 8265) (OS 6.1.7601 Service Pack 1 - Windows 7 Professional)
+. 2018-06-01 02:57:46.331 Configuration: nul
+. 2018-06-01 02:57:46.331 Log level: Normal
+. 2018-06-01 02:57:46.331 Local account: MVIRTICS07\SICAM32
+. 2018-06-01 02:57:46.331 Working directory: C:\Windows\system32
+. 2018-06-01 02:57:46.331 Process ID: 2552
+. 2018-06-01 02:57:46.346 Command-line: "C:\Program Files (x86)\WinSCP\WinSCP.exe" /console=5.13.1 /consoleinstance=_3304_75 "/log=S:\BKP ColombiaHosting\RutaC\Archivos\\descarga2018_06_01_02_57_46.log" "/ini=nul" "/command" "open sftp://ccsm:***@190.8.177.126/ -hostkey=""ssh-ed25519 256 8FULx6Qg1tYt+zq6tAPUuyVRr/ZEbvJZRgQ+39dSuog=""" "get /home/ccsm/rutac/*  ""S:\BKP ColombiaHosting\RutaC\Archivos\\"" " "#" "exit"
+. 2018-06-01 02:57:46.346 Time zone: Current: GMT-5 (Hora est. Pacífico, Sudamérica), No DST
+. 2018-06-01 02:57:46.346 Login time: viernes, 01 de junio de 2018 2:57:46
+. 2018-06-01 02:57:46.346 --------------------------------------------------------------------------
+. 2018-06-01 02:57:46.346 Script: Retrospectively logging previous script records:
+> 2018-06-01 02:57:46.346 Script: open sftp://ccsm:***@190.8.177.126/ -hostkey="ssh-ed25519 256 8FULx6Qg1tYt+zq6tAPUuyVRr/ZEbvJZRgQ+39dSuog="
+. 2018-06-01 02:57:46.346 --------------------------------------------------------------------------
+. 2018-06-01 02:57:46.346 Session name: ccsm@190.8.177.126 (Ad-Hoc site)
+. 2018-06-01 02:57:46.346 Host name: 190.8.177.126 (Port: 22)
+. 2018-06-01 02:57:46.346 User name: ccsm (Password: Yes, Key file: No, Passphrase: No)
+. 2018-06-01 02:57:46.346 Tunnel: No
+. 2018-06-01 02:57:46.346 Transfer Protocol: SFTP
+. 2018-06-01 02:57:46.346 Ping type: Off, Ping interval: 30 sec; Timeout: 15 sec
+. 2018-06-01 02:57:46.346 Disable Nagle: No
+. 2018-06-01 02:57:46.346 Proxy: None
+. 2018-06-01 02:57:46.346 Send buffer: 262144
+. 2018-06-01 02:57:46.346 SSH protocol version: 2; Compression: No
+. 2018-06-01 02:57:46.346 Bypass authentication: No
+. 2018-06-01 02:57:46.346 Try agent: Yes; Agent forwarding: No; TIS/CryptoCard: No; KI: Yes; GSSAPI: Yes
+. 2018-06-01 02:57:46.346 GSSAPI: Forwarding: No; Libs: gssapi32,sspi,custom; Custom: 
+. 2018-06-01 02:57:46.346 Ciphers: aes,chacha20,blowfish,3des,WARN,arcfour,des; Ssh2DES: No
+. 2018-06-01 02:57:46.346 KEX: ecdh,dh-gex-sha1,dh-group14-sha1,rsa,WARN,dh-group1-sha1
+. 2018-06-01 02:57:46.346 SSH Bugs: Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto
+. 2018-06-01 02:57:46.346 Simple channel: Yes
+. 2018-06-01 02:57:46.346 Return code variable: Autodetect; Lookup user groups: Auto
+. 2018-06-01 02:57:46.346 Shell: default
+. 2018-06-01 02:57:46.346 EOL: LF, UTF: Auto
+. 2018-06-01 02:57:46.346 Clear aliases: Yes, Unset nat.vars: Yes, Resolve symlinks: Yes; Follow directory symlinks: No
+. 2018-06-01 02:57:46.346 LS: ls -la, Ign LS warn: Yes, Scp1 Comp: No
+. 2018-06-01 02:57:46.346 SFTP Bugs: Auto,Auto
+. 2018-06-01 02:57:46.346 SFTP Server: default
+. 2018-06-01 02:57:46.346 Local directory: default, Remote directory: home, Update: Yes, Cache: Yes
+. 2018-06-01 02:57:46.346 Cache directory changes: Yes, Permanent: Yes
+. 2018-06-01 02:57:46.346 Recycle bin: Delete to: No, Overwritten to: No, Bin path: 
+. 2018-06-01 02:57:46.346 DST mode: Unix
+. 2018-06-01 02:57:46.346 --------------------------------------------------------------------------
+. 2018-06-01 02:57:46.346 Looking up host "190.8.177.126" for SSH connection
+. 2018-06-01 02:57:46.346 Connecting to 190.8.177.126 port 22
+. 2018-06-01 02:57:46.440 We claim version: SSH-2.0-WinSCP_release_5.13.1
+. 2018-06-01 02:57:46.549 Server version: SSH-2.0-OpenSSH_7.4
+. 2018-06-01 02:57:46.549 Using SSH protocol version 2
+. 2018-06-01 02:57:46.549 Have a known host key of type ssh-ed25519
+. 2018-06-01 02:57:46.643 Doing ECDH key exchange with curve Curve25519 and hash SHA-256

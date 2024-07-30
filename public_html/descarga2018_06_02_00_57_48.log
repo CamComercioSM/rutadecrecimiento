@@ -1,0 +1,177 @@
+. 2018-06-02 00:57:48.933 --------------------------------------------------------------------------
+. 2018-06-02 00:57:48.933 WinSCP Versión 5.13.1 (Compilación 8265) (OS 6.1.7601 Service Pack 1 - Windows 7 Professional)
+. 2018-06-02 00:57:48.933 Configuration: nul
+. 2018-06-02 00:57:48.933 Log level: Normal
+. 2018-06-02 00:57:48.933 Local account: MVIRTICS07\SICAM32
+. 2018-06-02 00:57:48.933 Working directory: C:\Windows\system32
+. 2018-06-02 00:57:48.933 Process ID: 3364
+. 2018-06-02 00:57:48.933 Command-line: "C:\Program Files (x86)\WinSCP\WinSCP.exe" /console=5.13.1 /consoleinstance=_576_283 "/log=S:\BKP ColombiaHosting\RutaC\Archivos\\descarga2018_06_02_00_57_48.log" "/ini=nul" "/command" "open sftp://ccsm:***@190.8.177.126/ -hostkey=""ssh-ed25519 256 8FULx6Qg1tYt+zq6tAPUuyVRr/ZEbvJZRgQ+39dSuog=""" "get /home/ccsm/rutac/*  ""S:\BKP ColombiaHosting\RutaC\Archivos\\"" " "#" "exit"
+. 2018-06-02 00:57:48.933 Time zone: Current: GMT-5 (Hora est. Pacífico, Sudamérica), No DST
+. 2018-06-02 00:57:48.933 Login time: sábado, 02 de junio de 2018 0:57:48
+. 2018-06-02 00:57:48.933 --------------------------------------------------------------------------
+. 2018-06-02 00:57:48.933 Script: Retrospectively logging previous script records:
+> 2018-06-02 00:57:48.933 Script: open sftp://ccsm:***@190.8.177.126/ -hostkey="ssh-ed25519 256 8FULx6Qg1tYt+zq6tAPUuyVRr/ZEbvJZRgQ+39dSuog="
+. 2018-06-02 00:57:48.933 --------------------------------------------------------------------------
+. 2018-06-02 00:57:48.933 Session name: ccsm@190.8.177.126 (Ad-Hoc site)
+. 2018-06-02 00:57:48.933 Host name: 190.8.177.126 (Port: 22)
+. 2018-06-02 00:57:48.933 User name: ccsm (Password: Yes, Key file: No, Passphrase: No)
+. 2018-06-02 00:57:48.933 Tunnel: No
+. 2018-06-02 00:57:48.933 Transfer Protocol: SFTP
+. 2018-06-02 00:57:48.933 Ping type: Off, Ping interval: 30 sec; Timeout: 15 sec
+. 2018-06-02 00:57:48.933 Disable Nagle: No
+. 2018-06-02 00:57:48.933 Proxy: None
+. 2018-06-02 00:57:48.933 Send buffer: 262144
+. 2018-06-02 00:57:48.933 SSH protocol version: 2; Compression: No
+. 2018-06-02 00:57:48.933 Bypass authentication: No
+. 2018-06-02 00:57:48.933 Try agent: Yes; Agent forwarding: No; TIS/CryptoCard: No; KI: Yes; GSSAPI: Yes
+. 2018-06-02 00:57:48.933 GSSAPI: Forwarding: No; Libs: gssapi32,sspi,custom; Custom: 
+. 2018-06-02 00:57:48.933 Ciphers: aes,chacha20,blowfish,3des,WARN,arcfour,des; Ssh2DES: No
+. 2018-06-02 00:57:48.933 KEX: ecdh,dh-gex-sha1,dh-group14-sha1,rsa,WARN,dh-group1-sha1
+. 2018-06-02 00:57:48.933 SSH Bugs: Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto
+. 2018-06-02 00:57:48.933 Simple channel: Yes
+. 2018-06-02 00:57:48.933 Return code variable: Autodetect; Lookup user groups: Auto
+. 2018-06-02 00:57:48.933 Shell: default
+. 2018-06-02 00:57:48.933 EOL: LF, UTF: Auto
+. 2018-06-02 00:57:48.933 Clear aliases: Yes, Unset nat.vars: Yes, Resolve symlinks: Yes; Follow directory symlinks: No
+. 2018-06-02 00:57:48.933 LS: ls -la, Ign LS warn: Yes, Scp1 Comp: No
+. 2018-06-02 00:57:48.933 SFTP Bugs: Auto,Auto
+. 2018-06-02 00:57:48.933 SFTP Server: default
+. 2018-06-02 00:57:48.933 Local directory: default, Remote directory: home, Update: Yes, Cache: Yes
+. 2018-06-02 00:57:48.933 Cache directory changes: Yes, Permanent: Yes
+. 2018-06-02 00:57:48.933 Recycle bin: Delete to: No, Overwritten to: No, Bin path: 
+. 2018-06-02 00:57:48.933 DST mode: Unix
+. 2018-06-02 00:57:48.933 --------------------------------------------------------------------------
+. 2018-06-02 00:57:48.933 Looking up host "190.8.177.126" for SSH connection
+. 2018-06-02 00:57:48.933 Connecting to 190.8.177.126 port 22
+. 2018-06-02 00:57:49.027 We claim version: SSH-2.0-WinSCP_release_5.13.1
+. 2018-06-02 00:57:49.136 Server version: SSH-2.0-OpenSSH_7.4
+. 2018-06-02 00:57:49.136 Using SSH protocol version 2
+. 2018-06-02 00:57:49.136 Have a known host key of type ssh-ed25519
+. 2018-06-02 00:57:49.230 Doing ECDH key exchange with curve Curve25519 and hash SHA-256
+. 2018-06-02 00:57:50.056 Server also has ecdsa-sha2-nistp256/ssh-rsa host keys, but we don't know any of them
+. 2018-06-02 00:57:50.056 Host key fingerprint is:
+. 2018-06-02 00:57:50.056 ssh-ed25519 256 96:e5:67:d2:0c:9d:5e:13:6c:6d:d7:a8:96:cc:5f:f3 8FULx6Qg1tYt+zq6tAPUuyVRr/ZEbvJZRgQ+39dSuog=
+. 2018-06-02 00:57:50.056 Host key matches configured key
+. 2018-06-02 00:57:50.056 Initialised AES-256 SDCTR client->server encryption
+. 2018-06-02 00:57:50.056 Initialised HMAC-SHA-256 client->server MAC algorithm
+. 2018-06-02 00:57:50.056 Initialised AES-256 SDCTR server->client encryption
+. 2018-06-02 00:57:50.056 Initialised HMAC-SHA-256 server->client MAC algorithm
+! 2018-06-02 00:57:50.290 Using username "ccsm".
+. 2018-06-02 00:57:50.384 Server offered these authentication methods: publickey,gssapi-keyex,gssapi-with-mic,password
+. 2018-06-02 00:57:50.384 Using SSPI from SECUR32.DLL
+. 2018-06-02 00:57:50.384 Attempting GSSAPI authentication
+. 2018-06-02 00:57:50.493 GSSAPI authentication request refused
+. 2018-06-02 00:57:50.493 Server offered these authentication methods: publickey,gssapi-keyex,gssapi-with-mic,password
+. 2018-06-02 00:57:50.493 Prompt (password, "SSH password", <no instructions>, "&Contraseña:")
+. 2018-06-02 00:57:50.493 Using stored password.
+. 2018-06-02 00:57:50.493 Sent password
+. 2018-06-02 00:57:50.618 Access granted
+. 2018-06-02 00:57:50.618 Opening session as main channel
+. 2018-06-02 00:57:51.008 Opened main channel
+. 2018-06-02 00:57:51.242 Started a shell/command
+. 2018-06-02 00:57:51.242 --------------------------------------------------------------------------
+. 2018-06-02 00:57:51.242 Using SFTP protocol.
+. 2018-06-02 00:57:51.242 Doing startup conversation with host.
+> 2018-06-02 00:57:51.242 Type: SSH_FXP_INIT, Size: 5, Number: -1
+< 2018-06-02 00:57:51.336 Type: SSH_FXP_VERSION, Size: 150, Number: -1
+. 2018-06-02 00:57:51.336 SFTP version 3 negotiated.
+. 2018-06-02 00:57:51.336 Unknown server extension posix-rename@openssh.com="1"
+. 2018-06-02 00:57:51.336 Supports statvfs@openssh.com extension version "2"
+. 2018-06-02 00:57:51.336 Unknown server extension fstatvfs@openssh.com="2"
+. 2018-06-02 00:57:51.336 Supports hardlink@openssh.com extension version "1"
+. 2018-06-02 00:57:51.336 Unknown server extension fsync@openssh.com="1"
+. 2018-06-02 00:57:51.336 We believe the server has signed timestamps bug
+. 2018-06-02 00:57:51.336 We will use UTF-8 strings until server sends an invalid UTF-8 string as with SFTP version 3 and older UTF-8 strings are not mandatory
+. 2018-06-02 00:57:51.336 Limiting packet size to OpenSSH sftp-server limit of 262148 bytes
+. 2018-06-02 00:57:51.336 Getting current directory name.
+. 2018-06-02 00:57:51.336 Getting real path for '.'
+> 2018-06-02 00:57:51.336 Type: SSH_FXP_REALPATH, Size: 10, Number: 16
+< 2018-06-02 00:57:51.429 Type: SSH_FXP_NAME, Size: 41, Number: 16
+. 2018-06-02 00:57:51.429 Real path is '/home/ccsm'
+. 2018-06-02 00:57:51.429 Startup conversation with host finished.
+< 2018-06-02 00:57:51.429 Script: Sesión activa: [1] ccsm@190.8.177.126
+> 2018-06-02 00:57:51.429 Script: get /home/ccsm/rutac/*  "S:\BKP ColombiaHosting\RutaC\Archivos\\" 
+. 2018-06-02 00:57:51.429 Listing directory "/home/ccsm/rutac".
+> 2018-06-02 00:57:51.429 Type: SSH_FXP_OPENDIR, Size: 25, Number: 267
+< 2018-06-02 00:57:51.523 Type: SSH_FXP_HANDLE, Size: 13, Number: 267
+> 2018-06-02 00:57:51.523 Type: SSH_FXP_READDIR, Size: 13, Number: 524
+< 2018-06-02 00:57:51.616 Type: SSH_FXP_NAME, Size: 549, Number: 524
+> 2018-06-02 00:57:51.616 Type: SSH_FXP_READDIR, Size: 13, Number: 780
+< 2018-06-02 00:57:51.710 Type: SSH_FXP_STATUS, Size: 28, Number: 780
+< 2018-06-02 00:57:51.710 Status code: 1
+> 2018-06-02 00:57:51.710 Type: SSH_FXP_CLOSE, Size: 13, Number: 1028
+. 2018-06-02 00:57:51.710 .;d;0;2018-05-25T13:10:22.000Z;3;"ccsm" [1001];"nobody" [99];rwxr-x---;0
+. 2018-06-02 00:57:51.710 ..;d;0;2018-05-31T20:20:31.000Z;3;"ccsm" [1001];"ccsm" [1002];rwx--x--x;0
+. 2018-06-02 00:57:51.710 cgi-bin;d;0;2018-05-25T13:08:35.000Z;3;"ccsm" [1001];"ccsm" [1002];rwxr-xr-x;0
+. 2018-06-02 00:57:51.710 .well-known;d;0;2018-05-25T13:09:36.000Z;3;"ccsm" [1001];"ccsm" [1002];rwxr-xr-x;2
+. 2018-06-02 00:57:51.710 .ftpquota;-;4;2018-05-25T13:11:33.000Z;3;"ccsm" [1001];"ccsm" [1002];rw-r--r--;2
+. 2018-06-02 00:57:51.710 Copying 3 files/directories to local directory "S:\BKP ColombiaHosting\RutaC\Archivos\\"
+. 2018-06-02 00:57:51.710   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0100; Resume: S (102400); CalcS: No; Mask: 
+. 2018-06-02 00:57:51.710   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: No; InclM: ; ResumeL: 0
+. 2018-06-02 00:57:51.710   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2018-06-02 00:57:51.710 File: '/home/ccsm/rutac/cgi-bin' [2018-05-25T13:08:35.000Z] [0]
+. 2018-06-02 00:57:51.710 Listing directory "/home/ccsm/rutac/cgi-bin".
+> 2018-06-02 00:57:51.710 Type: SSH_FXP_OPENDIR, Size: 33, Number: 1291
+< 2018-06-02 00:57:51.804 Type: SSH_FXP_STATUS, Size: 24, Number: 1028
+. 2018-06-02 00:57:51.804 Discarding reserved response
+< 2018-06-02 00:57:51.897 Type: SSH_FXP_HANDLE, Size: 13, Number: 1291
+> 2018-06-02 00:57:51.897 Type: SSH_FXP_READDIR, Size: 13, Number: 1548
+< 2018-06-02 00:57:51.991 Type: SSH_FXP_NAME, Size: 207, Number: 1548
+> 2018-06-02 00:57:51.991 Type: SSH_FXP_READDIR, Size: 13, Number: 1804
+< 2018-06-02 00:57:52.084 Type: SSH_FXP_STATUS, Size: 28, Number: 1804
+< 2018-06-02 00:57:52.084 Status code: 1
+> 2018-06-02 00:57:52.084 Type: SSH_FXP_CLOSE, Size: 13, Number: 2052
+. 2018-06-02 00:57:52.084 .;d;0;2018-05-25T13:08:35.000Z;3;"ccsm" [1001];"ccsm" [1002];rwxr-xr-x;0
+. 2018-06-02 00:57:52.084 ..;d;0;2018-05-25T13:10:22.000Z;3;"ccsm" [1001];"nobody" [99];rwxr-x---;0
+. 2018-06-02 00:57:52.084 File: '/home/ccsm/rutac/.well-known' [2018-05-25T13:09:36.000Z] [0]
+. 2018-06-02 00:57:52.084 Listing directory "/home/ccsm/rutac/.well-known".
+> 2018-06-02 00:57:52.084 Type: SSH_FXP_OPENDIR, Size: 37, Number: 2315
+< 2018-06-02 00:57:52.178 Type: SSH_FXP_STATUS, Size: 24, Number: 2052
+. 2018-06-02 00:57:52.178 Discarding reserved response
+< 2018-06-02 00:57:52.272 Type: SSH_FXP_HANDLE, Size: 13, Number: 2315
+> 2018-06-02 00:57:52.272 Type: SSH_FXP_READDIR, Size: 13, Number: 2572
+< 2018-06-02 00:57:52.365 Type: SSH_FXP_NAME, Size: 331, Number: 2572
+> 2018-06-02 00:57:52.365 Type: SSH_FXP_READDIR, Size: 13, Number: 2828
+< 2018-06-02 00:57:52.459 Type: SSH_FXP_STATUS, Size: 28, Number: 2828
+< 2018-06-02 00:57:52.459 Status code: 1
+> 2018-06-02 00:57:52.459 Type: SSH_FXP_CLOSE, Size: 13, Number: 3076
+. 2018-06-02 00:57:52.459 .;d;0;2018-05-25T13:09:36.000Z;3;"ccsm" [1001];"ccsm" [1002];rwxr-xr-x;0
+. 2018-06-02 00:57:52.459 ..;d;0;2018-05-25T13:10:22.000Z;3;"ccsm" [1001];"nobody" [99];rwxr-x---;0
+. 2018-06-02 00:57:52.459 acme-challenge;d;0;2018-05-25T13:19:49.000Z;3;"ccsm" [1001];"ccsm" [1002];rwxr-xr-x;0
+. 2018-06-02 00:57:52.459 File: '/home/ccsm/rutac/.well-known/acme-challenge' [2018-05-25T13:19:49.000Z] [0]
+. 2018-06-02 00:57:52.459 Listing directory "/home/ccsm/rutac/.well-known/acme-challenge".
+> 2018-06-02 00:57:52.459 Type: SSH_FXP_OPENDIR, Size: 52, Number: 3339
+< 2018-06-02 00:57:52.537 Type: SSH_FXP_STATUS, Size: 24, Number: 3076
+. 2018-06-02 00:57:52.537 Discarding reserved response
+< 2018-06-02 00:57:52.630 Type: SSH_FXP_HANDLE, Size: 13, Number: 3339
+> 2018-06-02 00:57:52.630 Type: SSH_FXP_READDIR, Size: 13, Number: 3596
+< 2018-06-02 00:57:52.724 Type: SSH_FXP_NAME, Size: 207, Number: 3596
+> 2018-06-02 00:57:52.724 Type: SSH_FXP_READDIR, Size: 13, Number: 3852
+< 2018-06-02 00:57:52.818 Type: SSH_FXP_STATUS, Size: 28, Number: 3852
+< 2018-06-02 00:57:52.818 Status code: 1
+> 2018-06-02 00:57:52.818 Type: SSH_FXP_CLOSE, Size: 13, Number: 4100
+. 2018-06-02 00:57:52.818 .;d;0;2018-05-25T13:19:49.000Z;3;"ccsm" [1001];"ccsm" [1002];rwxr-xr-x;0
+. 2018-06-02 00:57:52.818 ..;d;0;2018-05-25T13:09:36.000Z;3;"ccsm" [1001];"ccsm" [1002];rwxr-xr-x;0
+. 2018-06-02 00:57:52.818 File: '/home/ccsm/rutac/.ftpquota' [2018-05-25T13:11:33.000Z] [4]
+. 2018-06-02 00:57:52.818 Copying "/home/ccsm/rutac/.ftpquota" to local directory started.
+. 2018-06-02 00:57:52.818 Binary transfer mode selected.
+. 2018-06-02 00:57:52.818 Opening remote file.
+> 2018-06-02 00:57:52.818 Type: SSH_FXP_OPEN, Size: 43, Number: 4355
+< 2018-06-02 00:57:52.911 Type: SSH_FXP_STATUS, Size: 24, Number: 4100
+. 2018-06-02 00:57:52.911 Discarding reserved response
+< 2018-06-02 00:57:53.005 Type: SSH_FXP_HANDLE, Size: 13, Number: 4355
+> 2018-06-02 00:57:53.005 Type: SSH_FXP_FSTAT, Size: 13, Number: 4616
+< 2018-06-02 00:57:53.098 Type: SSH_FXP_ATTRS, Size: 37, Number: 4616
+. 2018-06-02 00:57:53.098 Confirming overwriting of file.
+> 2018-06-02 00:57:53.098 Type: SSH_FXP_READ, Size: 25, Number: 4869
+< 2018-06-02 00:57:53.286 Status code: 1
+. 2018-06-02 00:57:53.286 3 skipped SSH_FXP_WRITE, SSH_FXP_READ, SSH_FXP_DATA and SSH_FXP_STATUS packets.
+> 2018-06-02 00:57:53.286 Type: SSH_FXP_CLOSE, Size: 13, Number: 5380
+. 2018-06-02 00:57:53.286 Preserving timestamp [2018-05-25T13:11:33.000Z]
+. 2018-06-02 00:57:53.286 Transfer done: '/home/ccsm/rutac/.ftpquota' => 'S:\BKP ColombiaHosting\RutaC\Archivos\.ftpquota' [4]
+. 2018-06-02 00:57:53.286 Copying finished: Transferred: 4, Elapsed: 0:00:01, CPS: 0/s
+> 2018-06-02 00:57:53.286 Script: exit
+. 2018-06-02 00:57:53.286 Script: Exit code: 0
+. 2018-06-02 00:57:53.286 Closing connection.
+. 2018-06-02 00:57:53.286 Sending special code: 12
+. 2018-06-02 00:57:53.286 Sent EOF message
