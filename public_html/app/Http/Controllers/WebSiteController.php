@@ -20,13 +20,6 @@ use Illuminate\Support\Facades\Auth;
 class WebSiteController extends Controller {
 
     public function home(Request $request) {
-        
-        //Buscamos nuevamente la empresa con el otro metodo de la API
-        $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
-        $ConexionSICAM = new ('ApiSICAM' . $class);
-        $eventos = $ConexionSICAM->ejecutar('tienda-apps', 'RutaC', 'proximosEventos');
-        // Ordenamos el array
-        $Eventos = json_decode($eventos);                
         $section = Section::find(1);
         $banners = Banner::all();
         $json_data = json_decode($section->data);
@@ -38,7 +31,7 @@ class WebSiteController extends Controller {
         if ($request->test == 1)
             dd($data);
 
-        return view('website.home', compact('banners', 'section', 'data', 'footer', 'links', 'histories', 'Eventos'));
+        return view('website.home', compact('banners', 'section', 'data', 'footer', 'links', 'histories'));
     }
 
     public function register(Request $request) {

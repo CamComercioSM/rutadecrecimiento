@@ -8,14 +8,12 @@
 <!--@include('website.company.aviso_validaciondatos')-->
 <div id="diagnostic">
     <div class="wrap">
-        
-        <h2>Hola, <b>{{$company->business_name}}</b>!.</h2>
-        
         @if($arranquePOR == "NUEVO")
-        <h1 class="size-l color-2 font-w-700"> ...ha sido validada y puede continuar el proceso de Diagnóstico de Ruta C...</h1>
+        <h1 class="size-l color-2 font-w-700"> <b>{{$company->business_name}}</b>, ha sido validada y puede continuar el proceso de Diagnóstico de Ruta C...</h1>
         @endif
 
         @if($arranquePOR == "ANUAL")
+        <h2>Hola, <b>{{$company->business_name}}</b>!.</h2>
         <h1  class="size-l color-2 font-w-700" >Ya ha pasado 1 año desde tu último diagnostico. Vamos a comprobar cuanto hemos crecido durante ese tiempo.</h1>
         @endif
 

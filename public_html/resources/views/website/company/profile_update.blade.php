@@ -11,7 +11,6 @@
                 <h1 class="bold">Actualizar perfil</h1>
                 <hr />
                 @csrf
-                
                 <div class="group mt-20">
                     <h2>Descripción corta</h2>
                     <div class="row">

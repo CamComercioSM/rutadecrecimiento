@@ -7,10 +7,7 @@
 <div id="register">
     <div class="wrap">
         <section class="step-1 mt-40 mb-40">
-            <div>                                        
-                <h1>Bienvenid@, <b>{{$company->business_name}}</b> [{{$company->nit}}]!.</h1>                    
-            </div>
-            <h2 class="size-l color-2 font-w-700">Verifica los datos registrados</h2>
+            <h1 class="size-l color-2 font-w-700">Verifica los datos registrados</h1>
             <p class="mt-5">
                 Lo invitamos a completar la siguiente información corporativa. Una vez termine de completar los campos, presione el botón de "Continuar"
             </p>
@@ -113,7 +110,7 @@
                         padding: 10px;
                         margin-top: 20px;
                         margin-bottom: 20px;
-
+                        
                         border: 1px inset #000000;
                         border-radius: 11px;
 
@@ -145,29 +142,29 @@
 @section('js')
 <script>
 
-    function actualizarNombreCargoContacto(seleccionable) {
-            var cargo = $(seleccionable).find(":selected").val();
-            $("#contact_position").val(cargo);
-    }
+  function actualizarNombreCargoContacto(seleccionable) {
+      var cargo = $(seleccionable).find(":selected").val();
+      $("#contact_position").val(cargo);
+  }
 
-    $('document').ready(function () {
-            $('#department').on('change', function () {
-                    var countryid = $(this).val();
-                    $.ajax({
-                            type: 'GET',
-                            url: 'https://rutadecrecimiento.com/municipios/listado',
-                            data: 'id=' + countryid,
-                            dataType: 'json',
-                            cache: false,
-                            success: function (result) {
-                                    var html = '<option value="">Seleccione un municipio</option>';
-                                    for (var i = 0; i < result.length; i++) {
-                                            html += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
-                                    }
-                                    $('#municipality').html(html);
-                            },
-                    });
-            })
-    })
+  $('document').ready(function () {
+      $('#department').on('change', function () {
+          var countryid = $(this).val();
+          $.ajax({
+              type: 'GET',
+              url: 'https://rutadecrecimiento.com/municipios/listado',
+              data: 'id=' + countryid,
+              dataType: 'json',
+              cache: false,
+              success: function (result) {
+                  var html = '<option value="">Seleccione un municipio</option>';
+                  for (var i = 0; i < result.length; i++) {
+                      html += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
+                  }
+                  $('#municipality').html(html);
+              },
+          });
+      })
+  })
 </script>
 @endsection
