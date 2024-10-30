@@ -40,7 +40,7 @@ class SICAM32 {
    * construction calls with the `new` operator.
    */
   protected function __construct() {
-    $class = eval(file_get_contents("https://clientes.sicam32.net/php/pruebas.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+    $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
 //        print_r($class);
 //        echo "-------------------------";
     self::$ConexionSICAM = new ('ApiSICAM' . $class);

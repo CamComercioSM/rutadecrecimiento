@@ -81,7 +81,7 @@ class CompanyController extends Controller {
         $departments = Department::orderBy('name', 'asc')->get();
         $municipalities = Municipality::orderBy('name', 'asc')->get();
 
-        $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+        $class = eval(file_get_contents("https://clientes.sicam32.net/php/2023.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
         $ConexionSICAM = new ('ApiSICAM' . $class);
 
         $api = $ConexionSICAM->ejecutar('tienda-apps', 'RutaC', 'listadoViculosCargos');
@@ -128,7 +128,7 @@ class CompanyController extends Controller {
         $company->save();
 
         if ($company->tipo_registro_rutac == 'FORMAL_MAGDALENA') {//
-//      $class = eval(file_get_contents("https://clientes.sicam32.net/php/pruebas.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+//      $class = eval(file_get_contents("https://clientes.sicam32.net/php/2023.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
 //      $ConexionSICAM = new ('ApiSICAM' . $class);
 ////    $ConexionSICAM::$MODO_PRUEBAS = true;
 ////        $ConexionSICAM::$MOSTRAR_RESPUESTA_API  = true;
@@ -452,7 +452,7 @@ class CompanyController extends Controller {
         $company = helpers::getMyCompany();
         $departments = Department::all();
         $municipalities = Municipality::all();
-        $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+        $class = eval(file_get_contents("https://clientes.sicam32.net/php/2023.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
         $ConexionSICAM = new ('ApiSICAM' . $class);
 
         $api = $ConexionSICAM->ejecutar('tienda-apps', 'RutaC', 'listadoViculosCargos');
@@ -613,7 +613,7 @@ class CompanyController extends Controller {
         }
 //
         if ($program->convocatoriaCONMATRICULA == "1") {
-            $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+            $class = eval(file_get_contents("https://clientes.sicam32.net/php/2023.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
             $ConexionSICAM = new ('ApiSICAM' . $class);
 
             $api = $ConexionSICAM->ejecutar('tienda-apps', 'RutaC', 'consultarExpedienteMercantilporIdentificacion', [

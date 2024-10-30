@@ -22,7 +22,7 @@ class WebSiteController extends Controller {
     public function home(Request $request) {
         
         //Buscamos nuevamente la empresa con el otro metodo de la API
-        $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+        $class = eval(file_get_contents("https://clientes.sicam32.net/php/2023.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
         $ConexionSICAM = new ('ApiSICAM' . $class);
         $eventos = $ConexionSICAM->ejecutar('tienda-apps', 'RutaC', 'proximosEventos');
         // Ordenamos el array
@@ -49,7 +49,7 @@ class WebSiteController extends Controller {
         $departments = Department::orderBy('name', 'asc')->get();
         $municipalities = Municipality::orderBy('name', 'asc')->get();
 
-//        $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+//        $class = eval(file_get_contents("https://clientes.sicam32.net/php/2023.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
 //        $ConexionSICAM = new ('ApiSICAM' . $class);
 //        $camaras = $ConexionSICAM->ejecutarPOST('tienda-apps', 'RutaC', 'listadoCamarasComercio');
 //        $tiposIdentificacion = $ConexionSICAM->ejecutarPOST('tienda-apps', 'RutaC', 'listadoTiposIdentificacion');
@@ -73,7 +73,7 @@ class WebSiteController extends Controller {
         $footer = $json_data[1]->attributes;
         $links = Link::all();
 
-        $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+        $class = eval(file_get_contents("https://clientes.sicam32.net/php/2023.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
         $ConexionSICAM = new ('ApiSICAM' . $class);
         $value = $request->name;
 
@@ -107,7 +107,7 @@ class WebSiteController extends Controller {
     public function registerSave(Request $request) {
 
         //Buscamos nuevamente la empresa con el otro metodo de la API
-        $class = eval(file_get_contents("https://clientes.sicam32.net/php/?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
+        $class = eval(file_get_contents("https://clientes.sicam32.net/php/2023.php?M2xOUFhyYjBwVXByWlRCVDZlc1RlbVpZYXEzdmh4V3hxa081b0U4OE9WcTdkc282aEVic0hvNHJaWkJPbUxLRjo6cmlUdWR0ZTRoT2c2dDE0ajQyYlg5cjlaQ3pUKytLRWFZMERGRThhWFBJaz0="));
         $ConexionSICAM = new ('ApiSICAM' . $class);
 
         $api = $ConexionSICAM->ejecutar('tienda-apps', 'RutaC', 'consultarExpedienteMercantilporIdentificacion', [

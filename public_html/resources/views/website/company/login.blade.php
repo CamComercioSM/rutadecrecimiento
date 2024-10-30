@@ -15,7 +15,7 @@
             <label class="textl">Contraseña</label>
             <input type="password" id="password" name="password" tabindex="5" required autocomplete="current-password" />
             <span id="divMostrarPassword" style="position: absolute; margin-left: -30px; cursor: pointer; padding: 15px 0px; width: 30px;" >
-                <i class="fa-solid fa-eye bi bi-eye-slash" id="togglePassword"></i>
+                <i class="fa fa-solid fa-eye bi bi-eye-slash" id="togglePassword"></i>
             </span>
         </div>
         <div class="row" tabindex="6">
