@@ -12,7 +12,7 @@ use Laravel\Nova\Fields\Textarea;
 use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Alert extends Resource {
-    public static $model = \App\Models\Alert::class;
+    public static $model = \App\Models\Alerta::class;
     public static $title = 'id';
     public static $search = ['id'];
 
@@ -26,14 +26,13 @@ class Alert extends Resource {
 
     public function fields(Request $request) {
         return [
-            DateTime::make('Fecha', 'created_at')
-                ->hideWhenCreating()->hideWhenUpdating(),
+           
 
-            BelongsTo::make('Empresa', 'company', Company::class)
+            BelongsTo::make('Empresa', 'unidad_productiva', UnidadProductiva::class)
                 ->viewable(false)->withoutTrashed(),
 
             Select::make('Tipo', 'kind')
-                ->options(\App\Models\Alert::$kind)
+                ->options(\App\Models\Alerta::$kind)
                 ->displayUsingLabels(),
 
             Textarea::make('Comentarios', 'comments'),

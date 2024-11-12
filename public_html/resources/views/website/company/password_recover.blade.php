@@ -4,7 +4,7 @@
 
 @section('content')
     <div id="login">
-        <form method="post" action="{{route('company.login.process')}}">
+        <form method="post" action="{{route('login.process')}}">
             @csrf
             <h2 class="mayus mb-20">Ingrese su email</h2>
             <div class="row">

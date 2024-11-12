@@ -2,7 +2,7 @@
     <ul>
         <li>
             <a class="logo" href="{{route('company.dashboard')}}">
-                <img src="{{ asset('public/img/commons/logo-ruta-c.svg') }}" alt="Ruta C">
+                <img src="{{ asset('/img/commons/logo-ruta-c.svg') }}" alt="Ruta C">
             </a>
         </li>
         <li data-step="2" data-intro="Esta opción te permite regresar a la página principal de tu panel de cliente">
@@ -19,6 +19,14 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="tip">Perfil</div>
+            </a>
+        </li>
+        <li data-step="3" data-intro="Esta opción te permite cambiar de empresa o registrar una nueva">
+            <a class="profile" href="{{route('company.select')}}">
+                <div class="icon">
+                    <i class="fa fa-refresh"></i>
+                </div>
+                <div class="tip">Cambiar de empresa</div>
             </a>
         </li>
         <li data-step="4" data-intro="Esta opción te permite visualizar e inscribirte en los programas de Ruta C">
