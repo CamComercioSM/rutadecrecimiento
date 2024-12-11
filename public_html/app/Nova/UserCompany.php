@@ -7,7 +7,6 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UserCompany extends Resource {
@@ -26,7 +25,8 @@ class UserCompany extends Resource {
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
-            HasMany::make('Empresa', 'unidadesProductivas', UnidadProductiva::class),
+            BelongsTo::make('Empresa', 'company', Company::class)
+                ->withoutTrashed()->searchable(),
 
             Password::make('Contraseña', 'password')
                 ->onlyOnForms()

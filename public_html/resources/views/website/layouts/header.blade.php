@@ -19,7 +19,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="button button-primary" href="{{ route('login') }}">
+                        <a class="button button-primary" href="{{ route('company.login') }}">
                             Iniciar sesión
                         </a>
                     </li>

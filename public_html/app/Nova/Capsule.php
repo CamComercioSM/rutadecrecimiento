@@ -11,9 +11,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 
 class Capsule extends Resource {
-    public static $model = \App\Models\Capsula::class;
+    public static $model = \App\Models\Capsule::class;
     public static $title = 'id';
-    public static $search = ['capsula_id', 'nombre'];
+    public static $search = ['id', 'name'];
 
     public static function label() {
         return 'Capsulas';
@@ -21,15 +21,15 @@ class Capsule extends Resource {
 
     public function fields(Request $request) {
         return [
-            ID::make('capsula_id'),
+            ID::make('id'),
 
-            Image::make('Imagen', 'imagen')
+            Image::make('Imagen', 'image')
                 ->disk('public')->path('capsules'),
 
-            Text::make('Nombre', 'nombre')
+            Text::make('Nombre', 'name')
                 ->rules('required'),
 
-            Textarea::make('Descripción', 'descripcion'),
+            Textarea::make('Descripción', 'description'),
 
             Text::make('URL Video', 'url_video'),
         ];

@@ -9,9 +9,9 @@
         <meta name="robots" content="index, follow">
         <link rel="canonical" href="{{ URL::current() }}"/>
         @yield('meta')
-        <link rel="icon" type="image/png" href="{!! URL::asset('/img/commons/favicon.png') !!}">
-        <link rel="apple-touch-icon" href="{!! URL::asset('/img/commons/favicon.png') !!}">
-        <link rel="stylesheet" href="{!! URL::asset('/css/style.css?v=47-07-23') !!}" type="text/css" media="screen"/>
+        <link rel="icon" type="image/png" href="{!! URL::asset('public/img/commons/favicon.png') !!}">
+        <link rel="apple-touch-icon" href="{!! URL::asset('public/img/commons/favicon.png') !!}">
+        <link rel="stylesheet" href="{!! URL::asset('public/css/style.css?v=47-07-23') !!}" type="text/css" media="screen"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         @yield('css')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
