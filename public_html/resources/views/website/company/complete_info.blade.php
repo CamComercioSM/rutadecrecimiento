@@ -27,7 +27,7 @@
                         <input type="text" name="telephone"/>
                     </div>
                     <div class="row">
-                        <label>Seleccione un departamento * [{{$company->department_id}}]</label>
+                        <label>Seleccione un departamento *</label>
                         <select id="department" name="department" required>
                             <option value="">Seleccione un departamento</option>
                             @foreach($departments as $department)     

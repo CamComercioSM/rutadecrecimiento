@@ -2,7 +2,7 @@
 
 namespace App\Nova\Filters;
 
-use App\Models\Program;
+use App\Models\Programa;
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
 
@@ -21,6 +21,6 @@ class ByProgram extends Filter {
      * @return array
      */
     public function options(Request $request) {
-        return Program::all()->pluck('id', 'name')->toArray();
+        return Programa::all()->pluck('id', 'name')->toArray();
     }
 }

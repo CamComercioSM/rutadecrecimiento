@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -75,11 +74,11 @@ class Company extends Model {
     }
         
     public function department() {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Departamento::class);
     }
 
     public function municipality() {
-        return $this->belongsTo(Municipality::class);
+        return $this->belongsTo(Municipio::class);
     }
 
     public function stage() {
