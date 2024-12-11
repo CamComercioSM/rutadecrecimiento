@@ -1,11 +1,13 @@
 <?php
 
+use App\helpers;
 use App\Http\Controllers\DiagnosticoController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ProgramaController;
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -35,7 +37,7 @@ Route::post('/ingreso/procesar', [LoginController::class, 'login'])->name('login
 Route::get('/logout', [LoginController::class, 'logout'])->name('company.logout');
 
 Route::get('/empresa/diagnostico', [DiagnosticoController::class, 'index'])->name('company.diagnostic');
-Route::post('/empresa/diagnostico', [DiagnosticoController::class, 'index'])->name('company.diagnostic.saveVenta');
+Route::get('/empresa/diagnostico/{sells}', [DiagnosticoController::class, 'index'])->name('company.diagnostic.sells');
 Route::post('/empresa/diagnostico/procesar', [DiagnosticoController::class, 'store'])->name('company.diagnostic.save');
 
 Route::group(['middleware' => ['auth']], function() {
@@ -45,7 +47,6 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/historialDiagnosticos', [PerfilController::class, 'historialDiagnosticos'])->name('company.historialDiagnosticos');
     Route::get('/historialDiagnosticos/{id}', [PerfilController::class, 'historialDiagnosticoDetalle']);
-    Route::get('/exportarPreguntasDiagnostico/{id}', [PerfilController::class, 'exportarPreguntasDiagnostico']);
     
     Route::get('/empresa/actualizar', [PerfilController::class, 'completarInformacion'])->name('company.complete_info');
     Route::post('/empresa/actualizar/guardar', [PerfilController::class, 'completarInformacionGuardar'])->name('company.complete_info.save');
@@ -63,9 +64,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/empresa/capsulas', [ProgramaController::class, 'capsulas'])->name('company.capsules');
     Route::post('/empresa/aplicacion/procesar', [ProgramaController::class, 'applicationSave'])->name('company.application.save');
 
-    Route::get('/municipios/listado', [InicioController::class, 'getMunicipios'])->name('company.getMunicipios');
-    Route::get('/secciones/listado', [InicioController::class, 'getSecciones'])->name('company.getSecciones');
-    Route::get('/actividades/listado', [InicioController::class, 'getActividades'])->name('company.getActividades');
+    Route::get('/municipios/listado', [helpers::class, 'getMunicipalities'])->name('company.getMunicipalities');
 });
 
 

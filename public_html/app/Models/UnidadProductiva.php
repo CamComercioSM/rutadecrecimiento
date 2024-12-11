@@ -67,10 +67,6 @@ class UnidadProductiva extends Model
         'transformada_desde',
     ];
 
-    protected $casts = [
-        'registration_date' => 'date',
-    ];
-
     // Relaciones
 
     public function tipoPersona()

@@ -1,5 +1,5 @@
   <h1 class="mt-10">Niveles Alcanzados por Dimensión</h1>
-  <div style="max-width: 500px; height: 50vh; margin: 0 auto;">
+  <div style="max-width: 500px; height: 50vh; margin: auto;">
       <canvas id="myChart"></canvas>
   </div>
 
@@ -9,7 +9,7 @@
   labels: {!! $dimensions !!},
           datasets: [{
           label: '{{$company->business_name}}',
-                data: [{{implode(",", $results)}}],
+                  data: {{$results}},
                   fill: true,
                   backgroundColor: 'rgba(252,183,22, 0.2)',
                   borderColor: 'rgb(255,180,0)',
@@ -38,6 +38,3 @@
           };
   const myChart = new Chart(document.getElementById('myChart'), config);
 </script>
-<style>
-        #myChart{ margin: 0 auto; }
-</style>

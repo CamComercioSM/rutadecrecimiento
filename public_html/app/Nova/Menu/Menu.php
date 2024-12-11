@@ -7,14 +7,12 @@ use App\Nova\Answer;
 use App\Nova\Aplication;
 use App\Nova\Banner;
 use App\Nova\Capsule;
-use App\Nova\Diagnostico;
 use App\Nova\Lead;
 use App\Nova\Notification;
 use App\Nova\PreguntaDimension;
 use App\Nova\PreguntaGrupo;
 use App\Nova\PreguntaTipo;
 use App\Nova\Program;
-use App\Nova\Resources\Diagnosticos\DiagnosticoResultado;
 use App\Nova\Section;
 use App\Nova\Setting;
 use App\Nova\Stage;
@@ -38,7 +36,6 @@ class Menu {
                     'label'     => 'Gestionar',
                     'expanded'  => true,
                     'resources' => [
-                        DiagnosticoResultado::class,
                         UnidadProductiva::class,
                         Answer::class,
                         Aplication::class,
@@ -62,16 +59,11 @@ class Menu {
                     'label'     => 'Configurar',
                     'expanded'  => true,
                     'resources' => [
-                        
-
                         PreguntaGrupo::class,
                         PreguntaTipo::class,
                         PreguntaDimension::class,
                         Program::class,
                         Capsule::class,
-
-                        Diagnostico::class,
-                        
                         NovaResource::make(Stage::class)->canSee(function (){
                             return Auth::user()->hasAnyRole(['superadmin']);
                         }),

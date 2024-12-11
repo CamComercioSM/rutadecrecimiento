@@ -45,14 +45,6 @@
                 <div class="tip">Capsulas</div>
             </a>
         </li>
-        <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
-            <a class="capsules" href="{{route('company.historialDiagnosticos')}}">
-                <div class="icon">
-                    <i class="fa fa-history"></i>
-                </div>
-                <div class="tip">Historial de diagnósticos</div>
-            </a>
-        </li>
         <li data-step="6" data-intro="Esta opción te permite cerrar sesión">
             <a href="{{route('company.logout')}}">
                 <div class="icon">

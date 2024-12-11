@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
@@ -23,12 +22,6 @@ class PreguntaTipo extends Resource
 
             Text::make('Nombre', 'preguntatipo_nombre')
                 ->rules('required'),
-
-            Boolean::make('Permitir opciones', 'preguntatipo_opciones')
-                ->rules('required')
-                ->trueValue(1)
-                ->falseValue(0) 
-                ->sortable(), 
         ];
     }
 }
