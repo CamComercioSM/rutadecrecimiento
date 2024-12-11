@@ -2,6 +2,9 @@
 
 namespace App\Nova;
 
+use App\Models\Sector;
+use App\Models\UnidadProductivaPersona;
+use App\Models\UnidadProductivaTamano;
 use App\Nova\Actions\ExportCompanies;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
@@ -14,21 +17,21 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
 
-class Company extends Resource {
+class UnidadProductiva extends Resource {
 
-    public static $model = \App\Models\Company::class;
+    public static $model = \App\Models\UnidadProductiva::class;
     public static $title = 'business_name';
-    public static $search = ['id', 'business_name', 'nit', 'registration_number'];
+    public static $search = ['unidadproductiva_id', 'business_name', 'nit', 'registration_number','name_legal_representative','registration_email'];
 
     public static function label() {
-        return 'Empresas y Empresarios';
+        return 'Unidades productivas y Empresarios';
     }
 
     public function fields(Request $request) {
         return [
-            ID::make('id'),
+            ID::make('id', 'unidadproductiva_id'),
             
-            Text::make('Fecha de Registro', 'created_at')
+            Text::make('Fecha de Registro', 'fecha_creacion')
                 ->rules('required'),
             
             Text::make('Tipo de Registro', 'tipo_registro_rutac')
@@ -41,8 +44,7 @@ class Company extends Resource {
             Text::make('NIT', 'nit')
                 ->rules('required'),
 
-            Text::make('Nombre del representante legal', 'name_legal_representative')
-                ->hideFromIndex(),
+            Text::make('Nombre del representante legal', 'name_legal_representative'),
 
             Text::make('Numero de matricula', 'registration_number')
                 ->rules('required')->hideFromIndex(),
@@ -54,30 +56,34 @@ class Company extends Resource {
                 ->rules('required'),
 
             Select::make('Tipo de persona', 'type_person')
-                ->options(\App\Models\Company::$types)->displayUsingLabels(),
+                ->options(UnidadProductivaPersona::pluck('tipoPersonaNOMBRE', 'tipopersona_id'))
+                ->displayUsingLabels(),
 
             Select::make('Sector', 'sector')
-                ->options(\App\Models\Company::$sector)->displayUsingLabels(),
+                ->options(Sector::pluck('sectorNOMBRE', 'sector_id'))
+                ->displayUsingLabels(),
+
 
             Select::make('Tamaño', 'size')
-                ->options(\App\Models\Company::$size)->displayUsingLabels(),
+                ->options(UnidadProductivaTamano::pluck('tamanoNOMBRE', 'tamano_id'))
+                ->displayUsingLabels(),
 
             //Para mostrar usamos los campos de Stack Line, ya que puede haber valores en null
             Stack::make('Tipo de persona', [
                 Line::make(null, function () {
-                    return $this->type_person != null ? \App\Models\Company::$types[$this->type_person] : null;
+                    return $this->tipoPersona ? $this->tipoPersona->tipoPersonaNOMBRE : null;
                 }),
             ])->hideFromIndex(),
 
             Stack::make('Sector', [
                 Line::make(null, function () {
-                    return $this->sector != null ? \App\Models\Company::$sector[$this->sector] : null;
+                    return $this->sector ? $this->sector->sectorNOMBRE : null;
                 }),
             ])->hideFromIndex(),
 
             Stack::make('Tamaño', [
                 Line::make(null, function () {
-                    return $this->size != null ? \App\Models\Company::$size[$this->size] : null;
+                    return $this->tamano ? $this->tamano->tamanoNOMBRE : null;
                 }),
             ])->hideFromIndex(),
 
@@ -92,7 +98,7 @@ class Company extends Resource {
                    if($this->complete_diagnostic == 0)
                        return 'No tiene diagnostico';
 
-                   $url_domain = route('company.graph.radial', ['id' => $this->id]);
+                   $url_domain = route('company.graph.radial', ['id' => $this->unidadproductiva_id]);
                    return '<a class="btn btn-xs mr-1 btn-primary" style="line-height: 1.5rem" target="_blank" href="' . $url_domain . '">Visualizar gráfico</a>';
                })->asHtml()
             ]),
@@ -112,13 +118,20 @@ class Company extends Resource {
     }
 
     protected function information() {
+
+        $municipios = \App\Models\Municipio::orderBy('municipionombreoficial', 'asc')
+            ->pluck('municipionombreoficial', 'municipio_id');
+
+        $departamentos = \App\Models\Departamento::orderBy('departamentonombreoficial', 'asc')
+        ->pluck('departamentonombreoficial', 'departamento_id');
+
         return [
             Select::make('Departamento', 'department_id')
-                ->options(\App\Models\Department::all()->pluck('name', 'id'))->displayUsingLabels()->rules('required'),
+                ->options($departamentos)->displayUsingLabels()->rules('required'),
 
             Select::make('Municipio', 'municipality_id')
                 ->searchable()
-                ->options(\App\Models\Municipality::all()->pluck('name', 'id'))->displayUsingLabels()->rules('required'),
+                ->options($municipios)->displayUsingLabels()->rules('required'),
 
             Text::make('Dirección', 'address')
                 ->hideFromIndex(),

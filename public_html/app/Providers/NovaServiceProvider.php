@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Nova\Menu\Menu;
+use App\Nova\Metrics\TotalUnidadesProductivas;
+use App\Nova\Metrics\TotalUsuariosUnidadesProductivas;
+use App\Nova\Metrics\UnidadesProductivasEtapas;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
@@ -56,7 +59,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
-        return [];
+        return [
+            (new TotalUnidadesProductivas())->width('1/3')
+                ->route('nova.pages.index', ['resource' => 'unidad-productivas']),
+
+            (new UnidadesProductivasEtapas())->width('1/3')
+                ->route('nova.pages.index', ['resource' => 'unidad-productivas']),
+
+            (new TotalUsuariosUnidadesProductivas())->width('1/3')
+                ->route('nova.pages.index', ['resource' => 'unidad-productivas']),
+        ];
     }
 
     /**

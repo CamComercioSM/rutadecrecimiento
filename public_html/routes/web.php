@@ -1,5 +1,14 @@
 <?php
 
+use App\helpers;
+use App\Http\Controllers\DiagnosticoController;
+use App\Http\Controllers\InicioController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\ProgramaController;
+
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,54 +22,55 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\WebSiteController::class, 'home'])->name('home');
-
-Route::get('/mapa-sitio', [\App\Http\Controllers\WebSiteController::class, 'siteMap'])->name('site.map');
+Route::get('/', [InicioController::class, 'index'])->name('home');
+Route::get('/mapa-sitio', [InicioController::class, 'mapa'])->name('site.map');
 
 /* Rutas de registro */
-Route::get('/registro', [\App\Http\Controllers\WebSiteController::class, 'register'])->name('register');
-Route::post('/registro/buscar', [\App\Http\Controllers\WebSiteController::class, 'registerSearchCompany'])->name('register.search');
-Route::post('/registro/actualizar', [\App\Http\Controllers\WebSiteController::class, 'registerSave'])->name('register.save');
-Route::post('/registro/lead', [\App\Http\Controllers\WebSiteController::class, 'registerLead'])->name('register.lead');
+Route::get('/registro', [RegistroController::class, 'index'])->name('register');
+Route::post('/registro/buscar', [RegistroController::class, 'search'])->name('register.search');
+Route::post('/registro/actualizar', [RegistroController::class, 'store'])->name('register.save');
+Route::post('/registro/lead', [RegistroController::class, 'storeLead'])->name('register.lead');
 
 /* Rutas de empresa */
-Route::get('/ingreso', [\App\Http\Controllers\CompanyController::class, 'login'])->name('company.login');
-Route::post('/ingreso/procesar', [\App\Http\Controllers\CompanyController::class, 'loginProcess'])->name('company.login.process');
-Route::get('/empresa/diagnostico', [\App\Http\Controllers\CompanyController::class, 'diagnostic'])->name('company.diagnostic');
-Route::get('/empresa/diagnostico/{sells}', [\App\Http\Controllers\CompanyController::class, 'diagnostic'])->name('company.diagnostic.sells');
-Route::post('/empresa/diagnostico/procesar', [\App\Http\Controllers\CompanyController::class, 'saveDiagnostic'])->name('company.diagnostic.save');
-Route::get('/dashboard', [\App\Http\Controllers\CompanyController::class, 'dashboard'])->name('company.dashboard');
-Route::get('/ingreso', [\App\Http\Controllers\CompanyController::class, 'login'])->name('company.login');
+Route::get('/ingreso', [LoginController::class, 'index'])->name('login');
+Route::post('/ingreso/procesar', [LoginController::class, 'login'])->name('login.process');
+Route::get('/logout', [LoginController::class, 'logout'])->name('company.logout');
+
+Route::get('/empresa/diagnostico', [DiagnosticoController::class, 'index'])->name('company.diagnostic');
+Route::get('/empresa/diagnostico/{sells}', [DiagnosticoController::class, 'index'])->name('company.diagnostic.sells');
+Route::post('/empresa/diagnostico/procesar', [DiagnosticoController::class, 'store'])->name('company.diagnostic.save');
 
 Route::group(['middleware' => ['auth']], function() {
-    Route::get('/empresa/actualizar', [\App\Http\Controllers\CompanyController::class, 'completeInfo'])->name('company.complete_info');
-    Route::post('/empresa/actualizar/guardar', [\App\Http\Controllers\CompanyController::class, 'completeInfoSave'])->name('company.complete_info.save');
-    Route::get('/empresa/perfil', [\App\Http\Controllers\CompanyController::class, 'profile'])->name('company.profile');
-    Route::get('/empresa/perfil/actualizar', [\App\Http\Controllers\CompanyController::class, 'profileUpdate'])->name('company.profile.update');
-    Route::post('/empresa/perfil/guardar', [\App\Http\Controllers\CompanyController::class, 'profileSave'])->name('company.profile.save');
-    Route::get('/empresa/password/actualizar', [\App\Http\Controllers\CompanyController::class, 'passwordUpdate'])->name('company.password.update');
-    Route::post('/empresa/password/guardar', [\App\Http\Controllers\CompanyController::class, 'passwordSave'])->name('company.password.save');
-    Route::get('/empresa/programas', [\App\Http\Controllers\CompanyController::class, 'programs'])->name('company.programs');
-    Route::get('/empresa/programa/{id}', [\App\Http\Controllers\CompanyController::class, 'programShow'])->name('company.program.show');
-    Route::get('/empresa/programa/registro/{id}', [\App\Http\Controllers\CompanyController::class, 'programRegister'])->name('company.program.register');
-    Route::get('/empresa/capsulas', [\App\Http\Controllers\CompanyController::class, 'capsules'])->name('company.capsules');
 
-    Route::post('/empresa/aplicacion/procesar', [\App\Http\Controllers\CompanyController::class, 'applicationSave'])->name('company.application.save');
+    Route::get('/dashboard', [PerfilController::class, 'dashboard'])->name('company.dashboard');
+    Route::get('/seleccionarEmpresa', [PerfilController::class, 'SeleccionarUnidadProductiva'])->name('company.select');
 
-    Route::get('/municipios/listado', [\App\helpers::class, 'getMunicipalities'])->name('company.getMunicipalities');
+    Route::get('/historialDiagnosticos', [PerfilController::class, 'historialDiagnosticos'])->name('company.historialDiagnosticos');
+    Route::get('/historialDiagnosticos/{id}', [PerfilController::class, 'historialDiagnosticoDetalle']);
+    
+    Route::get('/empresa/actualizar', [PerfilController::class, 'completarInformacion'])->name('company.complete_info');
+    Route::post('/empresa/actualizar/guardar', [PerfilController::class, 'completarInformacionGuardar'])->name('company.complete_info.save');
+    Route::get('/empresa/perfil', [PerfilController::class, 'perfil'])->name('company.profile');
+    Route::get('/empresa/perfil/actualizar', [PerfilController::class, 'actualizarPerfil'])->name('company.profile.update');
+    Route::post('/empresa/perfil/guardar', [PerfilController::class, 'actualizarPerfilGuardar'])->name('company.profile.save');
+    Route::get('/empresa/password/actualizar', [PerfilController::class, 'actualizarPassword'])->name('company.password.update');
+    Route::post('/empresa/password/guardar', [PerfilController::class, 'actualizarPasswordGuardar'])->name('company.password.save');
+    
+    Route::get('/grafico-radial/{id}', [PerfilController::class, 'grafico'])->name('company.graph.radial');
+    Route::get('/empresa/programas/test', [ProgramaController::class, 'testProgramas'])->name('programas.test');
+    Route::get('/empresa/programas', [ProgramaController::class, 'index'])->name('company.programs');
+    Route::get('/empresa/programa/{id}', [ProgramaController::class, 'programShow'])->name('company.program.show');
+    Route::get('/empresa/programa/registro/{id}', [ProgramaController::class, 'programRegister'])->name('company.program.register');
+    Route::get('/empresa/capsulas', [ProgramaController::class, 'capsulas'])->name('company.capsules');
+    Route::post('/empresa/aplicacion/procesar', [ProgramaController::class, 'applicationSave'])->name('company.application.save');
 
-    Route::get('/grafico-radial/{id}', [\App\Http\Controllers\CompanyController::class, 'radialGraphic'])->name('company.graph.radial');
-
-    Route::get('/logout', [\App\Http\Controllers\CompanyController::class, 'logout'])->name('company.logout');
+    Route::get('/municipios/listado', [helpers::class, 'getMunicipalities'])->name('company.getMunicipalities');
 });
+
 
 Route::get('/clear', function(){
     Artisan::call('optimize');
     dump('Optmize done');
 });
 
-Route::get('/test', [\App\Http\Controllers\DebugController::class, 'test']);
-
-Route::get('/link', function () {
-    \Illuminate\Support\Facades\Artisan::call('storage:link');
-});
+Route::get('/link', function () { Artisan::call('storage:link'); });
