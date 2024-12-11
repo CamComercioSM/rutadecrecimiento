@@ -9,7 +9,7 @@
             <div id="capsules">
                 <div class="wrap wrap-large textl">
                     <h1>{{$company->business_name}}</h1>
-                    <h3 class="mt-5">Te encuentras en la etapa de <b>{{ $nombreEtapa }}</b></h3>
+                    <h3 class="mt-5">Te encuentras en la etapa de <b>{{\App\helpers::getStageLabel()}}</b></h3>
                     <hr class="mt-10 mb-10"/>
                     <p class="desc">
                         Teniendo en cuenta el diagnóstico de tu empresa, te recomendamos las siguientes cápsulas de capacitación
@@ -18,11 +18,11 @@
                         @foreach($capsules as $capsule)
                             <li>
                                 <a href="{{$capsule->url_video}}">
-                                    <div class="img" style="background-image: url('{{ asset( 'storage/'.$capsule->imagen ) }}')"></div>
+                                    <div class="img" style="background-image: url('{{ asset( 'storage/'.$capsule->image ) }}')"></div>
                                     <div class="info">
-                                        <h2>{{$capsule->nombre}}</h2>
+                                        <h2>{{$capsule->name}}</h2>
                                         <p>
-                                            {{$capsule->descripcion}}
+                                            {{$capsule->description}}
                                         </p>
                                     </div>
                                 </a>

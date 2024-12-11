@@ -9,7 +9,7 @@ use Laravel\Nova\Fields\Textarea;
 
 class Stage extends Resource {
 
-    public static $model = \App\Models\Etapa::class;
+    public static $model = \App\Models\Stage::class;
     public static $title = 'name';
     public static $search = ['id', 'name'];
 

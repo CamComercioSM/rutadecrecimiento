@@ -139,13 +139,6 @@
     array (
     ),
   ),
-  'saintsystems/nova-linkable-metrics' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'SaintSystems\\Nova\\LinkableMetrics\\CardServiceProvider',
-    ),
-  ),
   'spatie/eloquent-sortable' => 
   array (
     'providers' => 

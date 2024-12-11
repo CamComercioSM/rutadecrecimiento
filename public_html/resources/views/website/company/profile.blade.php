@@ -52,19 +52,19 @@
                     </tr>
                     <tr>
                         <td>Tamaño</td>
-                        <td>{{$company->tamano->tamanoNOMBRE ?? ''}}</td>
+                        <td>{{\App\Models\Company::$size[$company->size]}}</td>
                     </tr>
                     <tr>
                         <td>Tipo de Persona</td>
-                        <td>{{$company->tipoPersona->tipoPersonaNOMBRE ?? ''}}</td>
+                        <td>{{\App\Models\Company::$types[$company->type_person]}}</td>
                     </tr>
                     <tr>
                         <td>Sector</td>
-                        <td>{{$company->sector->sectorNombre ?? ''}}</td>
+                        <td>{{\App\Models\Company::$sector[$company->sector]}}</td>
                     </tr>
                     <tr>
                         <td>Actividad económica</td>
-                        <td>{{$company->ciiuActividad->ciiuActividadCODIGO ?? ''}} - <strong>{{  $company->ciiuActividad->ciiuActividadTITULO  ?? ''}}</strong></td>
+                        <td>{{$company->comercial_activity}} - <strong>{{  $company->nombre_actividad }}</strong></td>
                     </tr>
                     <tr>
                         <td>¿Afiliado?</td>
@@ -72,11 +72,11 @@
                     </tr>
                     <tr>
                         <td>Departamento</td>
-                        <td>{{$company->departamento->departamentonombreoficial ?? ''}}</td>
+                        <td>{{$company->department->name}}</td>
                     </tr>
                     <tr>
                         <td>Municipio</td>
-                        <td>{{$company->municipio->municipionombreoficial ?? ''}}</td>
+                        <td>{{$company->municipality->name}}</td>
                     </tr>
                     <tr>
                         <td>Dirección</td>

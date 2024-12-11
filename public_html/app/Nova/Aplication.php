@@ -14,8 +14,7 @@ use Laravel\Nova\Fields\Textarea;
 
 class Aplication extends Resource {
 
-    public static $model = \App\Models\ConvocatoriaInscripcion::class;
-    
+    public static $model = \App\Models\Aplication::class;
 
     public static function label() {
         return 'Inscripciones';
@@ -27,14 +26,14 @@ class Aplication extends Resource {
 
     public function fields(Request $request) {
         return [
-            BelongsTo::make('Programa', 'programa', Programa::class)
+            BelongsTo::make('Programa', 'program', Program::class)
                 ->viewable(false)->withoutTrashed()->hideWhenUpdating(),
 
-            BelongsTo::make('Empresa', 'unidadProductiva', UnidadProductiva::class)
+            BelongsTo::make('Empresa', 'company', Company::class)
                 ->viewable(false)->withoutTrashed()->hideWhenUpdating(),
 
             Select::make('Estado', 'state')
-                ->options(\App\Models\ConvocatoriaInscripcion::$states)->displayUsingLabels(),
+                ->options(\App\Models\Aplication::$states)->displayUsingLabels(),
 
             DateTime::make('Fecha de inscripción', 'created_at')
                 ->hideWhenUpdating()->hideWhenCreating(),

@@ -10,7 +10,7 @@
                 <ul>
                     <li>
                         <h3>Rutas de usuario</h3>
-                        <a href="{{ route('login') }}" tabindex="4">Iniciar sesión</a>
+                        <a href="{{ route('company.login') }}" tabindex="4">Iniciar sesión</a>
                         <a href="{{ route('register') }}" tabindex="5">Registrarse</a>
                     </li>
                     <li>
