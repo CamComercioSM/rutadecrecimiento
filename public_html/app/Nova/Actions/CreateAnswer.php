@@ -20,10 +20,10 @@ class CreateAnswer extends Action {
     public function fields() {
         return [
             Select::make('Empresa', 'company')
-                ->options(\App\Models\Company::all()->pluck('business_name', 'id')),
+                ->options(\App\Models\UnidadProductiva::all()->pluck('business_name', 'unidadproductiva_id')),
 
             Select::make('Variable', 'variable')
-                ->options(\App\Models\Variable::all()->pluck('name', 'id')),
+                ->options(\App\Models\DiagnosticoPregunta::all()->pluck('pregunta_titulo', 'pregunta_id')),
         ];
     }
 }

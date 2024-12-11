@@ -16,36 +16,34 @@ use Whitecube\NovaFlexibleContent\Flexible;
 class Variable extends Resource {
     use HasDependencies;
 
-    public static $model = \App\Models\Variable::class;
+    public static $model = \App\Models\DiagnosticoPregunta::class;
     public static $title = 'name';
-    public static $search = ['id', 'name'];
+    public static $search = ['pregunta_id', 'pregunta_titulo'];
 
     public static function label() {
-        return 'Variables';
+        return 'Preguntas';
     }
 
     public function fields(Request $request) {
         return [
-            ID::make('id'),
+            ID::make('pregunta_id'),
 
-            Text::make('Nombre', 'name')->rules('required'),
+            Text::make('Nombre', 'pregunta_titulo')->rules('required'),
 
-            Select::make('Vinculación', 'related_to')
-                ->options(\App\Models\Variable::$related_to)->displayUsingLabels()->rules('required')
-                ->help('Indique a cual proceso esta vinculada la variable'),
+            Text::make('Grupo', function () {
+                return optional($this->grupo)->preguntagrupo_nombre;
+            })->onlyOnIndex()->sortable(),
 
-            Select::make('Grupo', 'variable_group')
-                ->hideFromIndex()
-                ->options(\App\Models\Variable::$variable_group)->displayUsingLabels()->rules('required'),
+            Text::make('Dimensión', function () {
+                return optional($this->dimension)->preguntadimension_nombre;
+            })->onlyOnIndex()->sortable(),
 
-            Select::make('Dimension', 'dimension')
-                ->options(\App\Models\Variable::$dimension)->displayUsingLabels()->rules('required'),
-
-            Select::make('Tipo de variable', 'type')
-                ->options(\App\Models\Variable::$type)->displayUsingLabels()->rules('required'),
+            Text::make('Tipo de variable', function () {
+                return optional($this->tipo)->preguntatipo_nombre;
+            })->onlyOnIndex()->sortable(),
 
             NovaDependencyContainer::make([
-                Number::make('Nivel de porcentaje', 'percentage')->rules('required')
+                Number::make('Nivel de porcentaje', 'pregunta_porcentaje')->rules('required')
                     ->min(0)
                     ->max(100)
                     ->help('Recuerde que la sumataria de los niveles de todas preguntas de la misma dimension debe ser 100%'),
@@ -57,10 +55,6 @@ class Variable extends Resource {
                         Number::make('Porcentaje', 'percentage'),
                     ]),
             ])->dependsOn('type', 0),
-
-            BelongsToManyField::make('Programas', 'programs', ProgramList::class)
-                ->hideFromIndex()
-                ->help('Completar este campo solo para el caso de vinculación con un programa'),
 
             HasMany::make('Respuestas', 'answers', Answer::class)
         ];

@@ -4,13 +4,12 @@ namespace App;
 
 use App\Models\Alert;
 use App\Models\Company;
-use App\Models\Department;
-use App\Models\Diagnostic;
-use App\Models\Municipality;
+use App\Models\UnidadProductiva;
+use App\Models\Departamento;
+use App\Models\Municipio;
 use App\Models\Notification;
 use App\Models\Setting;
 use App\Models\Stage;
-use App\Models\Variable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,11 +58,11 @@ class helpers {
     }
 
     static function getMyCompany() {
-
-        if (!Auth::check())
+        if (!Auth::check()) {
             return false;
-
-        $company = Company::find(Auth::user()->company_id);
+        }
+    
+        $company = UnidadProductiva::find(Auth::user()->company_id); 
         return $company;
     }
 
@@ -156,9 +155,33 @@ class helpers {
     }
 
     public function getMunicipalities(Request $request) {
-        $municipalities = Municipality::where('department_id', $request->id)->orderBy('name', 'asc')->get();
+        
+        $municipalities = 
+            Municipio::where('departamentoID', $request->id)->
+            orderBy('municipionombreoficial', 'asc')->
+            get(['municipio_id as id', 'municipionombreoficial as name']);
+
         return $municipalities;
     }
+
+    static function getMunicipios() {
+        
+        $municipalities = 
+            Municipio::orderBy('municipionombreoficial', 'asc')->
+            get(['municipio_id as id', 'municipionombreoficial as name']);
+
+        return $municipalities;
+    }
+
+    static function getDepartamentos() {
+        
+        $municipalities = 
+            Departamento::orderBy('departamentonombreoficial', 'asc')->
+            get(['departamentoid as id', 'departamentonombreoficial as name']);
+
+        return $municipalities;
+    }
+
 
     public static function validateLastRenovation($date_register, $last_renovation, $company_id) {
         $date_register = date_create_from_format('Ymd', $date_register);
@@ -170,6 +193,7 @@ class helpers {
         if ($diff->y > 2)
             self::createAlertCompany(2, $company_id);
     }
+    
     /*
      * Valide si la ultima fecha de renovacion de camara de comercio esta vigente
      * Siempre vencen los 30 de marzo de cada año

@@ -104,7 +104,7 @@
                 <li>Empresa: {{ $data->business_name }}</li>
                 <li>Nit: {{ $data->nit}}</li>
                 <li>Persona de contacto: {{ $data->contact_person }}</li>
-                <li>Mail registrado: {{ $data->user->email }}</li>
+                <li>Mail registrado: {{ $data->usuario->email }}</li>
             </ul>
         </td>
     </tr>

@@ -2,8 +2,8 @@
 
 namespace App\Nova\Filters;
 
-use App\Models\Company;
-use App\Models\Program;
+use App\Models\UnidadProductiva;
+use App\Models\Programa;
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
 
@@ -12,7 +12,9 @@ class ByCompany extends Filter {
     public $name = 'Empresa';
 
     public function apply(Request $request, $query, $value) {
-        return $query->where('company_id', $value);
+        return $query->whereHas('resultado', function ($q) use ($value) {
+            $q->where('unidadproductiva_id', $value);
+        });
     }
 
     /**
@@ -22,6 +24,6 @@ class ByCompany extends Filter {
      * @return array
      */
     public function options(Request $request) {
-        return Company::all()->pluck('id', 'business_name')->toArray();
+        return UnidadProductiva::all()->pluck('unidadproductiva_id', 'business_name')->toArray();
     }
 }
