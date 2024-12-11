@@ -4,8 +4,8 @@
 @section('description','')
 
 @section('content')
-<!--@include('website.mantenimiento.modal_aviso')-->
-<!--@include('website.company.aviso_validaciondatos')-->
+{{--@include('website.mantenimiento.modal_aviso')--}}
+{{--@include('website.company.aviso_validaciondatos')--}}
 <div id="diagnostic">
     <div class="wrap">
         
@@ -19,66 +19,79 @@
         <h1  class="size-l color-2 font-w-700" >Ya ha pasado 1 año desde tu último diagnostico. Vamos a comprobar cuanto hemos crecido durante ese tiempo.</h1>
         @endif
 
-        @if($variables == null)
-        <section class="step-1">
-            <p class="mt-5">A continuación debera indicar si su empresa ha obtenido ventas y responder las preguntas del diagnóstico</p>
-            <ul class="mt-40">
-                <li>
-                    <a href="{{route('company.diagnostic.sells', 'ventas')}}" class="button button-primary">Sí he tenido ventas</a>
-                </li>
-                <li>
-                    <a href="{{route('company.diagnostic.sells', 'sin-ventas')}}" class="button button-third">No tengo ventas</a>
-                </li>
-            </ul>
-        </section>
+        @if(!(isset($preguntas) && $preguntas != null))
+            <section class="step-1">
+                <p class="mt-5">A continuación debera indicar si su empresa ha obtenido ventas y responder las preguntas del diagnóstico</p>
+                <ul class="mt-40">
+                    <li>
+                        <form id="frm_completardiagnostico" method="post" action="{{route('company.diagnostic.saveVenta')}}">
+                            @csrf
+                            <input type="hidden" name="anual_sales" value="1" >
+                            <button class="button button-primary">Sí he tenido ventas</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form id="frm_completardiagnostico" method="post" action="{{route('company.diagnostic.saveVenta')}}">
+                            @csrf
+                            <input type="hidden" name="anual_sales" value="0" >
+                            <button class="button button-primary">No tengo ventas</button>
+                        </form>
+                    </li>
+                </ul>
+            </section>
         @else
-        <form id="frm_completardiagnostico" method="post" action="{{route('company.diagnostic.save')}}">
-            @csrf
-            <input type="hidden" name="sells" value="{{$sells}}" />
-            @if($sells == 'ventas')
-            <section id="variable-0" class="variable">
-                <h2 class="color-2 font-w-700">¿A cuánto ascienden sus ventas anuales?</h2>
-                <ul class="hidden">
-                    @foreach(\App\Models\Company::$anual_sales[\App\helpers::getMyCompany()->sector] as $key => $value)
-                    <li>
-                        <label class="radio">
-                            <input type="radio"  id="anual_sales_{{$key}}"   name="anual_sales" value="{{$key}}"/>
-                            <div class="info">
-                                <h3 class="font-w-500">{{$value}}</h3>
-                            </div>
-                        </label>
-                    </li>
-                    @endforeach
-                </ul>
-                <button type="button"  id="btn_diagnosticosiguiente_conventas" class="button button-primary mt-20 button-next">Continuar</button>
-                <a class="button button-secundary mt-10" href="{{route('company.diagnostic')}}">Regresar</a>
-            </section>
-            @endif
-            @foreach($variables as $variable)
-            <section id="variable-{{$variable->id}}" class="variable hidden">
-                <h2 class="color-2 font-w-700">{{$variable->name}}</h2>
-                <ul>
-                    @foreach($variable->values as $key => $value)
-                    <li>
-                        <label class="radio">
-                            <input type="radio" id="variable_{{$variable->id}}_{{$key}}"  name="variable-{{$variable->id}}" value="{{$key}}"/>
-                            <div class="info font-w-500">
-                                {{$value['attributes']['variable_response']}}
-                            </div>
-                        </label>
-                    </li>
-                    @endforeach
-                </ul>
-                <button type="button" id="btn_diagnosticosiguiente_sinventas" class="button button-primary mt-20 button-next">Continuar</button>
-                <button type="button" class="button button-secundary mt-10 button-back">Regresar</button>
-            </section>
-            @endforeach
-        </form>
+            <form id="frm_completardiagnostico" method="post" action="{{route('company.diagnostic.save')}}">
+                @csrf
+                <input type="hidden" name="diagnosticoId" value="{{$diagnosticoId}}" />
+                
+                @if($diagnosticoId == 1)
+                    <section id="variable-0" class="variable">
+                        <h2 class="color-2 font-w-700">¿A cuánto ascienden sus ventas anuales?</h2>
+                        <ul class="hidden" style="padding:0" >
+                            @foreach($ventas as $item)
+                            <li>
+                                <label class="radio">
+                                    <input type="radio" id="anual_sales_{{$item->ventasAnualesID}}" name="anual_sales" value="{{$item->ventasAnualesID}}"/>
+                                    <div class="info">
+                                        <h3 class="font-w-500">{{$item->ventasAnualesNOMBRE}}</h3>
+                                    </div>
+                                </label>
+                            </li>
+                            @endforeach
+                        </ul>
+                        <button type="button"  id="btn_diagnosticosiguiente_conventas" class="button button-primary mt-20 button-next">Continuar</button>
+                        <a class="button button-secundary mt-10" href="{{route('company.diagnostic')}}">Regresar</a>
+                    </section>
+                @endif
+
+                @foreach($preguntas as $pregunta)
+                    <section id="variable-{{$pregunta->pregunta_id}}" class="variable hidden">
+                        <h2 class="color-2 font-w-700">{{$pregunta->pregunta_titulo}}</h2>
+                    
+                        <ul style="padding:0" >
+                            @if ($pregunta->pregunta_opcionesJSON)                        
+                                @foreach($pregunta->opciones as $item)
+                                    <li>                            
+                                        <label class="radio">
+                                            <input type="radio" id="variable_{{$pregunta->pregunta_id}}_{{$item->opcion_id}}" name="variable-{{$pregunta->pregunta_id}}" value="{{$item->opcion_id}}"/>
+                                            <div class="info font-w-500">
+                                                {{$item->opcion_variable_response}}
+                                            </div>
+                                        </label>                            
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+                        <button type="button" id="btn_diagnosticosiguiente_sinventas" class="button button-primary mt-20 button-next">Continuar</button>
+                        <button type="button" class="button button-secundary mt-10 button-back">Regresar</button>
+                    </section>
+                @endforeach
+            </form>
         @endif
         
     </div>
 </div>
-@if($variables != null)
+@if((isset($preguntas) && $preguntas != null))
 <script>
     $(document).ready(function () {
             $('.button-next').click(function () {
@@ -139,10 +152,10 @@
             }
     }
 </script>
-@if($sells == 'sin-ventas')
+@if($diagnosticoId == 2)
 <script>
     $(document).ready(function () {
-            $('#variable-{{$variables->first()->id}}').removeClass('hidden');
+        $('#variable-{{$preguntas->first()->pregunta_id}}').removeClass('hidden');
     });
 </script>
 @endif

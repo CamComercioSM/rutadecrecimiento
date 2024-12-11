@@ -5,7 +5,7 @@
 
 @section('content')
 <div id="register">
-    <div class="wrap">
+    <div class="container">
         <section class="step-1 mt-40 mb-40">
             <div>                                        
                 <h1>Bienvenid@, <b>{{$company->business_name}}</b> [{{$company->nit}}]!.</h1>                    
@@ -16,54 +16,79 @@
             </p>
             <form method="post" action="{{route('company.complete_info.save')}}">
                 @csrf
-                <div class="group mt-20">
-                    <h2>Información de la empresa</h2>
-                    <div class="row">
+
+                <div class="row d-flex group">
+                    
+                    <div class="col-12 col-md-12">
+                        <h2>Información de la empresa</h2>
+                    </div>
+
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Celular *</label>
                         <input type="text" name="mobile" value="{{$company->mobile}}" required/>
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Teléfono (opcional)</label>
                         <input type="text" name="telephone"/>
                     </div>
-                    <div class="row">
-                        <label>Seleccione un departamento * [{{$company->department_id}}]</label>
+
+                    <div class="col-12 col-md-6 mt-3">
+                        <label>Seleccione un departamento *</label>
                         <select id="department" name="department" required>
                             <option value="">Seleccione un departamento</option>
-                            @foreach($departments as $department)     
-                            @php($seleccionado = "")
-                            @if ( $company->department_id == $department->id )
-                            @php($seleccionado = "selected")
-                            @endif                            
-                            <option value="{{$department->id}}" {{$seleccionado}} >{{$department->name}}</option>
+                            @foreach($departments as $department)                                
+                                <option value="{{$department->id}}" >{{$department->name}}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Seleccione un municipio *</label>
                         <select id="municipality" name="municipality" required>
-                            <option>Seleccione primero un departamento</option>                            
-                            @foreach($municipalities as $municipality)     
-                            @php($seleccionado = "")
-                            @if ( $company->municipality_id == $municipality->id )
-                            @php($seleccionado = "selected")
-                            @endif                            
-                            <option value="{{$municipality->id}}" {{$seleccionado}} >{{$municipality->name}}</option>
-                            @endforeach
+                            <option>Seleccione primero un departamento</option>
                         </select>
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-12 mt-3">
                         <label>Dirección *</label>
                         <input type="text" name="address" value="{{$company->address}}" required  style="text-transform: uppercase;" />
                     </div>
+
+                    <div class="col-12 col-md-6 mt-3">
+                        <label>Sector *</label>
+                        <select id="sector" name="sector_id" required>
+                            <option value="">Seleccione un sector *</option> 
+                            @foreach($sectores as $item)
+                                <option  value="{{$item->sector_id}}">{{$item->sectorNOMBRE}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-6 mt-3">
+                        <label>Sección </label>
+                        <select id="seccion" name="seccion">
+                            <option>Seleccione un sector</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-12 mt-3">
+                        <label>Actividad economica </label>
+                        <select id="actividad" name="ciiuactividad_id">
+                            <option>Seleccione una sección</option>
+                        </select>
+                    </div>
+
                 </div>
-                <div class="group mt-20">
-                    <h2>Persona de contacto</h2>
-                    <div class="row">
+
+                <div class="row d-flex group mt-4">
+
+                    <div class="col-12 col-md-12">
+                        <h2>Persona de contacto</h2>
+                    </div>
+
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Nombre *</label>
                         <input type="text" name="contact_person" value="{{$company->name_legal_representative}}" required  style="text-transform: uppercase;" />
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Cargo *</label>
                         <select id="list_contacto_position" required onchange="actualizarNombreCargoContacto(this);">
                             <option value="">SELECCIONE UNO</option> 
@@ -77,30 +102,35 @@
                         </select>
                         <input type="text" id="contact_position" name="contact_position" value="{{$company->contact_position}}" required  style="text-transform: uppercase;display:none;"/>
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Email *</label>
                         <input type="text" name="contact_email" value="{{$company->registration_email}}" required/>
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Celular *</label>
                         <input type="text" name="contact_phone" value="{{$company->mobile}}" required/>
                     </div>
                 </div>
-                <div class="group mt-20">
-                    <h2>Información adicional</h2>
-                    <div class="row">
+
+                <div class="row d-flex group mt-4">
+
+                    <div class="col-12 col-md-12">
+                        <h2>Información adicional</h2>
+                    </div>
+
+                    <div class="col-12 col-md-6 mt-3">
                         <label>URL del Sitio Web (Opcional)</label>
                         <input type="text" name="website"/>
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Instagram (Opcional)</label>
                         <input type="text" name="social_instagram"/>
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-6 mt-3">
                         <label>Facebook (Opcional)</label>
                         <input type="text" name="social_facebook"/>
                     </div>
-                    <div class="row">
+                    <div class="col-12 col-md-6 mt-3">
                         <label>LinkedIn (Opcional)</label>
                         <input type="text" name="social_linkedin"/>
                     </div>
@@ -150,24 +180,63 @@
             $("#contact_position").val(cargo);
     }
 
+    function initselect(url, id, selector, idInit = null)
+    {
+        if(id)
+        {
+            $(selector).html('<option value="">Cargando...</option>');
+            $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: 'id=' + id,
+                    dataType: 'json',
+                    cache: false,
+                    success: function (result) {
+                            var html = '<option value="" dia>Seleccione una opción</option>';
+                            for (var i = 0; i < result.length; i++) {
+                                    html += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
+                            }
+                            $(selector).html(html);
+                            if(idInit)
+                                $(selector).val(idInit);
+                    },
+            });
+        }
+    }
+
     $('document').ready(function () {
-            $('#department').on('change', function () {
-                    var countryid = $(this).val();
-                    $.ajax({
-                            type: 'GET',
-                            url: 'https://rutadecrecimiento.com/municipios/listado',
-                            data: 'id=' + countryid,
-                            dataType: 'json',
-                            cache: false,
-                            success: function (result) {
-                                    var html = '<option value="">Seleccione un municipio</option>';
-                                    for (var i = 0; i < result.length; i++) {
-                                            html += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
-                                    }
-                                    $('#municipality').html(html);
-                            },
-                    });
-            })
+        $('#department').on('change', function () {
+            let id = $(this).val();
+            initselect('/municipios/listado', id, '#municipality');
+        });
+
+        $('#sector').on('change', function () {
+        // Limpiar los selects de sección y actividad
+        $('#seccion').html('<option value="">Seleccione un sector</option>');
+        $('#actividad').html('<option value="">Seleccione una sección</option>');
+        
+        // Obtener el ID del sector seleccionado y cargar las secciones correspondientes
+        let id = $(this).val();
+        if (id) {
+            initselect('/secciones/listado', id, '#seccion');
+        }
+    });
+
+        $('#seccion').on('change', function () {
+            let id = $(this).val();
+            initselect('/actividades/listado', id, '#actividad');
+        });
+
+        $("#department").val('{{$company->department_id}}');
+        $("#sector").val('{{$company->sector_id}}');
+
+        initselect('/municipios/listado', {{$company->department_id ?? 0}}, '#municipality', '{{$company->municipality_id}}');
+                
+        @if ($company->ciiuActividad()->first() != null)
+            initselect('/secciones/listado', {{$company->sector_id}}, '#seccion', '{{$company->ciiuActividad->ciiuSeccionID}}');
+            initselect('/actividades/listado', {{$company->ciiuActividad->ciiuSeccionID}}, '#actividad', '{{$company->ciiuActividad->ciiuactividad_id}}');
+        @endif
+
     })
 </script>
 @endsection

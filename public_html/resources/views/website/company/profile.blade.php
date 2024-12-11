@@ -52,19 +52,19 @@
                     </tr>
                     <tr>
                         <td>Tamaño</td>
-                        <td>{{\App\Models\Company::$size[$company->size]}}</td>
+                        <td>{{$company->tamano->tamanoNOMBRE ?? ''}}</td>
                     </tr>
                     <tr>
                         <td>Tipo de Persona</td>
-                        <td>{{\App\Models\Company::$types[$company->type_person]}}</td>
+                        <td>{{$company->tipoPersona->tipoPersonaNOMBRE ?? ''}}</td>
                     </tr>
                     <tr>
                         <td>Sector</td>
-                        <td>{{\App\Models\Company::$sector[$company->sector]}}</td>
+                        <td>{{$company->sector->sectorNombre ?? ''}}</td>
                     </tr>
                     <tr>
                         <td>Actividad económica</td>
-                        <td>{{$company->comercial_activity}} - <strong>{{  $company->nombre_actividad }}</strong></td>
+                        <td>{{$company->ciiuActividad->ciiuActividadCODIGO ?? ''}} - <strong>{{  $company->ciiuActividad->ciiuActividadTITULO  ?? ''}}</strong></td>
                     </tr>
                     <tr>
                         <td>¿Afiliado?</td>
@@ -72,12 +72,27 @@
                     </tr>
                     <tr>
                         <td>Departamento</td>
-                        <td>{{$company->department->name}}</td>
+                        <td>
+                            @foreach($departments as $department)
+                                @if($company->department_id == $department->id)
+                                    {{$department->name}}
+                                @endif
+                            @endforeach
+                        </td>
                     </tr>
+                    
+                    
                     <tr>
                         <td>Municipio</td>
-                        <td>{{$company->municipality->name}}</td>
+                        <td>
+                            {{
+                                $municipalities->firstWhere('id', $company->municipality_id)->name 
+                                ?? 'No definido'
+                            }}
+                        </td>
                     </tr>
+                    
+                    
                     <tr>
                         <td>Dirección</td>
                         <td>{{$company->address}}</td>

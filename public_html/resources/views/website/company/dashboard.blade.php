@@ -12,13 +12,8 @@
     <main>
         <div id="dashboard">
             <div class="wrap wrap-large">
-                @if(isset($debug))
-                {{\App\helpers::getDiagnosticScore(true)}}
-                @endif
                 <div class="info">
-                    
                     @include('website.company.panel_inicial') 
-
                 </div>
             </div>
         </div>
@@ -26,26 +21,11 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 @foreach($stages as $stage)
-<div id="stage-{{$stage->id}}" class="hidden c-stage-description">
+<div id="stage-{{$stage->etapa_id}}" class="hidden c-stage-description">
     <h2 class="bold textl">{{$stage->name}}</h2>
     <p class="mt-20">{!! nl2br($stage->description) !!}</p>
 </div>
 @endforeach
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!--una encuesta sobre el producto-->
 <hr />
@@ -87,7 +67,7 @@ Fancybox.show(
 });
 </script>
 <!-- Una vez cargado el formulario inactivamos para que no vuelva aparecer en otras ocaciones -->
-@php( \App\helpers::disablePoll() )
+@php( \App\Http\Services\UnidadProductivaService::disablePoll() )
 @endif
 
 
