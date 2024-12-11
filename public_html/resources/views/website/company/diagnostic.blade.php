@@ -4,8 +4,8 @@
 @section('description','')
 
 @section('content')
-{{--@include('website.mantenimiento.modal_aviso')--}}
-{{--@include('website.company.aviso_validaciondatos')--}}
+<!--@include('website.mantenimiento.modal_aviso')-->
+<!--@include('website.company.aviso_validaciondatos')-->
 <div id="diagnostic">
     <div class="wrap">
         
@@ -19,7 +19,7 @@
         <h1  class="size-l color-2 font-w-700" >Ya ha pasado 1 año desde tu último diagnostico. Vamos a comprobar cuanto hemos crecido durante ese tiempo.</h1>
         @endif
 
-        @if($preguntas == null)
+        @if($variables == null)
         <section class="step-1">
             <p class="mt-5">A continuación debera indicar si su empresa ha obtenido ventas y responder las preguntas del diagnóstico</p>
             <ul class="mt-40">
@@ -39,12 +39,12 @@
             <section id="variable-0" class="variable">
                 <h2 class="color-2 font-w-700">¿A cuánto ascienden sus ventas anuales?</h2>
                 <ul class="hidden">
-                    @foreach($ventas as $item)
+                    @foreach(\App\Models\Company::$anual_sales[\App\helpers::getMyCompany()->sector] as $key => $value)
                     <li>
                         <label class="radio">
-                            <input type="radio" id="anual_sales_{{$item->ventasAnualesID}}" name="anual_sales" value="{{$item->ventasAnualesID}}"/>
+                            <input type="radio"  id="anual_sales_{{$key}}"   name="anual_sales" value="{{$key}}"/>
                             <div class="info">
-                                <h3 class="font-w-500">{{$item->ventasAnualesNOMBRE}}</h3>
+                                <h3 class="font-w-500">{{$value}}</h3>
                             </div>
                         </label>
                     </li>
@@ -54,23 +54,20 @@
                 <a class="button button-secundary mt-10" href="{{route('company.diagnostic')}}">Regresar</a>
             </section>
             @endif
-            @foreach($preguntas as $pregunta)
-            <section id="variable-{{$pregunta->pregunta_id}}" class="variable hidden">
-                <h2 class="color-2 font-w-700">{{$pregunta->pregunta_titulo}}</h2>
-               
+            @foreach($variables as $variable)
+            <section id="variable-{{$variable->id}}" class="variable hidden">
+                <h2 class="color-2 font-w-700">{{$variable->name}}</h2>
                 <ul>
-                    @if ($pregunta->pregunta_opcionesJSON)                        
-                        @foreach($pregunta->pregunta_opcionesJSON as $key => $value)
-                            <li>                            
-                                <label class="radio">
-                                    <input type="radio" id="variable_{{$pregunta->pregunta_id}}_{{$key}}"  name="variable-{{$pregunta->pregunta_id}}" value="{{$key}}"/>
-                                    <div class="info font-w-500">
-                                        {{$value['attributes']['variable_response']}}
-                                    </div>
-                                </label>                            
-                            </li>
-                        @endforeach
-                    @endif
+                    @foreach($variable->values as $key => $value)
+                    <li>
+                        <label class="radio">
+                            <input type="radio" id="variable_{{$variable->id}}_{{$key}}"  name="variable-{{$variable->id}}" value="{{$key}}"/>
+                            <div class="info font-w-500">
+                                {{$value['attributes']['variable_response']}}
+                            </div>
+                        </label>
+                    </li>
+                    @endforeach
                 </ul>
                 <button type="button" id="btn_diagnosticosiguiente_sinventas" class="button button-primary mt-20 button-next">Continuar</button>
                 <button type="button" class="button button-secundary mt-10 button-back">Regresar</button>
@@ -81,7 +78,7 @@
         
     </div>
 </div>
-@if($preguntas != null)
+@if($variables != null)
 <script>
     $(document).ready(function () {
             $('.button-next').click(function () {
@@ -145,7 +142,7 @@
 @if($sells == 'sin-ventas')
 <script>
     $(document).ready(function () {
-        $('#variable-{{$preguntas->first()->pregunta_id}}').removeClass('hidden');
+            $('#variable-{{$variables->first()->id}}').removeClass('hidden');
     });
 </script>
 @endif

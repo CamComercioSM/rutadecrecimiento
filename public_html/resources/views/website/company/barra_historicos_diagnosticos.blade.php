@@ -109,12 +109,12 @@ series.columns.template.adapters.add("stroke", function (stroke, target) {
 // Set data
 var data = [
 
-@foreach ($company->diagnosticos as $Diag)    
+@foreach ($company->diagnostics as $Diag)    
 {
-  etapa: "{{$Diag->etapa?->nombre ?? ''}}",
-  country: "{{$Diag->fecha_creacion->format('M - Y') }}",
-  fecha: "{{$Diag->fecha_creacion}}",
-  value: {{$Diag->resultado_puntaje}}
+  etapa: "{{$Diag->etapaNOMBRE}}",
+  country: "{{$Diag->created_at->format('M - Y') }}",
+  fecha: "{{$Diag->created_at}}",
+  value: {{$Diag->score}}
 }, 
 @endforeach
             
