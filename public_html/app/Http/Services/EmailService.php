@@ -16,6 +16,7 @@ class EmailService
             });
         } 
         catch (\Exception $e) {
+           
             dd($e);
         }
     }

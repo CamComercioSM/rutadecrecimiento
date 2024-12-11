@@ -12,7 +12,9 @@ class ByCompany extends Filter {
     public $name = 'Empresa';
 
     public function apply(Request $request, $query, $value) {
-        return $query->where('unidadproductiva_id', $value);
+        return $query->whereHas('resultado', function ($q) use ($value) {
+            $q->where('unidadproductiva_id', $value);
+        });
     }
 
     /**

@@ -16,18 +16,18 @@ class UnidadProductivaService
 {
     private static string $KEY_UNIDAD_PRODUCTIVA_ID = "UNIDAD_PRODUCTIVA__ID";
 
-    static function setUnidadProductiva($id) 
+    public static function setUnidadProductiva($id) 
     {
         session([self::$KEY_UNIDAD_PRODUCTIVA_ID => $id]);
     }
 
-    static function getUnidadProductiva() 
+    public static function getUnidadProductiva() 
     {
         $id = session(self::$KEY_UNIDAD_PRODUCTIVA_ID);
         return UnidadProductiva::find($id);
     }
 
-    static function crearAlerta($tipo, $unidad_id) 
+    public static function crearAlerta($tipo, $unidad_id) 
     {
         $alerta = Alerta::where('tipo', $tipo)->where('unidadproductiva_id', $unidad_id)->first();
         
@@ -42,7 +42,7 @@ class UnidadProductivaService
         return true;
     }
 
-    static function validarDiagnostico($unidad) 
+    public static function validarDiagnostico($unidad) 
     {    
         $dias = 365;
 
@@ -61,7 +61,7 @@ class UnidadProductivaService
         return "NO";
     }
 
-    static function validarTiempoDiagnostico($unidad, $dias = 365) {
+    public static function validarTiempoDiagnostico($unidad, $dias = 365) {
 
         if ($unidad->complete_diagnostic == 1)
         {
@@ -78,7 +78,7 @@ class UnidadProductivaService
         return false;
     }
 
-    static function ajustarValorRespuesta($valor, $opciones) 
+    public static function ajustarValorRespuesta($valor, $opciones) 
     {    
         /*
         * Cuando son variables que tienen solo 3 opciones de respuestas.
@@ -109,7 +109,7 @@ class UnidadProductivaService
         }
     }
 
-    static function localizacion($departamento, $municipio, $direccion)
+    public static function localizacion($departamento, $municipio, $direccion)
     {   
         if($departamento && $municipio && $direccion)
         {
@@ -133,7 +133,7 @@ class UnidadProductivaService
         }
     }
 
-    static function setTipoUnidad($company, $unidadProductiva)
+    public static function setTipoUnidad($company, $unidadProductiva)
     {   
         // Si la organizacion es 1, persona natural // Si 2 => establecimiento // Si mayor o igual a 3 => juridica
         if ($unidadProductiva->Persona->organizacion == 1) {
@@ -150,9 +150,9 @@ class UnidadProductivaService
         }
     }
 
-    static function setTamano($unidadProductiva, $ingresostamanoempresarial)
+    public static function setTamano($unidadProductiva, $ingresostamanoempresarial)
     {   
-        if($unidadProductiva->sector != null)
+        if($unidadProductiva->sector >= 0)
         {
             $ventaAnual = VentasAnuales::where('sectorCODIGO', $unidadProductiva->sector)
                 ->where([ 
@@ -167,27 +167,29 @@ class UnidadProductivaService
         }
     }
     
-    static function setSector($unidadProductiva)
+    public static function setSector($unidadProductiva)
     {   
-        $unidadProductiva->sector = null;
+        $sectorId = 0;
+        
         if ($unidadProductiva->comercial_activity <= 3320)
-            $unidadProductiva->sector = 0;
+            $sectorId = 1;
         elseif ($unidadProductiva->comercial_activity <= 4390)
-            $unidadProductiva->sector = 1;
+            $sectorId = 2;
         elseif ($unidadProductiva->comercial_activity <= 4799)
-            $unidadProductiva->sector = 2;
+            $sectorId = 3;
         elseif ($unidadProductiva->comercial_activity <= 9900)
-            $unidadProductiva->sector = 1;
+            $sectorId = 4;
 
-        if($unidadProductiva->sector != null)
+        $sector = Sector::find($sectorId);
+        
+        if($sector)
         {
-            $unidadProductiva->sector_id = 
-                Sector::where('sectorCODIGO', $unidadProductiva->sector)
-                ->first()->sector_id;
+            $unidadProductiva->sector_id = $sector->sector_id;
+            $unidadProductiva->sector = $sector->sectorCODIGO;
         }
     }
 
-    static function setVentasAnuales($unidadProductiva, $ingresostamanoempresarial)
+    public static function setVentasAnuales($unidadProductiva, $ingresostamanoempresarial)
     {   
         $ventaAnual = VentasAnuales::where('sectorCODIGO', $unidadProductiva->sector)
             ->where([ 
@@ -199,7 +201,7 @@ class UnidadProductivaService
         $unidadProductiva->ventaanual_id = $ventaAnual->ventasAnualesID;
     }
 
-    static function getEtapa($value) 
+    public static function getEtapa($value) 
     {
         $etapa = Etapa::
             where([ 
@@ -212,49 +214,7 @@ class UnidadProductivaService
 
     /////////////////////////////////////////////////
 
-    static function getPuntajeDiagnostico($company) 
-    {
-        //Definimos los dos grupos principales de variables para luego sumar los pesos de cada variable a su respectivo grupo
-        $variable_group_0 = 0;
-        $variable_group_1 = 0;
-
-        //calculamos el peso de las ventas y lo asignamos al grupo 0
-        $variable_group_0 += self::getAnualSalesWeight($company->anual_sales);
-
-        //recorremos las respuestas del ultimo diagnostico
-        $ultimoDiagnostico = $company->diagnosticos()->latest()->first();
-        $answers = $ultimoDiagnostico->respuestas();
-
-        foreach ($answers as $answer) {
-            //Realizamos el calculo para determinar el peso de la respuesta
-            $variable = $answer->variable;
-            $variable_percentaje = $variable->percentage / 100;
-            $answer_percentage = $variable->values[$answer->value]['attributes']['percentage'];
-            $answer_weight = $variable_percentaje * $answer_percentage;
-
-            //sumamos el peso de la respuesta al grupo correspondiente
-            $variable->variable_group == 0 ? $variable_group_0 += $answer_weight : $variable_group_1 += $answer_weight;
-        }
-
-        //obtenemos el calculo final segun los pesos de cada variable
-        return ($variable_group_0 * 0.5) + ($variable_group_1 * 0.5);
-    }
-
-    static function getAnualSalesWeight($value) 
-    {
-        $variable_weight = 0.5;
-        
-        $answers = [
-            1 => 30,
-            2 => 55,
-            3 => 80,
-            4 => 110
-        ];
-
-        return $answers[$value] * $variable_weight;
-    }
-
-    static function disablePoll(): bool {
+    public static function disablePoll(): bool {
         $company = self::getUnidadProductiva();
         $company->show_poll = 0;
         $company->save();

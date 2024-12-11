@@ -4,36 +4,59 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\CommonService;
 use App\Http\Services\UnidadProductivaService;
+use App\Models\Diagnostico;
 use App\Models\DiagnosticoPregunta;
 use App\Models\DiagnosticoRespuesta;
 use App\Models\DiagnosticoResultado;
+use App\Models\PreguntaOpcion;
 use App\Models\VentasAnuales;
 use Illuminate\Http\Request;
 
 class DiagnosticoController extends Controller
 {
-   
+
     public function index(Request $request)
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-        
-        if($request->sells)
+
+        if($request->anual_sales != null)
         {
-            $es_ventas = $request->sells == 'ventas';
-            $preguntas = DiagnosticoPregunta::where('pregunta_sobreventas', $es_ventas)
-                ->where('pregunta_opcionesJSON', '!=', null)->get();
-            $ventas = VentasAnuales::where('sectorCODIGO',  $unidadProductiva->sector->sector_id ?? 0)->get();
+            $unidadProductiva->anual_sales = $request->anual_sales;
+            $unidadProductiva->save();
         }
         
         $data = [
             'footer'=> CommonService::footer(),
             'links'=> CommonService::links(),
             'company'=> $unidadProductiva,
-            'preguntas'=> $preguntas ?? null,
             'arranquePOR'=> UnidadProductivaService::validarDiagnostico($unidadProductiva),
-            'ventas'=> $ventas ?? null,
-            'sells'=> $request->sells,
         ];
+
+        if($unidadProductiva->anual_sales != null)
+        {
+            $diagnostico = Diagnostico::where([ 
+                ['diagnostico_etapa_id', $unidadProductiva->etapa_id], 
+                ['diagnostico_etapa_id', $unidadProductiva->anual_sales] 
+            ])->first();
+            
+            if($diagnostico == null)
+            {
+                $diagnostico = Diagnostico::where([ 
+                    ['diagnostico_etapa_id', null], 
+                    ['diagnostico_conventas', $unidadProductiva->anual_sales == 1] 
+                ])->first();
+            }   
+            
+            $data['preguntas'] = $diagnostico->preguntas()->get();
+            $data['diagnosticoId'] = $diagnostico->diagnostico_id;
+            
+            if($unidadProductiva->anual_sales)
+            {
+                $sector = $unidadProductiva->sector()->first();
+
+                $data['ventas'] = VentasAnuales::where('sectorCODIGO',  $sector->sectorCODIGO )->get();
+            }
+        }
 
         return view('website.company.diagnostic', $data);
     }
@@ -41,7 +64,6 @@ class DiagnosticoController extends Controller
     public function store(Request $request)
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-        $tipo_diagnostico = $request->sells;
 
         $diagnostico = New DiagnosticoResultado();
         $diagnostico->unidadproductiva_id = $unidadProductiva->unidadproductiva_id;
@@ -49,35 +71,38 @@ class DiagnosticoController extends Controller
         $diagnostico->save();
 
         $unidadProductiva->etapa_id = 1;
-
-        if ($tipo_diagnostico == 'ventas') 
-        {
-            $unidadProductiva->anual_sales = $request->anual_sales;
-
-            $diagnostico->resultado_puntaje = UnidadProductivaService::getPuntajeDiagnostico($unidadProductiva);
-            $unidadProductiva->etapa_id = UnidadProductivaService::getEtapa($diagnostico->resultado_puntaje);
-        } 
+        $resultado_puntaje = 0;
 
         foreach ($request->all() as $key => $value) 
         {
-            if( $key != 'anual_sales' && $key != '_token' && $key != 'sells')
+            if( str_starts_with($key, 'variable-') )
             {
                 $pregunta_id = str_replace('variable-', '', $key);
 
+                $pregunta = DiagnosticoPregunta::find($pregunta_id);
+                $opcion = PreguntaOpcion::find($value);
+
                 $respuesta = New DiagnosticoRespuesta();
                 $respuesta->resultado_id = $diagnostico->resultado_id;
-                $respuesta->pregunta_id = $pregunta_id;
-                $respuesta->diagnosticorespuesta_valor = $value;
+                $respuesta->pregunta_id = $pregunta->pregunta_id;
+                $respuesta->diagnosticorespuesta_valor = $opcion->opcion_variable_response;
+
+                $respuesta->diagnosticorespuesta_porcentaje = 
+                    ($pregunta->pregunta_porcentaje/100) * ($opcion->opcion_percentage);
+
                 $respuesta->save();
 
-                if ($tipo_diagnostico == 'ventas') {
-                    // Si el crecimiento de la empresa ha sido mayor al 10%
-                    if ($pregunta_id == 3 && $value == 3)
-                        UnidadProductivaService::crearAlerta(1, $unidadProductiva->unidadproductiva_id);
-                }
+                $resultado_puntaje += $respuesta->diagnosticorespuesta_porcentaje;
             }
         }
 
+        if ($unidadProductiva->anual_sales == 1) 
+        {
+            $unidadProductiva->ventaanual_id = $request->anual_sales;
+            $unidadProductiva->etapa_id = UnidadProductivaService::getEtapa($resultado_puntaje);
+        } 
+
+        $diagnostico->resultado_puntaje = $resultado_puntaje;
         $diagnostico->etapa_id = $unidadProductiva->etapa_id;
         $diagnostico->save();
 

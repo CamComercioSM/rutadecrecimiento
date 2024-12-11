@@ -16,6 +16,7 @@ class PreguntaTipo extends Model
 
     protected $fillable = [
         'preguntatipo_nombre',
+        'preguntatipo_opciones'
     ];
 
     const CREATED_AT = 'fecha_creacion';

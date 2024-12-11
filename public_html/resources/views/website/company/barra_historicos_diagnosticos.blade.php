@@ -111,7 +111,7 @@ var data = [
 
 @foreach ($company->diagnosticos as $Diag)    
 {
-  etapa: "{{$Diag->etapa?->nombre ?? ''}}",
+  etapa: "{{$Diag->etapa?->name ?? ''}}",
   country: "{{$Diag->fecha_creacion->format('M - Y') }}",
   fecha: "{{$Diag->fecha_creacion}}",
   value: {{$Diag->resultado_puntaje}}

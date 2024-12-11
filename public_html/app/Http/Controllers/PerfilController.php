@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DiagnosticoRespuestasExport;
 use App\Http\Services\EmailService;
 use App\Http\Services\CommonService;
 use App\Http\Services\SICAM32;
 use App\Http\Services\UnidadProductivaService;
-use App\Models\DiagnosticoPregunta;
-use App\Models\DiagnosticoRespuesta;
-use App\Models\Programa;
+use App\Models\ResultadosDiagnostico;
+use App\Models\Sector;
+use App\Models\SectorSecciones;
 use App\Models\UnidadProductiva;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PerfilController extends Controller
 {
@@ -58,32 +60,21 @@ class PerfilController extends Controller
                     return redirect()->route('company.diagnostic');
 
             $activarDIAGVOLUNTARIO = UnidadProductivaService::validarTiempoDiagnostico($unidadProductiva, 30);
-
-            $diagnostico = $unidadProductiva->diagnosticos->last();
-            $etapas = CommonService::etapas()->keyBy('etapa_id');
-            $historialDiagnosticos = $unidadProductiva->diagnosticos->map(function ($diag) use ($etapas) {
-                $etapa = $etapas->get($diag->etapa_id);
-                $diag->etapa_nombre = $etapa ? $etapa->name : 'Etapa no definida';
-                return $diag;
-            });
-                        
-            $resultados = [];
-
-            $dimensiones = CommonService::dimensiones();
-            $resultados = $this->calcular($unidadProductiva, $diagnostico, $dimensiones);
             
-            $dimensiones = $dimensiones->pluck('preguntadimension_nombre')->toArray();
-            $dimensiones = json_encode($dimensiones);
+            $diagnostico = $unidadProductiva->diagnosticos->last();
+            $resultados = ResultadosDiagnostico::where('resultado_id', $diagnostico->resultado_id)->get();
+
+            $dimensiones = $resultados->pluck('dimension')->toArray();
+            $resultados = $resultados->pluck('valor')->toArray();
 
             $data = [
                 'footer'=> CommonService::footer(),
                 'links'=> CommonService::links(),
                 'stages'=> CommonService::etapas(),
                 'company'=> $unidadProductiva,
-                'etapa_id'=> $unidadProductiva,
-                'helper_notifications'=> CommonService::notifacaciones(),
-                'dimensions'=> $dimensiones,
-                'results'=> json_encode($resultados),
+                'helper_notifications'=> CommonService::notificaciones(),
+                'dimensions'=> json_encode($dimensiones),
+                'results'=> $resultados,
                 'activarDIAGVOLUNTARIO'=> $activarDIAGVOLUNTARIO,
             ];
             
@@ -96,21 +87,10 @@ class PerfilController extends Controller
     public function historialDiagnosticos(){
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
     
-        if ($unidadProductiva) {
-            
-            $etapas = CommonService::etapas()->keyBy('etapa_id');
-    
-            $historialDiagnosticos = $unidadProductiva->diagnosticos->map(function ($diagnostico) use ($etapas) {
-                $etapa = $etapas->get($diagnostico->etapa_id);
-                $diagnostico->etapa_nombre = $etapa ? $etapa->name : 'Etapa no definida';
-                return $diagnostico;
-            });
-    
+        if ($unidadProductiva) 
+        {
             $data = [
-                'footer' => CommonService::footer(),
-                'links' => CommonService::links(),
                 'company' => $unidadProductiva,
-                'historialDiagnosticos' => $historialDiagnosticos, // Pasando el historial con los nombres de las etapas
             ];
     
             return view('website.company.historial_diagnosticos', $data);
@@ -123,28 +103,22 @@ class PerfilController extends Controller
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
     
-        if ($unidadProductiva) {
+        if ($unidadProductiva) 
+        {
             $diagnostico = $unidadProductiva->diagnosticos()->find($id);
-           
-            if ($diagnostico) {
                 
-                $etapas = CommonService::etapas()->keyBy('etapa_id');
-                $etapa = $etapas->get($diagnostico->etapa_id);
-                $diagnostico->etapa_nombre = $etapa ? $etapa->name : 'Etapa no definida';
-    
-                $dimensiones = CommonService::dimensiones();
-                $resultados = $this->calcular($unidadProductiva, $diagnostico, $dimensiones);
-    
-                $dimensiones = $dimensiones->pluck('preguntadimension_nombre')->toArray();
-                $dimensiones = json_encode($dimensiones);
+            if ($diagnostico) 
+            {        
+                $resultados = ResultadosDiagnostico::where('resultado_id', $diagnostico->resultado_id)->get();
+                
+                $dimensiones = $resultados->pluck('dimension')->toArray();
+                $resultados = $resultados->pluck('valor')->toArray();
     
                 $data = [
-                    'footer' => CommonService::footer(),
-                    'links' => CommonService::links(),
                     'company' => $unidadProductiva,
                     'diagnostico' => $diagnostico,
-                    'dimensions' => $dimensiones,
-                    'results' => json_encode($resultados),
+                    'dimensions' => json_encode($dimensiones),
+                    'results' => $resultados,
                 ];
     
                 return view('website.company.historial_diagnostico_detalle', $data);
@@ -154,6 +128,10 @@ class PerfilController extends Controller
         return redirect()->route('company.historialDiagnosticos');
     }
     
+    public function exportarPreguntasDiagnostico($id)
+    {
+        return Excel::download(new DiagnosticoRespuestasExport($id), 'diagnostico-respuestas.xlsx');
+    }
     
     public function completarInformacion() 
     {
@@ -161,9 +139,9 @@ class PerfilController extends Controller
             'footer'=> CommonService::footer(),
             'links'=> CommonService::links(),
             'departments'=> CommonService::departamentos(),
-            'municipalities'=> CommonService::municipios(),
             'company'=> UnidadProductivaService::getUnidadProductiva(),
             'listaCargos'=> SICAM32::listadoViculosCargos(),
+            'sectores'=> Sector::get(),
         ];
 
         return view('website.company.complete_info', $data);
@@ -191,10 +169,15 @@ class PerfilController extends Controller
 
         $unidad->geolocation = UnidadProductivaService::localizacion($request->department, $request->municipality, $request->address);
 
+        $unidad->sector_id = $request->sector_id;
+        $unidad->ciiuactividad_id = $request->ciiuactividad_id;
+
         $unidad->update_info = 1;
         $unidad->save();
 
+
         // Enviamos notificacion de email al correo corporativo
+        $unidad->usuario = $unidad->usuario()->first();
         EmailService::send($unidad->registration_email, 'Solicitud de registro', 'website.mail.company_register', $unidad);
 
         return redirect()->route('company.diagnostic');
@@ -203,36 +186,37 @@ class PerfilController extends Controller
     public function perfil() 
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-        $user = Auth::user();
-
-        $programas_inscrito = [];
-        /*Programa::whereHas('applications', function ($query) use ($unidadProductiva) {
-              $query->where('company_id', $unidadProductiva->unidadproductiva_id);
-          })->get();*/
-
+        
+        if (!$unidadProductiva) {
+            abort(404, 'Unidad productiva no encontrada o no asociada al usuario.');
+        }
+     
+        $programas_inscrito = []; 
+    
         $data = [
-            'footer'=> CommonService::footer(),
-            'links'=> CommonService::links(),
-            'helper_notifications'=> CommonService::notifacaciones(),
-            'programas_inscrito'=> $programas_inscrito,
-            'company'=> $unidadProductiva,
-            'user'=> $user,
+            'footer' => CommonService::footer(),
+            'links' => CommonService::links(),
+            'helper_notifications' => CommonService::notificaciones(),
+            'departments' => CommonService::departamentos(), 
+            'municipalities' => CommonService::municipios(), 
+            'programas_inscrito' => $programas_inscrito,
+            'company' => $unidadProductiva,
+            'user' => Auth::user(),
         ];
-
+    
         return view('website.company.profile', $data);
     }
+    
 
     public function actualizarPerfil() 
     {
-       
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
         $listaCargos = SICAM32::listadoViculosCargos();
-
+      
         $data = [
             'footer'=> CommonService::footer(),
             'links'=> CommonService::links(),
             'departments'=> CommonService::departamentos(),
-            'municipalities'=> CommonService::municipios(),
             'company'=> $unidadProductiva,
             'listaCargos'=> $listaCargos,
         ];
@@ -305,67 +289,19 @@ class PerfilController extends Controller
         {
             $diagnostico = $unidadProductiva->diagnosticos->last();
            
-            $dimensiones = CommonService::dimensiones();
-            $resultados = $this->calcular($unidadProductiva, $diagnostico, $dimensiones);
+            $resultados = ResultadosDiagnostico::where('resultado_id', $diagnostico->resultado_id)->get();
 
-            $dimensiones = $dimensiones->pluck('preguntadimension_nombre')->toArray();
-            $dimensiones = json_encode($dimensiones);
-
+            $dimensiones = $resultados->pluck('dimension')->toArray();
+            $resultados = $resultados->pluck('valor')->toArray();
+            
             $data = [
-                'company'=> CommonService::links(),
-                'dimensions'=> CommonService::dimensiones(),
-                'results'=> $resultados,
+                'company'=> $unidadProductiva,
+                'dimensions'=> json_encode($dimensiones),
+                'results'=> json_encode($resultados),
             ];
     
             return view('website.company.radial_graphic', $data);
         }
-
-    }
-
-
-    private function calcular($unidadProductiva, $diagnostico, $dimensiones)
-    {
-        $resultados = [];
-
-        foreach ($dimensiones as $dimension) 
-        {
-            $preguntas = DiagnosticoPregunta::where('preguntadimension_id', $dimension->preguntadimension_id)->get();
-            $preguntas_contador = count($preguntas);
-            $int = 0;
-
-            // Si estamos en la dimension comercial
-            if ($dimension->preguntadimension_id == 1) {
-                // Cargamos la primera respuesta de la cantidad de ventas
-                if ($unidadProductiva->anual_sales == 0)
-                    $int += 2;
-                elseif ($unidadProductiva->anual_sales == 1)
-                    $int += 3;
-                elseif ($unidadProductiva->anual_sales == 2)
-                    $int += 4;
-                else
-                    $int += 5;
-            }
-
-            foreach ($preguntas as $pregunta) 
-            {
-                //TODO hay que analizar variables que no estan unidas a la dimension
-                if ($pregunta->pregunta_id == 2)
-                    continue;
-
-                $respuesta = DiagnosticoRespuesta::where('pregunta_id', $pregunta->pregunta_id)->where('resultado_id', $diagnostico->resultado_id)->first();
-                
-                if($respuesta != null)
-                {
-                    $valor = UnidadProductivaService::ajustarValorRespuesta($respuesta->diagnosticorespuesta_valor, $pregunta->pregunta_opcionesJSON);
-                    $int += $valor;
-                }
-            }
-
-            // Se suma 1 a la cantidad de variables, ya que son el total + la pregunta inicial de ventas
-            $resultados[] = $int / ($preguntas_contador > 0 ? $preguntas_contador : 1 );
-        }
-        
-        return $resultados;
     }
 
 }

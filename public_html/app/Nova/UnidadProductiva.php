@@ -111,9 +111,9 @@ class UnidadProductiva extends Resource {
 
             new Panel('Forzar diagnostico', $this->forceDiagnostic()),
 
-            HasMany::make('Respuestas', 'answers', Answer::class),
+            HasMany::make('Respuestas', 'diagnosticos', Answer::class),
 
-            HasMany::make('Inscripciones', 'aplications', Aplication::class),
+            //HasMany::make('Inscripciones', 'aplications', Aplication::class),
         ];
     }
 
