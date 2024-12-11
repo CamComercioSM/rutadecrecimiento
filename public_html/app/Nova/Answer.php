@@ -17,13 +17,13 @@ use Laravel\Nova\Fields\Stack;
 
 class Answer extends Resource {
 
-    public static $model = \App\Models\DiagnosticoRespuesta::class;
+    public static $model = \App\Models\Answer::class;
     public static $title = 'id';
     public static $search = ['id'];
     public static $perPageViaRelationship = 10;
 
     public static function label() {
-        return 'Respuestas  Diagnosticos';
+        return 'Respuestas';
     }
 
     public static $searchRelations = [
@@ -34,7 +34,11 @@ class Answer extends Resource {
         $fields = [];
 
         $mains_fields = [
-       
+            DateTime::make('Fecha', 'created_at')
+                ->hideWhenCreating()->hideWhenUpdating(),
+
+            BelongsTo::make('Empresa', 'company', Company::class)
+                ->viewable(false)->withoutTrashed(),
 
             Stack::make('Respuesta', [
                 Line::make(null, function (){

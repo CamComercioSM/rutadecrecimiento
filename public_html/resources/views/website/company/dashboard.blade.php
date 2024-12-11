@@ -12,8 +12,13 @@
     <main>
         <div id="dashboard">
             <div class="wrap wrap-large">
+                @if(isset($debug))
+                {{\App\helpers::getDiagnosticScore(true)}}
+                @endif
                 <div class="info">
+                    
                     @include('website.company.panel_inicial') 
+
                 </div>
             </div>
         </div>
@@ -26,6 +31,21 @@
     <p class="mt-20">{!! nl2br($stage->description) !!}</p>
 </div>
 @endforeach
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!--una encuesta sobre el producto-->
 <hr />
@@ -67,7 +87,7 @@ Fancybox.show(
 });
 </script>
 <!-- Una vez cargado el formulario inactivamos para que no vuelva aparecer en otras ocaciones -->
-@php( \App\Http\Services\UnidadProductivaService::disablePoll() )
+@php( \App\helpers::disablePoll() )
 @endif
 
 
