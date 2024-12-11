@@ -213,9 +213,9 @@
                 <div class="row">
                     <label for="nit">Criterio de búsqueda</label>
                     <select name="search_type" id="search_type" tabindex="28">
-                        <option value="1">NIT</option>
-                        <option value="2">Razón social</option>
-                        <option value="3">Matrícula mercantil</option>
+                        <option value="NIT">NIT</option>
+                        <option value="RAZONSOCIAL">Razón social</option>
+                        <option value="MATRICULA">Matrícula mercantil</option>
                     </select>
                 </div>
                 <div class="row">

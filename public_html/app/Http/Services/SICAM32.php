@@ -6,6 +6,15 @@ class SICAM32 {
 
   static string $URL = 'https://clientes.sicam32.net/php/?Tk1UbXBoS0htQ3kzN2JHelZWdUMzUTRpOVFMdklEZmR5Y3BvRTcxUjdQdCtPQ2JpUVIrMDd3c01OYmFoZVc2Qjo6YnRDdUZuZmhqRXdyWlpndDBHaFk0RTlsWTBnS0p1NlNqWVFiUHFNcFU5OD0=';
 
+  public static function actualizarIdRelacionadoUnidadProductiva($unidadProductivaID, $unidadProductivaRUTAC) 
+  {
+    self::ejecutarOperacion('actualizarIdRelacionadoUnidadProductiva',
+      [
+        'unidadProductivaID' => $unidadProductivaID,
+        'unidadProductivaRUTAC' => $unidadProductivaRUTAC
+      ]);  
+  }
+
   public static function listadoViculosCargos() 
   {
       $resultado = self::ejecutarOperacion('listadoViculosCargos');  

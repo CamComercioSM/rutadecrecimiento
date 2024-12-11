@@ -3,9 +3,9 @@
 @section('description','')
 
 @section('content')
-    <div style="width: 500px">
-        <canvas id="myChart"></canvas>
-    </div>
+
+    <canvas id="myChart"></canvas>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const data = {

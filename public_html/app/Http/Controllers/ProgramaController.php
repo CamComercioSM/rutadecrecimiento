@@ -29,16 +29,17 @@ class ProgramaController extends Controller
     
     public function index(){
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
+       
         
         $programas_inscrito = ProgramaConvocatoria::whereHas('inscripciones', function ($query) use ($unidadProductiva) {
             $query->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id);
         })->where('fecha_apertura_convocatoria', '<=', date('Y-m-d'))->get();
-        
+    
         $programs_recommend = ProgramaConvocatoria::whereHas('etapas', function ($query) use ($unidadProductiva) {
             $query->where('convocatorias_etapas.etapa_id', $unidadProductiva->etapa_id);
         })->where('fecha_apertura_convocatoria', '<=', date('Y-m-d'))
           ->where('fecha_cierre_convocatoria', '>=', date('Y-m-d'))->get();
-    
+          
         $programas_otros = ProgramaConvocatoria::whereDoesntHave('etapas', function ($query) use ($unidadProductiva) {
             $query->where('convocatorias_etapas.etapa_id', $unidadProductiva->etapa_id);
         })->where('fecha_apertura_convocatoria', '<=', date('Y-m-d'))
@@ -51,19 +52,20 @@ class ProgramaController extends Controller
         $programas_cerrados_recomendados = ProgramaConvocatoria::whereHas('etapas', function ($query) use ($unidadProductiva) {
             $query->where('convocatorias_etapas.etapa_id', $unidadProductiva->etapa_id);
         })->where('fecha_cierre_convocatoria', '<=', date('Y-m-d'))->get();
-    
+      
         $etapa = Etapa::find($unidadProductiva->etapa_id);
+     
         $nombreEtapa = $etapa ? $etapa->name : 'Etapa no encontrada';
     
         $helper_default = [
             'title' => 'Bienvenido',
             'message' => 'Te invitamos a seleccionar una opción del panel lateral izquierdo. En el menú principal, puedes seleccionar entre visualizar perfil, programas, cápsulas o cerrar sesión.',
         ];
-    
+       
         $data = [
             'footer' => CommonService::footer(),
             'links' => CommonService::links(),
-            'helper_notifications' => CommonService::notifacaciones($helper_default),
+            'helper_notifications' => CommonService::notificaciones($helper_default),
             'programas_inscrito' => $programas_inscrito,
             'programas_otros' => $programas_otros,
             'programs_recommend' => $programs_recommend,
@@ -72,11 +74,12 @@ class ProgramaController extends Controller
             'unidadProductiva' => $unidadProductiva,
             'nombreEtapa' => $nombreEtapa, 
         ];
-    
+       //dd($data);
         return view('website.program.index', $data);
     }
 
     public function programShow(Request $request) {
+   
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
         
         $program = ProgramaConvocatoria::where('convocatoria_id', $request->id)->first();
@@ -139,7 +142,7 @@ class ProgramaController extends Controller
         $data = [
             'company' => $unidadProductiva,
             'capsules' => CommonService::capsulas(),
-            'helper_notifications' => CommonService::notifacaciones($helper_default),
+            'helper_notifications' => CommonService::notificaciones($helper_default),
             'nombreEtapa' => $nombreEtapa, // Pass the stage name to the view
         ];
     

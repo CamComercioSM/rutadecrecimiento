@@ -11,12 +11,7 @@ class DiagnosticoPregunta extends Model
 {
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
     protected $table = 'diagnosticos_preguntas (variables)';
-
     protected $primaryKey = 'pregunta_id';
-    
-    protected $casts = [
-        'pregunta_opcionesJSON' => 'array',
-    ];
 
     protected $fillable = [
         'diagnostico_id',
@@ -33,7 +28,7 @@ class DiagnosticoPregunta extends Model
 
     public function diagnostico()
     {
-        return $this->belongsTo(Diagnostico::class, 'diagnostico_id');
+        return $this->belongsTo(Diagnostico::class, 'diagnostico_id', 'diagnostico_id');
     }
 
     public function grupo()
@@ -43,12 +38,17 @@ class DiagnosticoPregunta extends Model
 
     public function tipo()
     {
-        return $this->belongsTo(PreguntaTipo::class, 'preguntatipo_id');
+        return $this->belongsTo(PreguntaTipo::class, 'preguntatipo_id', 'preguntatipo_id');
     }
 
     public function dimension()
     {
         return $this->belongsTo(PreguntaDimension::class, 'preguntadimension_id');
+    }
+
+    public function opciones()
+    {
+        return $this->hasMany(PreguntaOpcion::class, 'pregunta_id', 'pregunta_id');
     }
 
     const CREATED_AT = 'fecha_creacion';
