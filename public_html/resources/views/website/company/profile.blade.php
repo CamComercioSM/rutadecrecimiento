@@ -72,27 +72,12 @@
                     </tr>
                     <tr>
                         <td>Departamento</td>
-                        <td>
-                            @foreach($departments as $department)
-                                @if($company->department_id == $department->id)
-                                    {{$department->name}}
-                                @endif
-                            @endforeach
-                        </td>
+                        <td>{{$company->departamento->departamentonombreoficial ?? ''}}</td>
                     </tr>
-                    
-                    
                     <tr>
                         <td>Municipio</td>
-                        <td>
-                            {{
-                                $municipalities->firstWhere('id', $company->municipality_id)->name 
-                                ?? 'No definido'
-                            }}
-                        </td>
+                        <td>{{$company->municipio->municipionombreoficial ?? ''}}</td>
                     </tr>
-                    
-                    
                     <tr>
                         <td>Dirección</td>
                         <td>{{$company->address}}</td>

@@ -34,7 +34,7 @@ class DiagnosticoResultado extends Model
 
     public function respuestas()
     {
-        return $this->HasMany(DiagnosticoRespuesta::class, 'resultado_id', 'resultado_id');
+        return $this->belongsTo(DiagnosticoRespuesta::class, 'diagnosticoresultado_id', 'resultado_id');
     }
 
     const CREATED_AT = 'fecha_creacion';

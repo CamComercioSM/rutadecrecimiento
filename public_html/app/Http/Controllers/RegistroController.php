@@ -39,8 +39,8 @@ class RegistroController extends Controller
 
     public function search(Request $request)
     {
-        $api = SICAM32::buscarRegistroMercantil($request->search_type, $request->name);
- 
+        $api = SICAM32::buscarRegistroMercantil($request->criterio, $request->nombre);
+
         if (!empty($api)) 
         {
             if ($api->RESPUESTA != 'EXITO' || count($api->DATOS->expedientes) == 0)
@@ -57,7 +57,7 @@ class RegistroController extends Controller
                 'result'=>  $resultado,
             ];
 
-            return view('website.register.results', $data);
+            return view('website.register.results', compact('result', 'value', 'kind', 'section', 'footer', 'links'));
         } 
         else {
             return redirect()->back()->with('error', 'No se encontraron empresas según el tipo de búsqueda. Valide los datos e intente nuevamente.');
@@ -66,9 +66,8 @@ class RegistroController extends Controller
 
     public function store(Request $request) 
     {
-        
         $api = SICAM32::consultarExpedienteMercantilporIdentificacion($request->value);
-        
+
         // Validamos que la API haya respondido de manera correcta
         if ($api->RESPUESTA != 'EXITO')
             return redirect()->route('home')->with('error', 'No pudimos validar su empresa. Intente nuevamente');
@@ -128,16 +127,18 @@ class RegistroController extends Controller
 
         $company->save();
 
-        SICAM32::actualizarIdRelacionadoUnidadProductiva($values->unidadProductivaID, $company->unidadproductiva_id);
-
         UnidadProductivaService::validarRenovacion($values->fecharenovacion, $company->unidadproductiva_id);
         UnidadProductivaService::validarSiguienteRenovacion($values->fechamatricula, $values->fecharenovacion, $company->unidadproductiva_id);
 
         if(!Auth::check())
+        {
+            UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
             Auth::login($user);
-
-        UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
-        return redirect()->route('company.complete_info');
+            
+            return redirect()->route('company.complete_info');
+        }
+        
+        return redirect()->route('company.select');
     }
 
     public function storeLead(Request $request) 
@@ -205,7 +206,7 @@ class RegistroController extends Controller
             'unidadProductivaREPRESENTANTELEGAL' => $request->name_legal_representative,
             'REQUEST1' => $request->toArray(),
         ];
-        
+
         $UnidadProductiva = SICAM32::registarNuevaUnidadProductiva($datos);
 
         if(!Auth::check())
@@ -263,15 +264,16 @@ class RegistroController extends Controller
         $company->type_person = $tipoPersona->tipoPersonaCODIGO;
        
         $company->save();
-
-        SICAM32::actualizarIdRelacionadoUnidadProductiva($UnidadProductiva->unidadProductivaID, $company->unidadproductiva_id);
         
-        UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
-
         if(!Auth::check())
+        {
+            UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
             Auth::login($user);
+            
+            return redirect()->route('company.complete_info');
+        }
         
-        return redirect()->route('company.complete_info');
+        return redirect()->route('company.select');
     }
     
 }

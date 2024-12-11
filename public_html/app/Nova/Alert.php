@@ -21,12 +21,13 @@ class Alert extends Resource {
     }
 
     public static $searchRelations = [
-        'unidad_productiva' => ['business_name'],
+        'company' => ['name'],
     ];
 
     public function fields(Request $request) {
         return [
            
+
             BelongsTo::make('Empresa', 'unidad_productiva', UnidadProductiva::class)
                 ->viewable(false)->withoutTrashed(),
 

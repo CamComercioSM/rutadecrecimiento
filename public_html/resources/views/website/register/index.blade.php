@@ -127,114 +127,84 @@
                 <br />
                 <hr />                
                 <br />
-
                 <!--DATOS DE CONTACTO-->
-                <div class="row d-flex">
-
-                    <div class="col-12 col-md-12">
-                        <h4>Datos de la Persona de Contacto</h4>
-                    </div>    
-
-                    <div class="col-12 col-md-12 mt-3" >
-                        <div class="form-group">
-                            <label for="tipoPersonaID" >Tipo de Organización *</label>
-                            <select id="tipoPersonaID" name="tipoPersonaID" required>
-                                <option value="0" selected="" class="selecPersonaNatural">PERSONA NATURAL</option>
-                                <!--<option value="1">Establecimentos</option>-->
-                                <option value="2"  class="selecPersonaJuridica">PERSONA JURÍDICA O EMPRESA</option>
-                            </select>
-                        </div>    
-                    </div>
-                    
-                    <div class="col-12 col-md-6 mt-3 nombreTipoPersona nombreTipoPersonaNATURAL">
-                        <div class="form-group">
-                            <label for="personaNOMBRES" class="">Nombres *</label>
-                            <input id="personaNOMBRES" type="text" name="personaNOMBRES" placeholder="Nombres" tabindex="14" required  style="text-transform: uppercase;" />
-                        </div>    
-                    </div>
-                    <div class="col-12 col-md-6 mt-3 nombreTipoPersona nombreTipoPersonaNATURAL">
-                        <div class="form-group">
-                            <label for="personaAPELLIDOS" class="">Apellidos *</label>
-                            <input id="personaAPELLIDOS" type="text" name="personaAPELLIDOS" placeholder="Apellidos" tabindex="14" required  style="text-transform: uppercase;" />
-                        </div>   
-                    </div>
-
-                    <div class="col-12 col-md-12 mt-3 nombreTipoPersona nombreTipoPersonaJURIDICA">
-                        <div class="form-group">
-                            <label for="personaRAZONSOCIAL"  class="">Razón Social *</label>
-                            <input id="personaRAZONSOCIAL" type="text" name="personaRAZONSOCIAL" placeholder="Razón Social" tabindex="14"  style="text-transform: uppercase;" />
-                        </div>   
-                    </div>
-
-                    <div class="col-12 col-md-6 mt-3">
-                        <div class="form-group">
-                            <label for="tipo_identificacion">Seleccione su tipo de identificación*</label>
-                            <select id="tipo_identificacion" name="tipo_identificacion" required>
-                                <option value="0">SELECCIONE UNO</option>
-                                @foreach($tiposIdentificacion as $tipoIdentificacion)
-                                <option value="{{$tipoIdentificacion->tipoIdentificacionID}}"  
-                                        class=" tipoIdentificacionOpciones tipoIdentificacion{{$tipoIdentificacion->tipoIdentificacionTIPOPERSONA}}" >
-                                    {{$tipoIdentificacion->tipoIdentificacionTITULO}} 
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>   
-                    </div>
-                    <div class="col-12 col-md-6 mt-3">
-                        <div class="form-group">
-                            <label for="document">Número de identificación *</label>
-                            <input id="document" type="text" name="document" placeholder="Número de identificación" tabindex="15" required />
-                        </div>   
-                    </div>
-
-                    <div class="col-12 col-md-6 mt-3">
-                        <label for="email">E-mail *</label>
-                        <input id="email" type="email" name="email" placeholder="E-mail" tabindex="16" required />
-                    </div>
-                    <div class="col-12 col-md-6 mt-3">
-                        <label for="phone">Teléfono *</label>
-                        <input id="phone" type="tel" name="phone" placeholder="Teléfono" tabindex="17" maxlength="15" required />
-                    </div>
-
-                </div>                               
-                       
-                <br /> 
-                <hr />  
-
-                <!--datos para la ubicacion del negocio o contacto-->
-                <div class="row d-flex">
-                    <div class="col-12 col-md-12">
-                        <h4>Datos de Ubicación</h4>
-                    </div>
-
-                    <div class="col-12 col-md-6 mt-3">
-                        <label>Seleccione un departamento *</label>
-                        <select id="department" name="department" required>
-                            <option value="0">SELECCIONE UNO</option>
-                            @foreach($departamentos as $item)
-                            <option value="{{$item->id}}" >{{$item->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-6 mt-3">
-                        <label>Seleccione un municipio *</label>
-                        <select id="municipality" name="municipality" required>
-                            <option data-depto="0">SELECCIONE UNO</option>
-                            @foreach($municipios as $item)
-                            <option value="{{$item->id}}" data-depto="{{$item->departamentoID}}" style="display: none;" >{{$item->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-12 mt-3">
-                        <label>Dirección *</label>
-                        <input type="text" name="address" value="" placeholder="Dirección" required style="text-transform: uppercase;" />
-                    </div>
-
+                <div class="row">
+                    <h4>Datos de la Persona de Contacto</h4>
                 </div>
-
+                <div class="row">
+                    <label for="tipoPersonaID" >Tipo de Organización *</label>
+                    <select id="tipoPersonaID" name="tipoPersonaID" required>
+                        <option value="0" selected="" class="selecPersonaNatural">PERSONA NATURAL</option>
+                        <!--<option value="1">Establecimentos</option>-->
+                        <option value="2"  class="selecPersonaJuridica">PERSONA JURÍDICA O EMPRESA</option>
+                    </select>
+                </div>
+                <div class="row nombreTipoPersona nombreTipoPersonaNATURAL">
+                    <label for="personaNOMBRES" class="">Nombres *</label>
+                    <input id="personaNOMBRES" type="text" name="personaNOMBRES" placeholder="Nombres" tabindex="14" required  style="text-transform: uppercase;" />
+                </div>                                   
+                <div class="row nombreTipoPersona nombreTipoPersonaNATURAL">
+                    <label for="personaAPELLIDOS" class="">Apellidos *</label>
+                    <input id="personaAPELLIDOS" type="text" name="personaAPELLIDOS" placeholder="Apellidos" tabindex="14" required  style="text-transform: uppercase;" />
+                </div>                
+                <div class="row nombreTipoPersona nombreTipoPersonaJURIDICA">
+                    <label for="personaRAZONSOCIAL"  class="">Razón Social *</label>
+                    <input id="personaRAZONSOCIAL" type="text" name="personaRAZONSOCIAL" placeholder="Razón Social" tabindex="14"  style="text-transform: uppercase;" />
+                </div>
+                <div class="row">
+                    <label for="tipo_identificacion">Seleccione su tipo de identificación*</label>
+                    <select id="tipo_identificacion" name="tipo_identificacion" required>
+                        <option value="0">SELECCIONE UNO</option>
+                        @foreach($tiposIdentificacion as $tipoIdentificacion)
+                        <option value="{{$tipoIdentificacion->tipoIdentificacionID}}"  
+                                class=" tipoIdentificacionOpciones tipoIdentificacion{{$tipoIdentificacion->tipoIdentificacionTIPOPERSONA}}" >
+                            {{$tipoIdentificacion->tipoIdentificacionTITULO}} 
+                        </option>
+                        @endforeach
+                    </select>
+                </div>                
+                <div class="row">
+                    <label for="document">Número de identificación *</label>
+                    <input id="document" type="text" name="document" placeholder="Número de identificación" tabindex="15" required />
+                </div>
+                <div class="row">
+                    <label for="email">E-mail *</label>
+                    <input id="email" type="email" name="email" placeholder="E-mail" tabindex="16" required />
+                </div>
+                <div class="row">
+                    <label for="phone">Teléfono *</label>
+                    <input id="phone" type="tel" name="phone" placeholder="Teléfono" tabindex="17" maxlength="15" required />
+                </div>
+                <br />
+                <hr />      
+                <div class="row">
+                    <h4>Datos de Ubicación</h4>
+                </div>
+                <!--datos para la ubicacion del negocio o contacto-->
+                <div class="row">
+                    <label>Seleccione un departamento *</label>
+                    <select id="department" name="department" required>
+                        <option value="0">SELECCIONE UNO</option>
+                        @foreach($departamentos as $item)
+                        <option value="{{$item->id}}" >{{$item->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="row">
+                    <label>Seleccione un municipio *</label>
+                    <select id="municipality" name="municipality" required>
+                        <option data-depto="0">SELECCIONE UNO</option>
+                        @foreach($municipios as $item)
+                        <option value="{{$item->id}}" data-depto="{{$item->departamentoID}}" style="display: none;" >{{$item->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="row">
+                    <label>Dirección *</label>
+                    <input type="text" name="address" value="" placeholder="Dirección" required style="text-transform: uppercase;" />
+                </div>
                 <br />
                 <hr />
-
                 <div class="row">
                     <h4>Datos de <span class="tituloSegunTipo" >...........</span></h4>
                 </div>
@@ -319,9 +289,9 @@
                 <div class="row">
                     <label for="nit">Criterio de búsqueda</label>
                     <select name="search_type" id="search_type" tabindex="28">
-                        <option value="NIT">NIT</option>
-                        <option value="RAZONSOCIAL">Razón social</option>
-                        <option value="MATRICULA">Matrícula mercantil</option>
+                        <option value="1">NIT</option>
+                        <option value="2">Razón social</option>
+                        <option value="3">Matrícula mercantil</option>
                     </select>
                 </div>
                 <div class="row">

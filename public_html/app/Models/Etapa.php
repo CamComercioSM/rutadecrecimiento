@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Traits\DatosAuditoriaTrait;
+use App\models\Traits\DatosAuditoriaTrait;
 use App\Models\Traits\UsuarioTrait;
 
 class Etapa extends Model
@@ -15,7 +15,7 @@ class Etapa extends Model
     protected $primaryKey = 'etapa_id';
 
     protected $fillable = [
-        'name',
+        'nombre',
         'imagen',
         'descripcion',
         'etapa_anterior_id',

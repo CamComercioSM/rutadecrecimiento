@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\DatosAuditoriaTrait;
+use App\Models\Traits\TiemposAuditoriaTrait;
 use App\Models\Traits\UsuarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;

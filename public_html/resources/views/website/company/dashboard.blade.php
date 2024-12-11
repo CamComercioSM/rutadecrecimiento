@@ -21,7 +21,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 @foreach($stages as $stage)
-<div id="stage-{{$stage->etapa_id}}" class="hidden c-stage-description">
+<div id="stage-{{$stage->id}}" class="hidden c-stage-description">
     <h2 class="bold textl">{{$stage->name}}</h2>
     <p class="mt-20">{!! nl2br($stage->description) !!}</p>
 </div>
