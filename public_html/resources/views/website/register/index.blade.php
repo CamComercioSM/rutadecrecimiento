@@ -11,11 +11,12 @@
             <p class="mt-5" tabindex="5">A continuación debera responder algunas preguntas con el objetivo de identificar el estado de su proyecto</p>
             <button id="start-proccess" class="button button-primary button-small mt-20 margin-center" tabindex="6">Iniciar proceso</button>
         </section>
-
         <section class="step-2 hidden">
             <h2 class="color-2 font-w-700" tabindex="7">Actualmente...</h2>
 
             <h1 class="color-3 font-w-900" >... soy una empresa o persona registrada en una cámara de comercio:</h1>
+
+
 
             <div class="container text-center">
                 <div class="row">
@@ -110,7 +111,6 @@
                 <button id="continue-step-2" class="button button-primary button-small mt-20 margin-center" tabindex="11">Continuar</button>
             </div>
         </section>
-
         <section class="step-basic-user hidden">
             <h2 class="color-2 font-w-700" tabindex="12">Estás comenzando tu ruta de crecimiento</h2>
             <a class="example mt-20" href="{{asset('img/content/lead-idea-negocio.jpg')}}" target="_blank" tabindex="13">
@@ -141,15 +141,15 @@
                 </div>
                 <div class="row nombreTipoPersona nombreTipoPersonaNATURAL">
                     <label for="personaNOMBRES" class="">Nombres *</label>
-                    <input id="personaNOMBRES" type="text" name="personaNOMBRES" placeholder="Nombres" tabindex="14" required  style="text-transform: uppercase;" />
+                    <input id="personaNOMBRES" type="text" name="personaNOMBRES" tabindex="14" required  style="text-transform: uppercase;" />
                 </div>                                   
                 <div class="row nombreTipoPersona nombreTipoPersonaNATURAL">
                     <label for="personaAPELLIDOS" class="">Apellidos *</label>
-                    <input id="personaAPELLIDOS" type="text" name="personaAPELLIDOS" placeholder="Apellidos" tabindex="14" required  style="text-transform: uppercase;" />
+                    <input id="personaAPELLIDOS" type="text" name="personaAPELLIDOS" tabindex="14" required  style="text-transform: uppercase;" />
                 </div>                
                 <div class="row nombreTipoPersona nombreTipoPersonaJURIDICA">
                     <label for="personaRAZONSOCIAL"  class="">Razón Social *</label>
-                    <input id="personaRAZONSOCIAL" type="text" name="personaRAZONSOCIAL" placeholder="Razón Social" tabindex="14"  style="text-transform: uppercase;" />
+                    <input id="personaRAZONSOCIAL" type="text" name="personaRAZONSOCIAL" tabindex="14"  style="text-transform: uppercase;" />
                 </div>
                 <div class="row">
                     <label for="tipo_identificacion">Seleccione su tipo de identificación*</label>
@@ -164,16 +164,16 @@
                     </select>
                 </div>                
                 <div class="row">
-                    <label for="document">Número de identificación *</label>
-                    <input id="document" type="text" name="document" placeholder="Número de identificación" tabindex="15" required />
+                    <label for="document">Identificación *</label>
+                    <input id="document" type="text" name="document" tabindex="15" required />
                 </div>
                 <div class="row">
                     <label for="email">E-mail *</label>
-                    <input id="email" type="email" name="email" placeholder="E-mail" tabindex="16" required />
+                    <input id="email" type="email" name="email" tabindex="16" required />
                 </div>
                 <div class="row">
                     <label for="phone">Teléfono *</label>
-                    <input id="phone" type="tel" name="phone" placeholder="Teléfono" tabindex="17" maxlength="15" required />
+                    <input id="phone" type="tel" name="phone" tabindex="17" maxlength="15" required />
                 </div>
                 <br />
                 <hr />      
@@ -185,8 +185,8 @@
                     <label>Seleccione un departamento *</label>
                     <select id="department" name="department" required>
                         <option value="0">SELECCIONE UNO</option>
-                        @foreach($departamentos as $item)
-                        <option value="{{$item->id}}" >{{$item->name}}</option>
+                        @foreach($departments as $department)
+                        <option value="{{$department->id}}" >{{$department->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -194,14 +194,14 @@
                     <label>Seleccione un municipio *</label>
                     <select id="municipality" name="municipality" required>
                         <option data-depto="0">SELECCIONE UNO</option>
-                        @foreach($municipios as $item)
-                        <option value="{{$item->id}}" data-depto="{{$item->departamentoID}}" style="display: none;" >{{$item->name}}</option>
+                        @foreach($municipalities as $municipality)
+                        <option value="{{$municipality->id}}" data-depto="{{$municipality->department_id}}" style="display: none;" >{{$municipality->name}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="row">
                     <label>Dirección *</label>
-                    <input type="text" name="address" value="" placeholder="Dirección" required style="text-transform: uppercase;" />
+                    <input type="text" name="address" value="" required style="text-transform: uppercase;" />
                 </div>
                 <br />
                 <hr />
@@ -211,12 +211,13 @@
                 <br />
                 <div class="row">
                     <label>Nombre de <span class="tituloSegunTipo" >...........</span> *</label>
-                    <input type="text" name="business_name" placeholder="Nombre" value="" required style="text-transform: uppercase;" />
+                    <input type="text" name="business_name" value="" required style="text-transform: uppercase;" />
                 </div>
+
 
                 <div class="row nit_registrado">
                     <label for="nit_registrado">Número de Identificación Tributraria [NIT] *</label>
-                    <input id="nit_registrado" type="text" placeholder="Número de Identificación Tributraria" name="nit_registrado" tabindex="17"  />
+                    <input id="nit_registrado" type="text" name="nit_registrado" tabindex="17"  />
                 </div>
 
                 <div class="row">
@@ -225,7 +226,7 @@
                 </div>
                 <div class="row">
                     <label for="description">Descripción de <span class="tituloSegunTipo" >...........</span></label>
-                    <textarea name="description" placeholder="Descripción" tabindex="18"></textarea>
+                    <textarea name="description" tabindex="18"></textarea>
                 </div>
 
                 <div class="row camara_comercio">
@@ -239,13 +240,13 @@
                 </div>
                 <div class="row registration_number">
                     <label for="registration_number">Número de Matricula en la Cámara Seleccionada</label>
-                    <input id="registration_number" type="text" placeholder="Número de Matricula" name="registration_number" tabindex="17"  />
+                    <input id="registration_number" type="text" name="registration_number" tabindex="17"  />
                 </div>
 
                 <!--datos para el matriulado en otra camara-->   
                 <div class="row name_legal_representative">
                     <label for="name_legal_representative">Nombre del Respresentante Legal *</label>
-                    <input id="name_legal_representative" type="text" placeholder="Respresentante Legal" name="name_legal_representative" tabindex="17"  />
+                    <input id="name_legal_representative" type="text" name="name_legal_representative" tabindex="17"  />
                 </div>
                 <br />
                 <hr />                
@@ -270,15 +271,14 @@
                         </div>
                     </label>
                 </div>
-
                 <div class="row" tabindex="25">
-                    <button type="submit" class="button button-primary">ENVIAR SOLICITUD</button>
-                    <button type="button" id="back-1" class="button button-secundary mt-3" tabindex="26">VOLVER</button>
+                    <input type="submit" value="ENVIAR SOLICITUD" class="button button-primary"/>
                 </div>
-
+                <div class="row">
+                    <button id="back-1" type="button" class="button button-secundary" tabindex="26">VOLVER AL REGISTRO</button>
+                </div>
             </form>
         </section>
-
         <section class="step-company hidden">
             <h2 class="color-2 font-w-700" tabindex="27">Registra los datos de tu empresa</h2>
             <p class="mt-10" tabindex="28">
@@ -296,7 +296,7 @@
                 </div>
                 <div class="row">
                     <label for="name">Búsqueda</label>
-                    <input id="name" type="text" name="name" placeholder="Búsqueda" tabindex="29"/>
+                    <input id="name" type="text" name="name"  tabindex="29"/>
                 </div>
                 <div class="row habeas">
                     <p class="textj" tabindex="30">
@@ -317,13 +317,12 @@
                         </div>
                     </label>
                 </div>
-                <div class="row" tabindex="25" >
-                    <button type="submit" class="button button-primary">BUSCAR EMPRESA</button>
-                    <button type="button" id="back-2" class="button button-secundary mt-3">VOLVER</button>
+                <div class="row">
+                    <input type="submit" value="BUSCAR EMPRESA" class="button button-primary" tabindex="34"/>
                 </div>
             </form>
+            <button id="back-2" class="button button-secundary mt-10" tabindex="35">VOLVER AL REGISTRO</button>
         </section>
-        
         <div class="c-help-info" tabindex="36">
             {{App\helpers::getSettingValue(0)}}
         </div>
@@ -387,7 +386,7 @@ $(document).ready(function () {
 function abrirFormularioMatriculaOTRACAM() {
         $(".step-basic-user").slideDown();
         $("#lead-user-type").val(2);
-        $("#tipo_registro_rutac").val(3);
+        $("#tipo_registro_rutac").val(2);
         $('#tipoPersonaID option').hide();
         $('#tipoPersonaID option[value="0"]').show();
         $('#tipoPersonaID option[value="0"]').attr("selected", "selected");
@@ -403,7 +402,7 @@ function abrirFormularioMatriculaOTRACAM() {
 function abrirFormularioInformal() {
         $(".step-basic-user").slideDown();
         $("#lead-user-type").val(1);
-        $("#tipo_registro_rutac").val(2);
+        $("#tipo_registro_rutac").val(1);
         $('#tipoPersonaID option').hide();
         $('#tipoPersonaID option[value="0"]').show();
         $('#tipoPersonaID option[value="0"]').attr("selected", "selected");
@@ -418,7 +417,7 @@ function abrirFormularioInformal() {
 }
 function abrirFormularioIdea() {
         $("#lead-user-type").val(0);
-        $("#tipo_registro_rutac").val(1);
+        $("#tipo_registro_rutac").val(0);
         $('#tipoPersonaID option').hide();
         $('#tipoPersonaID option[value="0"]').show();
         $('#tipoPersonaID option[value="0"]').attr("selected", "selected");
@@ -472,7 +471,7 @@ function abrirFormularioMatriculaCCSM() {
         $(".step-basic-user").slideUp();
         $(".step-company").slideDown();
         $("#lead-user-type").val(3);
-        $("#tipo_registro_rutac").val(4);
+        $("#tipo_registro_rutac").val(3);
         $('#tipoPersonaID option').hide();
         $('#tipoPersonaID option[value="0"]').show();
         $('#tipoPersonaID option[value="0"]').attr("selected", "selected");

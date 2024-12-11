@@ -17,6 +17,6 @@ class Alert extends Model {
     ];
 
     public function company() : BelongsTo {
-        return $this->belongsTo(UnidadProductiva::class, 'unidadproductiva_id' , 'unidadproductiva_id');
+        return $this->belongsTo(Company::class);
     }
 }

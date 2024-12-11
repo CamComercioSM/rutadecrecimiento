@@ -10,12 +10,21 @@
             </a>
             @else
             <a>
-                <h6>{{$notification->titulo}}</h6>
-                <p>{{$notification->descripcion}}</p>
+                <h6>{{$notification->title}}</h6>
+                <p>{{$notification->description}}</p>
             </a>
             @endif
         </li>
         @endforeach
+    </ul>
+    @else
+    <ul>
+        <li>
+            <a>
+                <h6>{{$helper_default['title']}}</h6>
+                <p>{{$helper_default['message']}}</p>
+            </a>
+        </li>
     </ul>
     @endif
     <button><span>C</span></button>

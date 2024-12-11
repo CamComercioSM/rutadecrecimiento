@@ -13,9 +13,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 
 class Program extends Resource {
-    public static $model = \App\Models\ProgramaConvocatoria::class;
-    public static $title = 'nombre';
-    public static $search = ['programa_id', 'nombre'];
+    public static $model = \App\Models\Program::class;
+    public static $title = 'name';
+    public static $search = ['id', 'name'];
 
     public static function label() {
         return 'Programas';
@@ -23,52 +23,52 @@ class Program extends Resource {
 
     public function fields(Request $request) {
         return [
-            Text::make('Nombre', 'nombre')
+            Text::make('Nombre', 'name')
                 ->rules('required'),
 
-            Textarea::make('Descripción', 'descripcion')
+            Textarea::make('Descripcion', 'description')
                 ->rules('required'),
 
             Image::make('Logotipo', 'logo')
-                ->disk('public')->path('programas'),
+                ->disk('public')->path('programs'),
 
-            Textarea::make('Beneficios', 'beneficios'),
+            Textarea::make('Beneficios', 'benefits'),
 
-            Textarea::make('Requisitos', 'requisitos'),
+            Textarea::make('Requisitos', 'requirements'),
 
-            Text::make('Duración', 'duracion'),
+            Text::make('Duración', 'duration'),
 
-            Textarea::make('Fechas de Convocatoria', 'dirigido_a'),
+            Textarea::make('Fechas de convocatoria', 'aimed_at'),
 
-            Textarea::make('Objetivo', 'objetivo'),
+            Textarea::make('El objetivo que se desea lograr', 'objective'),
 
-            Textarea::make('Determinantes', 'determinantes'),
+            Textarea::make('Dimensión', 'determinants'),
 
-            Textarea::make('Aporte', 'informacion_adicional')
+            Textarea::make('Aporte', 'input_info')
                 ->hideFromIndex(),
 
-            Image::make('Imagen del Procedimiento', 'procedimiento_imagen')
-                ->disk('public')->path('programas'),
+            Image::make('Imagen del procedimiento', 'image_procedure')
+                ->disk('public')->path('programs'),
 
-            Textarea::make('Herramientas Requeridas', 'herramientas_requeridas'),
+            Textarea::make('Información adicional', 'required_tools'),
 
-            Select::make('Modalidad', 'es_virtual')
-                ->options(\App\Models\ProgramaConvocatoria::$es_virtual)->rules('required'),
+            Select::make('Si es presencial o virtual', 'is_virtual')
+                ->options(\App\Models\Program::$is_virtual)->rules('required'),
 
-            Text::make('Persona a Cargo', 'persona_encargada')->rules('required'),
+            Text::make('Persona a cargo', 'person_charge')->rules('required'),
 
-            Text::make('Correo de Contacto', 'correo_contacto')
+            Text::make('Email de contacto', 'contact_email')
                 ->rules('required')->hideFromIndex(),
 
-            Text::make('Teléfono', 'telefono')
+            Text::make('Telefono', 'telephone')
                 ->hideFromIndex(),
 
-            Text::make('Sitio Web', 'sitio_web')
+            Text::make('Sitio web', 'website')
                 ->hideFromIndex(),
 
-            HasMany::make('Solicitudes de Inscripción', 'inscripciones', Aplication::class),
+            HasMany::make('Solicitudes de inscripción', 'applications', Aplication::class),
 
-            BelongsToManyField::make('Etapas', 'etapas', Stage::class),
+            BelongsToManyField::make('Etapas', 'stages', Stage::class),
         ];
     }
 }
