@@ -5,8 +5,8 @@
         <li>
             @if($notification->url != null)
             <a class="with-link" href="{{$notification->url}}" target="_blank">
-                <h6>{{$notification->title}}</h6>
-                <p>{{$notification->description}}</p>
+                <h6>{{$notification->titulo}}</h6>
+                <p>{{$notification->descripcion}}</p>
             </a>
             @else
             <a>

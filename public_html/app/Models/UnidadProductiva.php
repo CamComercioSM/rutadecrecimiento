@@ -80,7 +80,7 @@ class UnidadProductiva extends Model
 
     public function sector()
     {
-        return $this->belongsTo(sector::class, 'sector_id');
+        return $this->belongsTo(Sector::class, 'sector_id');
     }
 
     public function ventaAnual()
@@ -100,12 +100,12 @@ class UnidadProductiva extends Model
 
     public function departamento()
     {
-        return $this->belongsTo(Departamento::class, 'department_id');
+        return $this->belongsTo(Departamento::class, 'department_id', 'departamento_id');
     }
 
     public function municipio()
     {
-        return $this->belongsTo(Municipio::class, 'municipality_id');
+        return $this->belongsTo(Municipio::class, 'municipality_id', 'municipio_id');
     }
 
     public function etapa()
@@ -126,6 +126,11 @@ class UnidadProductiva extends Model
     public function diagnosticos()
     {
         return $this->HasMany(DiagnosticoResultado::class, 'unidadproductiva_id', 'unidadproductiva_id');
+    }
+
+    public function inscripciones()
+    {
+        return $this->HasMany(ConvocatoriaInscripcion::class, 'unidadproductiva_id', 'unidadproductiva_id');
     }
 
     const CREATED_AT = 'fecha_creacion';

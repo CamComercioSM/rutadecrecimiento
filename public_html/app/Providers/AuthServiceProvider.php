@@ -2,50 +2,30 @@
 
 namespace App\Providers;
 
-use App\Models\Alert;
-use App\Models\Aplication;
+use App\Models\Alerta;
+use App\Models\ConvocatoriaInscripcion;
+use App\Models\DiagnosticoRespuesta;
+use App\Models\DiagnosticoResultado;
 use App\Models\Lead;
-use App\Models\Notification;
-use App\Nova\Answer;
-use App\Nova\Capsule;
-use App\Nova\Program;
-use App\Nova\Resources\Diagnosticos\DiagnosticoRespuesta;
-use App\Nova\Resources\Diagnosticos\DiagnosticoResultado;
-use App\Nova\Section;
-use App\Nova\Setting;
-use App\Nova\Stage;
-use App\Nova\User;
+use App\Models\Notificacion;
 use App\Policies\AlertPolicy;
-use App\Policies\AplicationPolicy;
-use App\Policies\CapsulePolicy;
 use App\Policies\LeadPolicy;
 use App\Policies\NotificationPolicy;
-use App\Policies\ProgramPolicy;
-use App\Policies\SectionPolicy;
-use App\Policies\SettingPolicy;
-use App\Policies\StagePolicy;
-use App\Policies\UserPolicy;
-use App\Policies\AnswerPolicy;
 use App\Policies\DiagnosticoRespuestaPolicy;
 use App\Policies\DiagnosticoResultadoPolicy;
+use App\Policies\InscripcionConvocatoriaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider {
     protected $policies = [
-        User::class => UserPolicy::class,
-        Stage::class => StagePolicy::class,
-        Program::class => ProgramPolicy::class,
-        Capsule::class => CapsulePolicy::class,
-        //Company::class => CompanyPolicy::class,
-        Setting::class => SettingPolicy::class,
-        Answer::class => AnswerPolicy::class,
-        Aplication::class => AplicationPolicy::class,
-        Notification::class => NotificationPolicy::class,
+        //User::class => UserPolicy::class,
+        Notificacion::class => NotificationPolicy::class,
         Lead::class => LeadPolicy::class,
-        Alert::class => AlertPolicy::class,
-        Section::class => SectionPolicy::class,
+        Alerta::class => AlertPolicy::class,
+        //GeneralesSection::class => SectionPolicy::class,       
         DiagnosticoResultado::class => DiagnosticoResultadoPolicy::class,
         DiagnosticoRespuesta::class => DiagnosticoRespuestaPolicy::class,
+        ConvocatoriaInscripcion::class => InscripcionConvocatoriaPolicy::class
     ];
 
     public function boot() {

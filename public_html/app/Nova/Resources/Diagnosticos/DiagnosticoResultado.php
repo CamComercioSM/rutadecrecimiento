@@ -3,8 +3,9 @@
 namespace App\Nova\Resources\Diagnosticos;
 
 use App\Nova\Actions\ExportarDiagnosticoResultado;
-use App\Nova\Resource;
-use App\Nova\UnidadProductiva;
+use App\Nova\Actions\ExportarDiagnosticoResultadoRespuestas;
+use App\Nova\Resources\Resource;
+use App\Nova\Resources\Empresarios\UnidadProductiva;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
@@ -31,6 +32,10 @@ class DiagnosticoResultado extends Resource
             ->format('YYYY-MM-DD') // Formato deseado
             ->sortable(),
             
+            Text::make('NIT', function () {
+                return $this->unidadproductiva->nit ?? '';
+            })->sortable(),
+
             BelongsTo::make('Unidad Productiva', 'unidadproductiva', UnidadProductiva::class)->sortable(),
             
             Text::make('Puntaje', 'resultado_puntaje')->sortable(),
@@ -44,23 +49,11 @@ class DiagnosticoResultado extends Resource
     }
 
     public function actions(Request $request) {
-        return [ new ExportarDiagnosticoResultado() ];
-    }
-
-    public static function authorizedToCreate(Request $request)
-    {
-        return false; // Deshabilita la creación
-    }
-
-    public function authorizedToUpdate(Request $request)
-    {
-        return false; // Deshabilita la edición
-    }
-
-    public function authorizedToDelete(Request $request)
-    {
-        return false; // Deshabilita la eliminación
-    }
+        return [ 
+            new ExportarDiagnosticoResultadoRespuestas(),
+            new ExportarDiagnosticoResultado(), 
+        ];
+    } 
 
     public static function uriKey()
     {

@@ -112,14 +112,18 @@ class RegistroController extends Controller
         $company->comercial_activity = $comercial_activity;
         $company->user_id = $user->id;
 
-        UnidadProductivaService::setSector($company);
-        UnidadProductivaService::setTamano($company, $values->ingresostamanoempresarial);
+        $company->tamano_id = $values->tamanoempresa;
 
-        $tipoRegistro = UnidadProductivaTipo::where('unidadtipo_id', $request->tipo_registro_rutac)->first();
+        //UnidadProductivaService::setSector($company);
+        //UnidadProductivaService::setTamano($company, $values->ingresostamanoempresarial);
+
+        /* FROMAL DEL MAGDALENA */
+        $tipoRegistro = UnidadProductivaTipo::where('unidadtipo_id', 4)->first();
         $company->unidadtipo_id = $tipoRegistro->unidadtipo_id;
         $company->tipo_registro_rutac = $tipoRegistro->unidadtipo_nombre;
 
-        $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', $values->organizacion)->first();
+        /* EMPRESA FORMAL */
+        $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', 2)->first();
         $company->tipopersona_id = $tipoPersona->tipopersona_id;
         $company->type_person = $tipoPersona->tipoPersonaCODIGO;
 
@@ -128,7 +132,8 @@ class RegistroController extends Controller
 
         $company->save();
 
-        SICAM32::actualizarIdRelacionadoUnidadProductiva($values->unidadProductivaID, $company->unidadproductiva_id);
+        /* TODO: validar que no llega el  unidadProductivaID*/
+        //SICAM32::actualizarIdRelacionadoUnidadProductiva($values->unidadProductivaID, $company->unidadproductiva_id);
 
         UnidadProductivaService::validarRenovacion($values->fecharenovacion, $company->unidadproductiva_id);
         UnidadProductivaService::validarSiguienteRenovacion($values->fechamatricula, $values->fecharenovacion, $company->unidadproductiva_id);
@@ -137,6 +142,7 @@ class RegistroController extends Controller
             Auth::login($user);
 
         UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
+       
         return redirect()->route('company.complete_info');
     }
 

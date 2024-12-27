@@ -56,7 +56,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/empresa/password/guardar', [PerfilController::class, 'actualizarPasswordGuardar'])->name('company.password.save');
     
     Route::get('/grafico-radial/{id}', [PerfilController::class, 'grafico'])->name('company.graph.radial');
-    Route::get('/empresa/programas/test', [ProgramaController::class, 'testProgramas'])->name('programas.test');
     Route::get('/empresa/programas', [ProgramaController::class, 'index'])->name('company.programs');
     Route::get('/empresa/programa/{id}', [ProgramaController::class, 'programShow'])->name('company.program.show');
     Route::get('/empresa/programa/registro/{id}', [ProgramaController::class, 'programRegister'])->name('company.program.register');

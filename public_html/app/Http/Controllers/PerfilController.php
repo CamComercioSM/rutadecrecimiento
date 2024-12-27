@@ -203,7 +203,7 @@ class PerfilController extends Controller
             'company' => $unidadProductiva,
             'user' => Auth::user(),
         ];
-    
+       
         return view('website.company.profile', $data);
     }
     
@@ -217,6 +217,7 @@ class PerfilController extends Controller
             'footer'=> CommonService::footer(),
             'links'=> CommonService::links(),
             'departments'=> CommonService::departamentos(),
+            'municipalities' => CommonService::municipios(), 
             'company'=> $unidadProductiva,
             'listaCargos'=> $listaCargos,
         ];
@@ -281,9 +282,16 @@ class PerfilController extends Controller
     }
 
 
-    public function grafico() 
+    public function grafico($id) 
     {
-        $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
+        if($id != null && $id > 0)
+        {
+            $unidadProductiva = UnidadProductiva::find($id);
+        }
+        else
+        {
+            $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
+        }
 
         if ($unidadProductiva != null)
         {

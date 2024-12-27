@@ -16,9 +16,6 @@ class PreguntaOpcion extends Model
 
     protected $fillable = [
         'pregunta_id',
-        'opcion_layout',
-        'opcion_key',
-        'opcion_attributes',
         'opcion_variable_response',
         'opcion_percentage',
     ];

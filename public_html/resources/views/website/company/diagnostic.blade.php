@@ -68,19 +68,17 @@
                     <section id="variable-{{$pregunta->pregunta_id}}" class="variable hidden">
                         <h2 class="color-2 font-w-700">{{$pregunta->pregunta_titulo}}</h2>
                     
-                        <ul style="padding:0" >
-                            @if ($pregunta->pregunta_opcionesJSON)                        
-                                @foreach($pregunta->opciones as $item)
-                                    <li>                            
-                                        <label class="radio">
-                                            <input type="radio" id="variable_{{$pregunta->pregunta_id}}_{{$item->opcion_id}}" name="variable-{{$pregunta->pregunta_id}}" value="{{$item->opcion_id}}"/>
-                                            <div class="info font-w-500">
-                                                {{$item->opcion_variable_response}}
-                                            </div>
-                                        </label>                            
-                                    </li>
-                                @endforeach
-                            @endif
+                        <ul style="padding:0" >  
+                            @foreach($pregunta->opciones as $item)
+                                <li>                            
+                                    <label class="radio">
+                                        <input type="radio" id="variable_{{$pregunta->pregunta_id}}_{{$item->opcion_id}}" name="variable-{{$pregunta->pregunta_id}}" value="{{$item->opcion_id}}"/>
+                                        <div class="info font-w-500">
+                                            {{$item->opcion_variable_response}}
+                                        </div>
+                                    </label>                            
+                                </li>
+                            @endforeach
                         </ul>
                         <button type="button" id="btn_diagnosticosiguiente_sinventas" class="button button-primary mt-20 button-next">Continuar</button>
                         <button type="button" class="button button-secundary mt-10 button-back">Regresar</button>
@@ -152,7 +150,7 @@
             }
     }
 </script>
-@if($diagnosticoId == 2)
+@if($diagnosticoId != 1)
 <script>
     $(document).ready(function () {
         $('#variable-{{$preguntas->first()->pregunta_id}}').removeClass('hidden');

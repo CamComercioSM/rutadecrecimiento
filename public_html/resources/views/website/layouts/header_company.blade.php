@@ -13,6 +13,52 @@
                 <div class="tip">Dashboard</div>
             </a>
         </li>
+           <li data-step="4" data-intro="Esta opción te permite visualizar e inscribirte en los programas de Ruta C">
+            <a class="programs" href="{{route('company.programs')}}">
+                <div class="icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="tip">Programas</div>
+            </a>
+        </li>
+        
+             <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
+            <a class="capsules" href="{{route('company.capsules')}}">
+                <div class="icon">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <div class="tip">Capsulas</div>
+            </a>
+        </li>
+        
+        
+             <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
+            <a class="capsules" href="{{route('company.historialDiagnosticos')}}">
+                <div class="icon">
+                    <i class="fa fa-history"></i>
+                </div>
+                <div class="tip">Historial de diagnósticos</div>
+            </a>
+        </li>
+        
+                <li data-step="3" data-intro="Esta opción te permite cambiar de empresa o registrar una nueva">
+            <a class="profile" href="{{route('company.select')}}">
+                <div class="icon">
+                    <i class="fa fa-refresh"></i>
+                </div>
+                <div class="tip">Cambiar de empresa</div>
+            </a>
+        </li>
+        
+        <li data-step="3" data-intro=Estamos en construcción">
+            <a class="profile" href="#">
+                <div class="icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="tip">Tablero de indicadores en Construcción</div>
+            </a>
+        </li>
+           
         <li data-step="3" data-intro="Esta opción te permite regresar, visualizar y actualizar tu perfil corporativo">
             <a class="profile" href="{{route('company.profile')}}">
                 <div class="icon">
@@ -21,38 +67,7 @@
                 <div class="tip">Perfil</div>
             </a>
         </li>
-        <li data-step="3" data-intro="Esta opción te permite cambiar de empresa o registrar una nueva">
-            <a class="profile" href="{{route('company.select')}}">
-                <div class="icon">
-                    <i class="fa fa-refresh"></i>
-                </div>
-                <div class="tip">Cambiar de empresa</div>
-            </a>
-        </li>
-        <li data-step="4" data-intro="Esta opción te permite visualizar e inscribirte en los programas de Ruta C">
-            <a class="programs" href="{{route('company.programs')}}">
-                <div class="icon">
-                    <i class="fas fa-rocket"></i>
-                </div>
-                <div class="tip">Programas</div>
-            </a>
-        </li>
-        <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
-            <a class="capsules" href="{{route('company.capsules')}}">
-                <div class="icon">
-                    <i class="fab fa-youtube"></i>
-                </div>
-                <div class="tip">Capsulas</div>
-            </a>
-        </li>
-        <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
-            <a class="capsules" href="{{route('company.historialDiagnosticos')}}">
-                <div class="icon">
-                    <i class="fa fa-history"></i>
-                </div>
-                <div class="tip">Historial de diagnósticos</div>
-            </a>
-        </li>
+   
         <li data-step="6" data-intro="Esta opción te permite cerrar sesión">
             <a href="{{route('company.logout')}}">
                 <div class="icon">

@@ -17,7 +17,7 @@
                     <ul class="mt-40">
                         @foreach($capsules as $capsule)
                             <li>
-                                <a href="{{$capsule->url_video}}">
+                                <a class="h-100" href="{{$capsule->url_video}}">
                                     <div class="img" style="background-image: url('{{ asset( 'storage/'.$capsule->imagen ) }}')"></div>
                                     <div class="info">
                                         <h2>{{$capsule->nombre}}</h2>
