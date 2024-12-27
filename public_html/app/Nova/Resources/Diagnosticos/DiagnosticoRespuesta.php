@@ -3,8 +3,7 @@
 namespace App\Nova\Resources\Diagnosticos;
 
 use App\Nova\Actions\ExportarDiagnosticoRespuesta;
-use App\Nova\DiagnosticoPregunta;
-use App\Nova\Resource;
+use App\Nova\Resources\Resource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -36,21 +35,6 @@ class DiagnosticoRespuesta extends Resource
 
     public function actions(Request $request) {
         return [ new ExportarDiagnosticoRespuesta() ];
-    }
-
-    public static function authorizedToCreate(Request $request)
-    {
-        return false; // Deshabilita la creación
-    }
-
-    public function authorizedToUpdate(Request $request)
-    {
-        return false; // Deshabilita la edición
-    }
-
-    public function authorizedToDelete(Request $request)
-    {
-        return false; // Deshabilita la eliminación
     }
 
     public static function uriKey()

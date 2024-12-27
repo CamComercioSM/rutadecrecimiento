@@ -52,19 +52,19 @@
                     </tr>
                     <tr>
                         <td>Tamaño</td>
-                        <td>{{$company->tamano->tamanoNOMBRE ?? ''}}</td>
+                        <td>{{$company->tamano()->first()->tamanoNOMBRE ?? ''}}</td>
                     </tr>
                     <tr>
                         <td>Tipo de Persona</td>
-                        <td>{{$company->tipoPersona->tipoPersonaNOMBRE ?? ''}}</td>
+                        <td>{{$company->tipoPersona()->first()->tipoPersonaNOMBRE ?? ''}}</td>
                     </tr>
                     <tr>
-                        <td>Sector</td>
-                        <td>{{$company->sector->sectorNombre ?? ''}}</td>
+                        <td>Sector</td>                        
+                        <td>{{$company->sector()->first()->sectorNOMBRE ?? ''}}</td>
                     </tr>
                     <tr>
                         <td>Actividad económica</td>
-                        <td>{{$company->ciiuActividad->ciiuActividadCODIGO ?? ''}} - <strong>{{  $company->ciiuActividad->ciiuActividadTITULO  ?? ''}}</strong></td>
+                        <td>{{$company->ciiuActividad()->first()->ciiuActividadCODIGO ?? ''}} - <strong>{{  $company->ciiuActividad()->first()->ciiuActividadTITULO  ?? ''}}</strong></td>
                     </tr>
                     <tr>
                         <td>¿Afiliado?</td>
@@ -72,26 +72,13 @@
                     </tr>
                     <tr>
                         <td>Departamento</td>
-                        <td>
-                            @foreach($departments as $department)
-                                @if($company->department_id == $department->id)
-                                    {{$department->name}}
-                                @endif
-                            @endforeach
-                        </td>
+                        <td>{{$company->departamento()->first()->departamentoNOMBRE ?? '-'}}</td>
                     </tr>
-                    
                     
                     <tr>
                         <td>Municipio</td>
-                        <td>
-                            {{
-                                $municipalities->firstWhere('id', $company->municipality_id)->name 
-                                ?? 'No definido'
-                            }}
-                        </td>
+                        <td>{{$company->municipio()->first()->municipioNOMBREOFICIAL ?? '-'}}</td>
                     </tr>
-                    
                     
                     <tr>
                         <td>Dirección</td>
@@ -99,11 +86,11 @@
                     </tr>
                     <tr>
                         <td>Teléfono</td>
-                        <td>{{$company->telephone}}</td>
+                        <td>{{$company->telephone ?? '-'}}</td>
                     </tr>
                     <tr>
                         <td>Celular</td>
-                        <td>{{$company->mobile}}</td>
+                        <td>{{$company->mobile ?? '-'}}</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="title">Persona de contacto</td>
@@ -122,26 +109,26 @@
                     </tr>
                     <tr>
                         <td>Celular</td>
-                        <td>{{$company->contact_phone}}</td>
+                        <td>{{$company->contact_phone ?? '-'}}</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="title">Información complementaria</td>
                     </tr>
                     <tr>
                         <td>URL de Sitio web</td>
-                        <td>{{$company->website}}</td>
+                        <td>{{$company->website ?? '-'}}</td>
                     </tr>
                     <tr>
                         <td>Facebook</td>
-                        <td>{{$company->social_facebook}}</td>
+                        <td>{{$company->social_facebook ?? '-'}}</td>
                     </tr>
                     <tr>
                         <td>Instagram</td>
-                        <td>{{$company->social_instagram}}</td>
+                        <td>{{$company->social_instagram ?? '-'}}</td>
                     </tr>
                     <tr>
                         <td>LinkedIn</td>
-                        <td>{{$company->social_linkedin}}</td>
+                        <td>{{$company->social_linkedin ?? '-'}}</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="title">Ubicación</td>
@@ -154,13 +141,13 @@
                 </table>
                 @include('website.layouts.button_audio', ['target' => 'info_major'])
                 
-                
+                <br><br>
                 <div class="container " style="font-size: 70%;" >
                 <!--programas inscrito  titulo-->
                 <div class="container text-center mb-4">
-                    <div class="row justify-content-center"">
+                    <div class="row justify-content-center">
                         <div class="col-8">
-                            <h4 class="display-1">Inscripciones a Programas.</h4>
+                            <h4 style='font-size:25px'>Inscripciones a Programas.</h4>
                         </div>
                     </div>
                 </div>            

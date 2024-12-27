@@ -17,6 +17,7 @@ class ExportarDiagnosticoResultado extends DownloadExcel
     public function headings(): array {
         return [
             'Fecha',
+            'NIT',
             'Unidad productiva',
             'Puntaje',
             'Etapa',
@@ -25,6 +26,7 @@ class ExportarDiagnosticoResultado extends DownloadExcel
     public function map($row): array {
         return [
             $row->fecha_creacion,
+            $row->unidadproductiva->nit ?? null,
             $row->unidadproductiva->business_name ?? null,
             $row->resultado_puntaje,
             $row->etapa->name ?? null,

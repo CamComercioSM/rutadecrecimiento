@@ -18,7 +18,10 @@
                     <div class="card shadow-sm company-card text-center p-3">
                         <div class="company-image-container">
                             <img 
-                                src="
+                            src="
+                                @if(!empty($company->logo))
+                            {{ asset('storage/logos/' . $company->logo) }}
+                                @else
                                     @if($company->unidadtipo_id == 1)
                                         https://rutadecrecimiento.com/img/registro/idea_negocio.png
                                     @elseif($company->unidadtipo_id == 2)
@@ -28,8 +31,9 @@
                                     @elseif($company->unidadtipo_id == 4)
                                         https://rutadecrecimiento.com/img/registro/registrado_ccsm.png
                                     @endif
-                                " 
-                                class="company-image" alt="Imagen de la empresa">
+                                @endif
+                            " 
+                            class="company-image" alt="Imagen de la empresa">
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{$company->business_name}}</h5>

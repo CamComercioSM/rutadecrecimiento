@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\DiagnosticoRespuesta;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -14,27 +13,33 @@ class DiagnosticoRespuestaPolicy
         return $user->hasAnyRole(['superadmin', 'cordinator', 'adviser']);
     }
 
-    public function view(User $user, DiagnosticoRespuesta $answer){
+    public function view(User $user){
         return $user->hasAnyRole(['superadmin', 'cordinator', 'adviser']);
     }
 
     public function create(User $user){
+        return false;
+    }
+
+    public function update(User $user){
+        return false;
+    }
+
+    public function delete(User $user){
+        return false;
+    }
+
+    public function handleAction(User $user)
+    {
         return $user->hasAnyRole(['superadmin', 'cordinator', 'adviser']);
     }
 
-    public function update(User $user, DiagnosticoRespuesta $answer){
-        return $user->hasAnyRole(['superadmin']);
+    public function restore(User $user){
+        return false;
     }
 
-    public function delete(User $user, DiagnosticoRespuesta $answer){
-        return $user->hasAnyRole(['superadmin']);
+    public function forceDelete(User $user){
+        return false;
     }
 
-    public function restore(User $user, DiagnosticoRespuesta $answer){
-        //
-    }
-
-    public function forceDelete(User $user, DiagnosticoRespuesta $answer){
-        //
-    }
 }

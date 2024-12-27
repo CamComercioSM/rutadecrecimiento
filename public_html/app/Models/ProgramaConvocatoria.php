@@ -35,14 +35,15 @@ class ProgramaConvocatoria extends Model
         'telefono',
         'informacion_adicional',
         'sitio_web',
-        'fecha_creacion',
-        'fecha_actualizacion',
-        'fecha_eliminacion',
-        'titulo_programa',
         'fecha_apertura_convocatoria',
         'fecha_cierre_convocatoria',
         'tiempo_actividad_convocatoria',
         'con_matricula'
+    ];
+
+    protected $casts = [
+        'fecha_apertura_convocatoria' => 'date',
+        'fecha_cierre_convocatoria' => 'date',
     ];
 
     // Definición de constantes para los timestamps personalizados
@@ -55,12 +56,9 @@ class ProgramaConvocatoria extends Model
      */
     public function programa(): BelongsTo
     {
-        return $this->belongsTo(Programa::class, 'programa_id');
+        return $this->belongsTo(Programa::class, 'programa_id', 'programa_id');
     }
-
-    /**
-     * Relación con el modelo Etapa a través de convocatorias_etapas.
-     */
+    
     public function etapas(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -72,8 +70,18 @@ class ProgramaConvocatoria extends Model
             'etapa_id'                    
         );
     }
+
     public function inscripciones(): HasMany {
-        return $this->hasMany(ConvocatoriaInscripcion::class, 'programa_id');
+        return $this->hasMany(ConvocatoriaInscripcion::class, 'convocatoria_id', 'convocatoria_id');
+    }
+
+    public function requisitos()
+    {
+        return $this->belongsToMany(
+            InscripcionesRequisitos::class, 
+            'convocatorias_requisitos', 
+            'convocatoria_id', 
+            'requisito_id');
     }
 
     public static $es_virtual = [
@@ -81,17 +89,4 @@ class ProgramaConvocatoria extends Model
         '1' => 'Virtual',
         '2' => 'Presencial y virtual'
     ];
-
-    /**
-     * Relación con el modelo Requisito a través de convocatorias_requisitos.
-     */
-    public function requisitos(): HasMany
-    {
-        return $this->hasManyThrough(
-            Requisito::class,
-            ConvocatoriaRequisito::class,
-            'convocatoria_id',
-            'requisito_id'
-        );
-    }
 }

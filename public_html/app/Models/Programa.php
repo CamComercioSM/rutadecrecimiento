@@ -33,35 +33,23 @@ class Programa extends Model
         'correo_contacto',
         'telefono',
         'informacion_adicional',
-        'sitio_web',
-        'titulo_programa',
-        'fecha_apertura_convocatoria',
-        'fecha_cierre_convocatoria',
-        'tiempo_actividad_convocatoria',
-        'con_matricula',
+        'sitio_web'
     ];
-
-    protected $dates = ['fecha_apertura_convocatoria', 'fecha_cierre_convocatoria'];
     
     public function inscripciones(): HasMany {
-        return $this->hasMany(ConvocatoriaInscripcion::class, 'programa_id');
+        return $this->hasMany(ConvocatoriaInscripcion::class, 'programa_id', 'programa_id');
     }
-    
+
+    public function convocatorias()
+    {
+        return $this->hasMany(ProgramaConvocatoria::class, 'programa_id', 'programa_id');
+    }
+
     public static $es_virtual = [
         '0' => 'Presencial',
         '1' => 'Virtual',
         '2' => 'Presencial y virtual'
     ];
-
-    public function etapas()
-    {
-        return $this->belongsToMany(
-            Etapa::class,                    
-            'convocatorias_etapas',          
-            'convocatoria_id',               
-            'etapa_id'                       
-        );
-    }
 
     const CREATED_AT = 'fecha_creacion';
     const UPDATED_AT = 'fecha_actualizacion';

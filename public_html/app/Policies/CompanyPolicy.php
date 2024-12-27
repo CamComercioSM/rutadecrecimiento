@@ -13,7 +13,7 @@ class CompanyPolicy {
         return $user->hasAnyRole(['superadmin', 'cordinator', 'adviser']);
     }
 
-    public function view(User $user, Company $company) {
+    public function view(User $user) {
         return $user->hasAnyRole(['superadmin', 'cordinator', 'adviser']);
     }
 
@@ -21,19 +21,19 @@ class CompanyPolicy {
         return false;
     }
 
-    public function update(User $user, Company $company) {
+    public function update(User $user) {
         return $user->hasAnyRole(['superadmin', 'cordinator', 'adviser']);
     }
 
-    public function delete(User $user, Company $company) {
+    public function delete(User $user) {
         return $user->hasAnyRole(['superadmin']);
     }
 
-    public function restore(User $user, Company $company) {
+    public function restore(User $user) {
         return false;
     }
 
-    public function forceDelete(User $user, Company $company) {
+    public function forceDelete(User $user) {
         return false;
     }
 }

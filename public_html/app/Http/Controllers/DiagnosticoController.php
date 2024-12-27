@@ -19,6 +19,10 @@ class DiagnosticoController extends Controller
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
 
+        if( !($unidadProductiva->sector_id > 0) ){
+            return redirect()->route('company.complete_info');
+        }
+
         if($request->anual_sales != null)
         {
             $unidadProductiva->anual_sales = $request->anual_sales;
@@ -46,10 +50,17 @@ class DiagnosticoController extends Controller
                     ['diagnostico_conventas', $unidadProductiva->anual_sales == 1] 
                 ])->first();
             }   
-            
-            $data['preguntas'] = $diagnostico->preguntas()->get();
+
+            $data['preguntas'] = DiagnosticoPregunta::whereNull('diagnostico_id')
+                    ->union(
+                        DiagnosticoPregunta::where('diagnostico_id', $diagnostico->diagnostico_id)
+                    )
+                    ->get();
+
+            $data['preguntas']->load('opciones');
+
             $data['diagnosticoId'] = $diagnostico->diagnostico_id;
-            
+         
             if($unidadProductiva->anual_sales)
             {
                 $sector = $unidadProductiva->sector()->first();
