@@ -57,6 +57,7 @@ return [
     | affect Nova's internal API routes which aren't exposed to users.
     |
     */
+    'path' => '/',
 
     
 
