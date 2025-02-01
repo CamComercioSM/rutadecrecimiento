@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class ProgramaConvocatoria extends Model
 {
@@ -37,8 +36,8 @@ class ProgramaConvocatoria extends Model
         'sitio_web',
         'fecha_apertura_convocatoria',
         'fecha_cierre_convocatoria',
-        'tiempo_actividad_convocatoria',
-        'con_matricula'
+        'con_matricula',
+        'sector_id',
     ];
 
     protected $casts = [
@@ -58,17 +57,10 @@ class ProgramaConvocatoria extends Model
     {
         return $this->belongsTo(Programa::class, 'programa_id', 'programa_id');
     }
-    
-    public function etapas(): HasManyThrough
+
+    public function sector(): BelongsTo
     {
-        return $this->hasManyThrough(
-            Etapa::class,                 
-            ConvocatoriaEtapa::class,     
-            'convocatoria_id',            
-            'etapa_id',                   
-            'convocatoria_id',            
-            'etapa_id'                    
-        );
+        return $this->belongsTo(Sector::class, 'sector_id', 'sector_id');
     }
 
     public function inscripciones(): HasMany {
@@ -81,7 +73,19 @@ class ProgramaConvocatoria extends Model
             InscripcionesRequisitos::class, 
             'convocatorias_requisitos', 
             'convocatoria_id', 
-            'requisito_id');
+            'requisito_id')
+            ->whereNull('indicador_id');
+    }
+
+    public function requisitosIndicadores()
+    {
+        return $this->belongsToMany(
+            InscripcionesRequisitos::class, 
+            'convocatorias_requisitos', 
+            'convocatoria_id', 
+            'requisito_id')
+            ->withPivot('referencia')     
+            ->whereNotNull('indicador_id'); 
     }
 
     public static $es_virtual = [

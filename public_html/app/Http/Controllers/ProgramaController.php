@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Exports\InscripcionConvocatoriaRespuestasExport;
 use App\Http\Services\CommonService;
 use App\Http\Services\SICAM32;
 use App\Http\Services\UnidadProductivaService;
@@ -10,8 +12,8 @@ use Illuminate\Http\Request;
 use App\Models\ConvocatoriaInscripcion;
 use App\Models\ConvocatoriaRespuesta;
 use App\Models\InscripcionesRequisitos;
-use App\Models\Programa;
 use App\Models\RequisitosOpciones;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramaController extends Controller
 {
@@ -20,27 +22,41 @@ class ProgramaController extends Controller
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
         $fechaActual = date('Y-m-d');
         
-        $programas_inscrito = ProgramaConvocatoria::whereHas('inscripciones', function ($query) use ($unidadProductiva) {
-            $query->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id);
-        })->where('fecha_apertura_convocatoria', '<=', $fechaActual)->get();
+        $programas_inscrito = ProgramaConvocatoria::with('programa')
+            ->whereHas('inscripciones', function ($query) use ($unidadProductiva) {
+                $query->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id);
+            })
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->get();
     
-        $programs_recommend = ProgramaConvocatoria::whereHas('etapas', function ($query) use ($unidadProductiva) {
-            $query->where('convocatorias_etapas.etapa_id', $unidadProductiva->etapa_id);
-        })->where('fecha_apertura_convocatoria', '<=', $fechaActual)
-          ->where('fecha_cierre_convocatoria', '>=', $fechaActual)->get();
-          
-        $programas_otros = ProgramaConvocatoria::whereDoesntHave('etapas', function ($query) use ($unidadProductiva) {
-            $query->where('convocatorias_etapas.etapa_id', $unidadProductiva->etapa_id);
-        })->where('fecha_apertura_convocatoria', '<=', $fechaActual)
-          ->where('fecha_cierre_convocatoria', '>=', $fechaActual)->get();
+        $programs_recommend = $this->getRecomendados($unidadProductiva, $fechaActual);
+
+        $programas_otros = ProgramaConvocatoria::with('programa')
+            ->whereHas('programa', function ($query) use ($unidadProductiva) {
+                $query->whereDoesntHave('etapas', function ($q) use ($unidadProductiva) {
+                    $q->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                });
+            })
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)->get();
     
-        $programas_cerrados = ProgramaConvocatoria::whereDoesntHave('etapas', function ($query) use ($unidadProductiva) {
-            $query->where('convocatorias_etapas.etapa_id', $unidadProductiva->etapa_id);
-        })->where('fecha_cierre_convocatoria', '<=', $fechaActual)->get();
+        $programas_cerrados = ProgramaConvocatoria::with('programa')
+            ->whereHas('programa', function ($query) use ($unidadProductiva) {
+                $query->whereDoesntHave('etapas', function ($q) use ($unidadProductiva) {
+                    $q->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                });
+            })
+            ->where('fecha_cierre_convocatoria', '<=', $fechaActual)->get();
     
-        $programas_cerrados_recomendados = ProgramaConvocatoria::whereHas('etapas', function ($query) use ($unidadProductiva) {
-            $query->where('convocatorias_etapas.etapa_id', $unidadProductiva->etapa_id);
-        })->where('fecha_cierre_convocatoria', '<=', $fechaActual)->get();
+        $programas_cerrados_recomendados = ProgramaConvocatoria::with('programa')
+            ->whereHas('programa', function ($query) use ($unidadProductiva) {
+                $query->whereHas('etapas', function ($q) use ($unidadProductiva) {
+                    $q->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                });
+            })
+            ->where('fecha_cierre_convocatoria', '<=', $fechaActual)
+            ->get();
+        
       
         $helper_default = [
             'title' => 'Bienvenido',
@@ -57,7 +73,7 @@ class ProgramaController extends Controller
             'programas_cerrados' => $programas_cerrados,
             'programas_cerrados_recomendados' => $programas_cerrados_recomendados,
             'unidadProductiva' => $unidadProductiva,
-            'nombreEtapa' => $unidadProductiva->etapa->name, 
+            'nombreEtapa' => $unidadProductiva->etapa?->name, 
         ];
         
         return view('website.program.index', $data);
@@ -66,45 +82,37 @@ class ProgramaController extends Controller
     public function programShow(Request $request)
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();        
-        $program = ProgramaConvocatoria::where('convocatoria_id', $request->id)->first();
+        $convocatoria = ProgramaConvocatoria::where('convocatoria_id', $request->id)
+            ->with('programa')->first();
     
-        if (!$program) {
+        if (!$convocatoria) {
             return redirect()->route('programas.index')
                 ->withErrors(['error' => 'El programa no fue encontrado.']);
         }
-    
-        // Variable de si la empresa puede aplicar al programa
-        if ($program->con_matricula == "1" && empty($unidadProductiva->registration_number)) {
-            $can_apply = false;
-            $already_subscribed = false;
-            $inscripcion = null;
-        } else {
-            $program_validation = ProgramaConvocatoria::where('convocatoria_id', $program->convocatoria_id)
-                ->whereHas('etapas', function ($query) use ($unidadProductiva) {
-                    $query->where('convocatorias_etapas.etapa_id', $unidadProductiva->etapa_id);
-                })->get();
-    
-            $can_apply = count($program_validation) > 0;
-    
-            $inscripcion = ConvocatoriaInscripcion::where('convocatoria_id', $program->convocatoria_id)
-                ->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id)
-                ->latest()
-                ->first();
-            
-            $already_subscribed = false;
-            $states = [0, 1, 2, 4, 5]; // Estados en los cuales no puede volver a inscribirse en un programa
-            
-            if ($inscripcion && in_array($inscripcion->inscripcionestado_id, $states)) {
-                $already_subscribed = true;
-            }
-            
-        }
 
+        $fechaActual = date('Y-m-d');
+        $programs_recommend = $this->getRecomendados($unidadProductiva, $fechaActual);
+        
+        $can_apply = false;
+        $already_subscribed = false;
+
+        $program_validation = $programs_recommend->where('convocatoria_id', $convocatoria->convocatoria_id);
+        $can_apply = count($program_validation) > 0;
+    
+        $inscripcion = ConvocatoriaInscripcion::where('convocatoria_id', $convocatoria->convocatoria_id)
+            ->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id)
+            ->latest()->first();
+        $states = [0, 1, 2, 4, 5]; // Estados en los cuales no puede volver a inscribirse en un programa
+        
+        if ($inscripcion && in_array($inscripcion->inscripcionestado_id, $states)) {
+            $already_subscribed = true;
+        }
+        
         $data = [
             'footer'=> CommonService::footer(),
             'links'=> CommonService::links(),
             'unidadProductiva'=> $unidadProductiva,
-            'program'=> $program,
+            'convocatoria'=> $convocatoria,
             'helper_notifications'=> CommonService::notificaciones(),
             'already_subscribed'=> $already_subscribed,
             'inscripcion'=> $inscripcion,
@@ -117,79 +125,85 @@ class ProgramaController extends Controller
     public function programRegister(Request $request)
     {
         $company =  UnidadProductivaService::getUnidadProductiva();
-        $program = Programa::find($request->id);
+        $program = ProgramaConvocatoria::find($request->id);
         
-        //
-        $inscrito = $company->inscripciones->where('convocatoria_id', $program->id);
-        if (count($inscrito) ) {
+        $inscripcion = $company->inscripciones()->where('convocatoria_id', $program->convocatoria_id)->first();
+        
+        if ( $inscripcion != null && $inscripcion->activarPreguntas != true ) {
             return redirect()->back()->with('error', 'Ya estas INSCRITO para este programa.');
         }
 
-        //valide si la empresa ya se encuentra inscrita en alguno de los estados donde ya no puede volverse a inscribir en un programa
-        // Deshabilitado temporalmente
-        $exists = $company->inscripciones->whereIn('inscripcionestado_id', [1, 2,4]);
-        if (count($exists) > 2) {
-            return redirect()->back()->with('error', 'Ya hay dos solicitudes activas para diferentes programas. No puede inscribirse en más de dos programas');
-        }
-
-        
-        if ($program->convocatoriaCONMATRICULA == "1") 
+        if( $inscripcion == null )
         {
-            $api = SICAM32::consultarExpedienteMercantilporIdentificacion($company->nit);
-            $values = $api->DATOS;
+            //valide si la empresa ya se encuentra inscrita en alguno de los estados donde ya no puede volverse a inscribir en un programa
+            // Deshabilitado temporalmente
+            $exists = $company->inscripciones->whereIn('inscripcionestado_id', [1, 2, 4]);
+            if (count($exists) > 2) {
+                return redirect()->back()->with('error', 'Ya hay dos solicitudes activas para diferentes programas. No puede inscribirse en más de dos programas');
+            }
 
-            UnidadProductivaService::validarRenovacion($values->fecharenovacion, $company->unidadproductiva_id);
-            UnidadProductivaService::validarSiguienteRenovacion($values->fechamatricula, $values->fecharenovacion, $company->unidadproductiva_id);
+            if ($program->convocatoriaCONMATRICULA == "1") 
+            {
+                $api = SICAM32::consultarExpedienteMercantilporIdentificacion($company->nit);
+                $values = $api->DATOS;
 
-            //Validamos que la API haya respondido de manera correcta
-            if ($api->RESPUESTA != 'EXITO')
-                return redirect()->back()->with('error', 'No se pudo validar en este momento. Espere unos minutos e intente nuevamente');
+                UnidadProductivaService::validarRenovacion($values->fecharenovacion, $company->unidadproductiva_id);
+                UnidadProductivaService::validarSiguienteRenovacion($values->fechamatricula, $values->fecharenovacion, $company->unidadproductiva_id);
 
-            if ($values->estado != 'MA') {
-                // Si la empresa no tiene el estado MA, quiere decir que no ha renovado su matricula. Y debe crearse una alerta.
-                UnidadProductivaService::crearAlerta(0, $company->unidadproductiva_id);
-                return redirect()->back()->with('error', 'No se puede inscribir en este programa. La matrícula de su empresa no lo permite');
+                //Validamos que la API haya respondido de manera correcta
+                if ($api->RESPUESTA != 'EXITO')
+                    return redirect()->back()->with('error', 'No se pudo validar en este momento. Espere unos minutos e intente nuevamente');
+
+                if ($values->estado != 'MA') {
+                    // Si la empresa no tiene el estado MA, quiere decir que no ha renovado su matricula. Y debe crearse una alerta.
+                    UnidadProductivaService::crearAlerta(0, $company->unidadproductiva_id);
+                    return redirect()->back()->with('error', 'No se puede inscribir en este programa. La matrícula de su empresa no lo permite');
+                }
             }
         }
 
-        $variables = $program->requisitos();
+        $indicadores = $program->requisitosIndicadores()->get();
+        $requisitos = $program->requisitos()->get();
 
+        $variables = $indicadores->merge($requisitos);
+        
         if (count($variables) == 0) {
             return redirect()->back()->with('error', 'No hay variables vinculadas al programa');
         }
 
-        /*
-         * Recorremos las variables para saber si ya han sido respondidas anteriormente
-         * Si encontramos que el usuario ha respondido esa misma variable, validamos el tiempo de respuesta.
-         * Si es menor a 30 dias, eliminamos esa variable de la collection
-        */
+        
+        if( $inscripcion == null )
+        {
+            $fecha = now()->subMonth();
 
-        // Variable para llevar el registro de las preguntas que ya completo anteriormente.
-        // TODO: Tenerlas en cuenta luego para indicar que no se respondieron?
+            /*
+            * Recorremos las variables para saber si ya han sido respondidas anteriormente
+            * Si encontramos que el usuario ha respondido esa misma variable, validamos el tiempo de respuesta.
+            * Si es menor a 30 dias, eliminamos esa variable de la collection
+            */
+            foreach ($variables as $key => $variable) {
+                $answer = ConvocatoriaRespuesta::
+                    whereHas('inscripcion', function ($q) use($company){
+                        $q->where('unidadproductiva_id', $company->unidadproductiva_id);
+                    })
+                    ->where('requisito_id', $variable->requisito_id)
+                    ->where('fecha_creacion', '>=', $fecha)
+                    ->get()->last();
 
-        $fecha = now()->subMonth();
+                if ($answer == null)
+                    continue;
 
-        foreach ($variables as $key => $variable) {
-            $answer = ConvocatoriaRespuesta::
-                whereHas('inscripcion', function ($q) use($company){
-                    $q->where('unidadproductiva_id', $company->unidadproductiva_id);
-                })
-                ->where('requisito_id', $variable->requisito_id)
-                ->where('fecha_creacion', '>=', $fecha)
-                ->get()->last();
-
-            if ($answer == null)
-                continue;
-
-            //Agrego el id de la variable ya respondida al array y remuevo variable de la collection
-            $variables->forget($key);
+                //Agrego el id de la variable ya respondida al array y remuevo variable de la collection
+                $variables->forget($key);
+            }
         }
-
+        
         $data = [
             'footer'=> CommonService::footer(),
             'links'=> CommonService::links(),
             'program'=> $program,
             'variables'=> $variables,
+            'volverApreguntar'=> $inscripcion != null && $inscripcion->activarPreguntas == true,
         ];
         
         return view('website.company.program_questions', $data);
@@ -198,15 +212,53 @@ class ProgramaController extends Controller
     public function applicationSave(Request $request) {
 
         $company =  UnidadProductivaService::getUnidadProductiva();
-        $convocatoria_id = $request->program;
+        $program = ProgramaConvocatoria::find($request->program);
         
         $fecha = now();
-        $inscripcion = New ConvocatoriaInscripcion();
-        $inscripcion->unidadproductiva_id = $company->unidadproductiva_id;
-        $inscripcion->convocatoria_id = $convocatoria_id;
-        $inscripcion->inscripcionestado_id = 1;
-        $inscripcion->comentarios = "Solicitud de registro enviada";
-        $inscripcion->save();
+        
+        $inscripcion = $company->inscripciones()
+            ->where('convocatoria_id', $program->convocatoria_id)
+            ->where('activarPreguntas', true)->first();
+
+        if($inscripcion == null)
+        {
+            $inscripcion = New ConvocatoriaInscripcion();
+            $inscripcion->unidadproductiva_id = $company->unidadproductiva_id;
+            $inscripcion->convocatoria_id = $program->convocatoria_id;
+            $inscripcion->inscripcionestado_id = 1;
+            $inscripcion->comentarios = "Solicitud de registro enviada";
+            $inscripcion->save();
+        }
+
+        $indicadores = $program->requisitosIndicadores()->get();
+        $requisitos = $program->requisitos()->get();
+
+        $variables = $indicadores->merge($requisitos);
+        $fechaMenos1Mes = now()->subMonth();
+
+        if($inscripcion != null && $inscripcion->activarPreguntas != true)
+        {
+            foreach ($variables as $key => $variable) {
+                
+                $answer = ConvocatoriaRespuesta::
+                    whereHas('inscripcion', function ($q) use($company){
+                        $q->where('unidadproductiva_id', $company->unidadproductiva_id);
+                    })
+                    ->where('requisito_id', $variable->requisito_id)
+                    ->where('fecha_creacion', '>=', $fechaMenos1Mes)
+                    ->get()->last();
+
+                if ($answer != null)
+                {
+                    $respuesta = New ConvocatoriaRespuesta();
+                    $respuesta->value = $answer->value;
+                    $respuesta->inscripcion_id = $inscripcion->inscripcion_id;
+                    $respuesta->requisito_id = $answer->requisito_id;
+                    $respuesta->fecha_respuesta = $fecha;
+                    $respuesta->save();
+                }
+            }
+        }
 
         foreach ($request->all() as $key => $value) 
         {
@@ -214,20 +266,42 @@ class ProgramaController extends Controller
             {
                 $pregunta_id = str_replace('variable-', '', $key);
 
-                $pregunta = InscripcionesRequisitos::find($pregunta_id);
-                $opcion = RequisitosOpciones::find($value);
-
                 $respuesta = New ConvocatoriaRespuesta();
+                $pregunta = InscripcionesRequisitos::find($pregunta_id);
+                
+                if($pregunta->tipo->preguntatipo_opciones)
+                {
+                    $opcion = RequisitosOpciones::find($value);
+                    $respuesta->value = $opcion->opcion_variable_response ?? $value;
+                }
+                else{
+                    $respuesta->value = $value;
+                }
+                
                 $respuesta->inscripcion_id = $inscripcion->inscripcion_id;
                 $respuesta->requisito_id = $pregunta->requisito_id;
-                $respuesta->value = $opcion->opcion_variable_response ?? $value;
                 $respuesta->fecha_respuesta = $fecha;
                 $respuesta->save();
             }
         }
+
+        $mensaje = 'Su solicitud se ha enviado correctamente';
+
+        if($inscripcion != null && $inscripcion->activarPreguntas == true)
+        {
+            $inscripcion->activarPreguntas = false;
+            $inscripcion->save();
+
+            $mensaje = 'Gracias por sus respuestas';
+        }
         
-        return redirect()->route('company.program.show', ['id' => $convocatoria_id])
-            ->with('success', 'Su solicitud se ha enviado correctamente');
+        return redirect()->route('company.program.show', ['id' => $program->convocatoria_id])
+            ->with('success', $mensaje);
+    }
+
+    public function exportarPreguntasInscripcionConvocatoria($id)
+    {
+        return Excel::download(new InscripcionConvocatoriaRespuestasExport($id), 'inscripcion-respuestas.xlsx');
     }
     
     public function capsulas() {
@@ -252,5 +326,56 @@ class ProgramaController extends Controller
     
         return view('website.capsule.index', $data);
     }
+
+    private function getRecomendados($unidadProductiva, $fechaActual)
+    {
+        $programs_recommend1 = ProgramaConvocatoria::query()
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->where('con_matricula', 1)
+            ->where(function ($query) use ($unidadProductiva) {
+
+                if (is_null($unidadProductiva->registration_number)) {
+                    $query->where('con_matricula', -1);
+                }
+
+                $query->whereHas('programa', function ($q) use ($unidadProductiva) {
+                    $q->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
+                        $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                    })
+                    ->where(function ($q) use ($unidadProductiva) {
+                        $q->whereNotNull('sector_id')
+                        ->where('sector_id', $unidadProductiva->sector_id)
+                        ->orWhereNull('sector_id');
+                    });
+                });
+            })
+            ->with('programa')->get();
+
+        $programs_recommend2 = ProgramaConvocatoria::query()
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->where('con_matricula', '!=', 1)
+            ->where(function ($query) use ($unidadProductiva) {
+                if (!is_null($unidadProductiva->registration_number)) {
+                    $query->where('con_matricula', -1);
+                }
+
+                $query->whereHas('programa', function ($q) use ($unidadProductiva) {
+                    $q->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
+                        $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                    })
+                    ->where(function ($q) use ($unidadProductiva) {
+                        $q->whereNotNull('sector_id')
+                        ->where('sector_id', $unidadProductiva->sector_id)
+                        ->orWhereNull('sector_id');
+                    });
+                });
+            })
+            ->with('programa')->get();
+
+        return $programs_recommend1->merge($programs_recommend2);
+    }
+
    
 }

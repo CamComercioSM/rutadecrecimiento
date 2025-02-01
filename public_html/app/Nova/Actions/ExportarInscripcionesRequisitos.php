@@ -24,7 +24,7 @@ class ExportarInscripcionesRequisitos extends DownloadExcel
     
     public function map($row): array {
         return [
-            $row->fecha_creacion,
+            $row->fecha_respuesta,
             $row->requisito->requisito_titulo ?? null,
             $row->value
         ];

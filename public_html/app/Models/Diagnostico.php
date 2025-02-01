@@ -12,7 +12,7 @@ class Diagnostico extends Model
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
 
     // Nombre de la tabla
-    protected $table = 'diagnosticos (nuevo)';
+    protected $table = 'diagnosticos';
 
     // Clave primaria personalizada
     protected $primaryKey = 'diagnostico_id';

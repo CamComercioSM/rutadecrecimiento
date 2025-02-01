@@ -21,6 +21,10 @@ class RequisitosOpciones extends Resource
         return 'Opciones de requisitos';
     }
 
+    public static function singularLabel(){
+        return 'Opción de requisito';
+    }
+
     public function fields(Request $request)
     {
         return [

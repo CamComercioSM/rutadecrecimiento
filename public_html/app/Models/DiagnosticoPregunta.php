@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class DiagnosticoPregunta extends Model
 {
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
-    protected $table = 'diagnosticos_preguntas (variables)';
+    protected $table = 'diagnosticos_preguntas';
     protected $primaryKey = 'pregunta_id';
 
     protected $fillable = [

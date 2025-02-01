@@ -13,7 +13,7 @@ class Notificacion extends Resource {
 
     public static $model = \App\Models\Notificacion::class;
     public static $title = 'notificacion_id';
-    public static $search = ['notificacion_id', 'titulo'];
+    public static $search = ['notificacion_id', 'titulo', 'descripcion'];
 
     public static function label() {
         return 'Notificaciones';

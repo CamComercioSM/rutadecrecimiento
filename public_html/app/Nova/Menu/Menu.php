@@ -22,6 +22,7 @@ use App\Nova\Resources\Generales\Setting;
 use App\Nova\Resources\Generales\UsuariosAdministradores;
 use App\Nova\Resources\Inscripciones\ConvocatoriaInscripcion;
 use App\Nova\Resources\Programas\InscripcionesRequisitos;
+use App\Nova\Resources\Programas\InscripcionesRequisitosIndicadores;
 use App\Nova\Resources\Programas\Programa;
 use App\Nova\Resources\Programas\ProgramaIndicador;
 use DigitalCreative\CollapsibleResourceManager\CollapsibleResourceManager;
@@ -67,18 +68,18 @@ class Menu {
 
                         Diagnostico::class,
                         Programa::class,
-
-                        ProgramaIndicador::class,
-                        InscripcionesRequisitos::class,
-                        DiagnosticoPreguntasBase::class,
-
                         Capsula::class,
+
+                        InscripcionesRequisitos::class,
+                        InscripcionesRequisitosIndicadores::class,
+                        DiagnosticoPreguntasBase::class,
 
                         UsuariosAdministradores::class,
 
+                        ProgramaIndicador::class,
                         PreguntaGrupo::class,
                         PreguntaTipo::class,
-                        PreguntaDimension::class,                        
+                        PreguntaDimension::class,  
                         
                         NovaResource::make(Etapa::class)->canSee(function (){
                             /** @var User $user */

@@ -15,12 +15,16 @@ class Empresario extends Resource
 {
     public static $model = \App\Models\User::class;
     public static $title = 'name';
-    public static $search = ['id', 'name', 'lastname', 'email'];
+    public static $search = ['id', 'identification', 'name', 'lastname', 'email'];
 
     public static function label() {
         return 'Empresarios';
     }
 
+    public static function singularLabel(){
+        return 'Empresario';
+    }
+    
     public function fields(Request $request) {
         return [
             Number::make('No documento', 'identification')

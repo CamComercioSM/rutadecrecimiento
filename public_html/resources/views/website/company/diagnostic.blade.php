@@ -5,7 +5,9 @@
 
 @section('content')
 {{--@include('website.mantenimiento.modal_aviso')--}}
-{{--@include('website.company.aviso_validaciondatos')--}}
+
+@include('website.company.aviso_validaciondatos')
+
 <div id="diagnostic">
     <div class="wrap">
         
@@ -110,40 +112,39 @@
                     $("#" + $before_variable).slideDown();
             });
             $("#frm_completardiagnostico input").change(function () {
-//          console.log(this);
-//          console.log($(this).attr('id'));
-//          console.log($(this).parent().attr('id'));
-//          console.log($(this).parent().parent().attr('id'));
-//          console.log($(this).parent().parent().parent().attr('id'));
-//          console.log($(this).parent().parent().parent().parent().attr('id'));
                     pasarSiguientePreguntaDiagnostico(
                             $(this).parent().parent().parent().parent().attr('id'),
                             $(this).parent().parent().parent().parent().next().attr('id')
                             );
             });
+
+            $('form').on('keydown', function(event) {
+                    if (event.key === 'Enter' || event.keyCode === 13) {
+                        event.preventDefault();
+                        return false;  
+                    }
+            });
     });
 
     function pasarSiguientePreguntaDiagnostico(actualID, siguienteID) {
-//      $variable = $("#btn_diagnosticosiguiente_conventas").parent().attr('id');
             $variable = actualID;
             let opcionesRespuesta = $("#" + $variable).find('input[type="radio"]');
             let seleccionado = false;
-            console.log(opcionesRespuesta);
+            
             opcionesRespuesta.each(function (index) {
                     if ($(this).is(':checked')) {
                             seleccionado = true;
                     }
             });
+
             if (seleccionado) {
-//      console.log($variable); 
                     $("#" + $variable).slideUp();
-//      $next_variable = $("#btn_diagnosticosiguiente_conventas").parent().next().attr('id');
                     $next_variable = siguienteID;
-//            console.log($next_variable);
+                    
                     if ($next_variable !== undefined) {
-                            $("#" + $next_variable).slideDown();
+                        $("#" + $next_variable).slideDown();
                     } else {
-                            $('form').submit();
+                        $('form').submit();
                     }
             } else {
                     modalValidacionDatosDiagnostico.show();

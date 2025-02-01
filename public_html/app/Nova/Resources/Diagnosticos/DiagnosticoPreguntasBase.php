@@ -19,7 +19,11 @@ class DiagnosticoPreguntasBase extends Resource
     ];
 
     public static function label() {
-        return 'Preguntas base de diagnosticos';
+        return 'Preguntas base de diagnósticos';
+    }
+
+    public static function singularLabel(){
+        return 'Pregunta base de diagnóstico';
     }
     
     public function fields(Request $request) {

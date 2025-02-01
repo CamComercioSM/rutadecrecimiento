@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Alerta;
 use App\Models\ConvocatoriaInscripcion;
+use App\Models\ConvocatoriaInscripcionHistorial;
 use App\Models\DiagnosticoRespuesta;
 use App\Models\DiagnosticoResultado;
 use App\Models\Lead;
@@ -13,6 +14,7 @@ use App\Policies\LeadPolicy;
 use App\Policies\NotificationPolicy;
 use App\Policies\DiagnosticoRespuestaPolicy;
 use App\Policies\DiagnosticoResultadoPolicy;
+use App\Policies\InscripcionConvocatoriaHistorialPolicy;
 use App\Policies\InscripcionConvocatoriaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -25,7 +27,8 @@ class AuthServiceProvider extends ServiceProvider {
         //GeneralesSection::class => SectionPolicy::class,       
         DiagnosticoResultado::class => DiagnosticoResultadoPolicy::class,
         DiagnosticoRespuesta::class => DiagnosticoRespuestaPolicy::class,
-        ConvocatoriaInscripcion::class => InscripcionConvocatoriaPolicy::class
+        ConvocatoriaInscripcion::class => InscripcionConvocatoriaPolicy::class,
+        ConvocatoriaInscripcionHistorial::class => InscripcionConvocatoriaHistorialPolicy::class
     ];
 
     public function boot() {

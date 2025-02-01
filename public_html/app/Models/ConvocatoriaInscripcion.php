@@ -23,19 +23,23 @@ class ConvocatoriaInscripcion extends Model
         'inscripcionestado_id',
         'comentarios',
         'archivo',
+        'activarPreguntas',
     ];
 
 
     protected static function booted()
     {
-        static::updating(function ($model) {
-            ConvocatoriaInscripcionHistorial::create([
-                'inscripcion_id' => $model->inscripcion_id,
-                'inscripcionestado_id' => $model->inscripcionestado_id,
-                'comentarios' => $model->comentarios,
-                'archivo' => $model->archivo
-            ]);
-        });
+        static::saved(function ($model) {
+            if ($model->isDirty(['inscripcionestado_id', 'comentarios', 'archivo'])) 
+            {
+                ConvocatoriaInscripcionHistorial::create([
+                    'inscripcion_id' => $model->inscripcion_id,
+                    'inscripcionestado_id' => $model->inscripcionestado_id,
+                    'comentarios' => $model->comentarios,
+                    'archivo' => $model->archivo
+                ]);
+            }
+        });      
     }
 
 
@@ -70,14 +74,4 @@ class ConvocatoriaInscripcion extends Model
         return $this->HasMany(ConvocatoriaInscripcionHistorial::class, 'inscripcion_id', 'inscripcion_id');
     }
 
-    public static $states = [
-        0 => 'Solicitud de registro',
-        1 => 'En proceso de vinculación',
-        2 => 'Admitido',
-        3 => 'No Admitido',
-        4 => 'En proceso de intervención',
-        5 => 'En espera',
-        6 => 'Finalizado',
-        7 => 'Retirado',
-    ];
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PreguntaOpcion extends Model
 {
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
-    protected $table = 'preguntas_opciones (nuevo)';
+    protected $table = 'preguntas_opciones';
 
     protected $primaryKey = 'opcion_id';
 

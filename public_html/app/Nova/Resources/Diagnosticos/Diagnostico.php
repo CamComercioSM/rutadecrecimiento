@@ -19,8 +19,13 @@ class Diagnostico extends Resource
     ];
 
     public static function label() {
-        return 'Diagnosticos';
+        return 'Diagnósticos';
     }
+
+    public static function singularLabel(){
+        return 'Diagnóstico';
+    }
+
 
     public function fields(Request $request) {
         return [

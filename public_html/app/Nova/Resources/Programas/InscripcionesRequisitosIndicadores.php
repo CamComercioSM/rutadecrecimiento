@@ -9,7 +9,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
-class InscripcionesRequisitos extends Resource
+class InscripcionesRequisitosIndicadores extends Resource
 {
     public static $model = \App\Models\InscripcionesRequisitos::class;
     public static $title = 'requisito_titulo';
@@ -18,11 +18,11 @@ class InscripcionesRequisitos extends Resource
     ];
 
     public static function label() {
-        return 'Banco de requisitos convocatorias';
+        return 'Banco requisitos-indicadores convocatorias';
     }
 
     public static function singularLabel(){
-        return 'Requisito convocatoria';
+        return 'Requisito-indicador convocatoria';
     }
     
     public function fields(Request $request) {
@@ -31,6 +31,10 @@ class InscripcionesRequisitos extends Resource
 
             Text::make('Nombre', 'requisito_titulo')
                 ->rules('required'),
+
+            Select::make('Indicador', 'indicador_id')
+                ->options(\App\Models\ProgramaIndicador::pluck('indicador_nombre', 'indicador_id')->toArray())
+                ->displayUsingLabels(),
 
             Select::make('Tipo', 'preguntatipo_id')
                 ->hideFromIndex()
@@ -45,11 +49,11 @@ class InscripcionesRequisitos extends Resource
 
     public static function indexQuery(Request $request, $query)
     {
-        return $query->whereNull('indicador_id'); 
+        return $query->whereNotNull('indicador_id'); 
     }
 
     public static function uriKey()
     {
-        return 'requisitos-convocatorias';
+        return 'requisitos-indicadores-convocatorias';
     }
 }

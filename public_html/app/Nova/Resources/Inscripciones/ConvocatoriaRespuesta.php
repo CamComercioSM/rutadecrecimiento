@@ -32,9 +32,24 @@ class ConvocatoriaRespuesta extends Resource
 
             BelongsTo::make('Inscripción', 'inscripcion', ConvocatoriaInscripcion::class)->sortable(),
             
-            BelongsTo::make('Requisito', 'inscripcion', InscripcionesRequisitos::class)->sortable(),
+            BelongsTo::make('Requisito', 'requisito', InscripcionesRequisitos::class)->sortable(),
+            
+            Text::make('Referencia', function () {
+
+                $convocatoria_id = $this->inscripcion->convocatoria_id ?? null;
+
+                if (!$convocatoria_id) {
+                    return null;
+                }
+
+                $requisitoConvocatoria = $this->requisito->requisitosConvocatoria($convocatoria_id)->first();
+
+                return $requisitoConvocatoria->pivot->referencia ?? null;
+            }),
                         
             Text::make('Respuesta', 'value'),
+
+            Text::make('Fecha respuesta', 'fecha_respuesta'),
         ];
     }
 

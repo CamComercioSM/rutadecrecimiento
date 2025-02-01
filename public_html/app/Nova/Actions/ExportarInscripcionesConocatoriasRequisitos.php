@@ -17,7 +17,7 @@ class ExportarInscripcionesConocatoriasRequisitos extends Action
 
     public function handle(ActionFields $fields, $models)
     {        
-        $modelIds = $models->pluck('resultado_id');
+        $modelIds = $models->pluck('inscripcion_id');
         $export = new InscripcionesConocatoriasRequisitosExport($modelIds);
 
         $filePath = 'requisitos_inscripciones.xlsx';

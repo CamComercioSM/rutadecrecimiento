@@ -20,8 +20,13 @@ class DiagnosticoPregunta extends Resource
     ];
 
     public static function label() {
-        return 'Preguntas diagnostico';
+        return 'Preguntas Diagnóstico';
     }
+
+    public static function singularLabel(){
+        return 'Pregunta Diagnóstico';
+    }
+
     
     public function fields(Request $request) {
         return [

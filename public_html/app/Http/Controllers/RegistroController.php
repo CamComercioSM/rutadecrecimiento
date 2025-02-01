@@ -247,6 +247,10 @@ class RegistroController extends Controller
             $company->registration_date = date("Y-m-d", strtotime($UnidadProductiva->unidadProductivaFCHINICIO));
         }
 
+        if ($request->tipo_registro_rutac == 1) {
+            $company->anual_sales = 0;
+        } 
+
         $company->registration_number = $UnidadProductiva->unidadProductivaMATRICULA;
         $company->registration_email = $UnidadProductiva->unidadProductivaEMAIL;
         $company->address = $UnidadProductiva->unidadProductivaDIRECCION;

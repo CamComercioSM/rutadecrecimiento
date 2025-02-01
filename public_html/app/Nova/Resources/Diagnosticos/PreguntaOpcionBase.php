@@ -18,7 +18,11 @@ class PreguntaOpcionBase extends Resource
     ];
 
     public static function label() {
-        return 'Opciones de pregunta diagnostico';
+        return 'Opciones de pregunta diagnóstico';
+    }
+
+    public static function singularLabel(){
+        return 'Opción de pregunta diagnóstico';
     }
 
     public function fields(Request $request)

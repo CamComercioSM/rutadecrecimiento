@@ -17,6 +17,7 @@ class ExportarInscripcionesConocatorias extends DownloadExcel
     public function headings(): array {
         return [
             'Convocatoria',
+            'NIT',
             'Unidad Productiva',
             'Estado',
             'Fecha de inscripción',
@@ -26,6 +27,7 @@ class ExportarInscripcionesConocatorias extends DownloadExcel
     public function map($row): array {
         return [
             $row->convocatoria->nombre ?? null,
+            $row->unidadproductiva->nit ?? null,
             $row->unidadproductiva->business_name ?? null,
             $row->Estado->inscripcionEstadoNOMBRE ?? null,
             $row->fecha_creacion,

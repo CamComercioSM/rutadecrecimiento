@@ -2,7 +2,9 @@
 
 namespace App\Nova\Resources\Programas;
 
+use App\Nova\Resources\Generales\Etapa;
 use App\Nova\Resources\Resource;
+use Benjacho\BelongsToManyField\BelongsToManyField;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Image;
@@ -18,6 +20,10 @@ class Programa extends Resource
 
     public static function label() {
         return 'Programas';
+    }
+
+    public static function singularLabel(){
+        return 'Programa';
     }
 
     public function fields(Request $request) {
@@ -54,16 +60,19 @@ class Programa extends Resource
             Select::make('Modalidad', 'es_virtual')
                 ->options(\App\Models\ProgramaConvocatoria::$es_virtual)->rules('required'),
 
-            Text::make('Persona a Cargo', 'persona_encargada')->rules('required'),
-
-            Text::make('Correo de Contacto', 'correo_contacto')
-                ->rules('required')->hideFromIndex(),
-
-            Text::make('Teléfono', 'telefono')
-                ->hideFromIndex(),
-
             Text::make('Sitio Web', 'sitio_web')
                 ->hideFromIndex(),
+
+            BelongsToManyField::make('Etapas', 'etapas', Etapa::class)
+                ->options(function () {
+                    return \App\Models\Etapa::all()->map(function ($etapa) {
+                        return [
+                            'id' => $etapa->etapa_id,
+                            'value' => $etapa->etapa_id,
+                            'name' => $etapa->name,
+                        ];
+                    });
+                }),
 
             HasMany::make('Convocatorias', 'convocatorias', ProgramaConvocatoria::class),
         ];
