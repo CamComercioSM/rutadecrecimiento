@@ -11,7 +11,7 @@ class EmailService
         {
             Mail::send($template, ['data' => $data], function ($m) use ($to, $subject) {
                 $m->from(env('MAIL_FROM_ADDRESS'), 'Ruta de crecimiento');
-                $m->to($to)->subject($subject);
+              //  $m->to($to)->subject($subject);
                 $m->to('test-rutac@yopmail.com')->subject($subject);
                 $m->to('rutac@ccsm.org.co')->subject($subject);
             });
