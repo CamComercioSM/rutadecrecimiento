@@ -23,10 +23,21 @@ class UnidadProductiva extends Resource {
 
     public static $model = \App\Models\UnidadProductiva::class;
     public static $title = 'business_name';
-    public static $search = ['unidadproductiva_id', 'business_name', 'nit', 'registration_number','name_legal_representative','registration_email'];
+    public static $search = [
+        'unidadproductiva_id', 
+        'business_name', 
+        'nit', 
+        'registration_number',
+        'name_legal_representative',
+        'registration_email'
+    ];
 
     public static function label() {
         return 'Unidades productivas y Empresarios';
+    }
+
+    public static function singularLabel(){
+        return 'Unidad productiva';
     }
 
     public function fields(Request $request) {

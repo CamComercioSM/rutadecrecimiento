@@ -19,7 +19,11 @@ class ConvocatoriaInscripcionHistorial extends Resource
     public static $search = [ 'historial_id' ];
 
     public static function label() {
-        return 'Historial inscripción';
+        return 'Historial  inscripción';
+    }
+
+    public static function singularLabel() {
+        return 'Historial  inscripción';
     }
 
     public function fields(Request $request) {

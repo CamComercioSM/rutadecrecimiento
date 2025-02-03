@@ -13,7 +13,11 @@ class ProgramaIndicador extends Resource
     public static $search = ['indicador_id', 'indicador_nombre'];
 
     public static function label() {
-        return 'Programas indicadores';
+        return 'Indicadores de programas';
+    }
+
+    public static function singularLabel(){
+        return 'Indicador de programa';
     }
 
     public function fields(Request $request) {

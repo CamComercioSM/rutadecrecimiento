@@ -22,7 +22,7 @@
             </a>
         </li>
         
-             <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
+        <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
             <a class="capsules" href="{{route('company.capsules')}}">
                 <div class="icon">
                     <i class="fab fa-youtube"></i>
@@ -31,8 +31,7 @@
             </a>
         </li>
         
-        
-             <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
+        <li data-step="5" data-intro="Esta opción te permite visualizar las cápsulas de capacitación de Ruta C">
             <a class="capsules" href="{{route('company.historialDiagnosticos')}}">
                 <div class="icon">
                     <i class="fa fa-history"></i>
@@ -41,7 +40,7 @@
             </a>
         </li>
         
-                <li data-step="3" data-intro="Esta opción te permite cambiar de empresa o registrar una nueva">
+        <li data-step="3" data-intro="Esta opción te permite cambiar de empresa o registrar una nueva">
             <a class="profile" href="{{route('company.select')}}">
                 <div class="icon">
                     <i class="fa fa-refresh"></i>
@@ -51,11 +50,11 @@
         </li>
         
         <li data-step="3" data-intro=Estamos en construcción">
-            <a class="profile" href="#">
+            <a class="profile" href="/indicadores">
                 <div class="icon">
                     <i class="fas fa-chart-line"></i>
                 </div>
-                <div class="tip">Tablero de indicadores en Construcción</div>
+                <div class="tip">Tablero de indicadores</div>
             </a>
         </li>
            
@@ -67,7 +66,7 @@
                 <div class="tip">Perfil</div>
             </a>
         </li>
-   
+
         <li data-step="6" data-intro="Esta opción te permite cerrar sesión">
             <a href="{{route('company.logout')}}">
                 <div class="icon">
@@ -76,5 +75,6 @@
                 <div class="tip">Salir</div>
             </a>
         </li>
+
     </ul>
 </header>

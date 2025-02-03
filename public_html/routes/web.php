@@ -55,12 +55,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/empresa/password/actualizar', [PerfilController::class, 'actualizarPassword'])->name('company.password.update');
     Route::post('/empresa/password/guardar', [PerfilController::class, 'actualizarPasswordGuardar'])->name('company.password.save');
     
+    Route::get('/indicadores', [PerfilController::class, 'indicadores'])->name('company.indicadores');
     Route::get('/grafico-radial/{id}', [PerfilController::class, 'grafico'])->name('company.graph.radial');
     Route::get('/empresa/programas', [ProgramaController::class, 'index'])->name('company.programs');
     Route::get('/empresa/programa/{id}', [ProgramaController::class, 'programShow'])->name('company.program.show');
     Route::get('/empresa/programa/registro/{id}', [ProgramaController::class, 'programRegister'])->name('company.program.register');
     Route::get('/empresa/capsulas', [ProgramaController::class, 'capsulas'])->name('company.capsules');
     Route::post('/empresa/aplicacion/procesar', [ProgramaController::class, 'applicationSave'])->name('company.application.save');
+    Route::get('/exportarPreguntasInscripcionConvocatoria/{id}', [ProgramaController::class, 'exportarPreguntasInscripcionConvocatoria']);
 
     Route::get('/municipios/listado', [InicioController::class, 'getMunicipios'])->name('company.getMunicipios');
     Route::get('/secciones/listado', [InicioController::class, 'getSecciones'])->name('company.getSecciones');

@@ -11,7 +11,7 @@ class ConvocatoriaRespuesta extends Model
     use HasFactory, SoftDeletes;
 
     // Nombre de la tabla
-    protected $table = 'convocatorias_respuestas (answers)';
+    protected $table = 'convocatorias_respuestas';
 
     // Clave primaria personalizada
     protected $primaryKey = 'convocatoriarespuesta_id';
@@ -21,7 +21,8 @@ class ConvocatoriaRespuesta extends Model
         'fecha_respuesta',
         'inscripcion_id',
         'requisito_id',
-        'value'
+        'value',
+        'fecha_respuesta'
     ];
 
     // Definición de constantes para los timestamps personalizados

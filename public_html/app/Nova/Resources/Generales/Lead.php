@@ -15,7 +15,7 @@ class Lead extends Resource {
 
     public static $model = \App\Models\Lead::class;
     public static $title = 'id';
-    public static $search = ['id', 'name'];
+    public static $search = ['id', 'name', 'document', 'email'];
 
     public static function label() {
         return 'Leads';

@@ -11,7 +11,7 @@ class UnidadProductiva extends Model
 {
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
 
-    protected $table = 'unidadesproductivas (companies)';
+    protected $table = 'unidadesproductivas';
 
     protected $primaryKey = 'unidadproductiva_id';
 

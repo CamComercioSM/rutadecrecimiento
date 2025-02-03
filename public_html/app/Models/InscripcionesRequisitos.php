@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class InscripcionesRequisitos extends Model
 {
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
-    protected $table = 'inscripciones_requisitos (variables)';
+    protected $table = 'inscripciones_requisitos';
     protected $primaryKey = 'requisito_id';
 
     protected $fillable = [
@@ -52,6 +52,17 @@ class InscripcionesRequisitos extends Model
     public function convocatorias()
     {
         return $this->belongsToMany(ProgramaConvocatoria::class, 'convocatoria_requisito', 'requisito_id', 'convocatoria_id');
+    }
+
+    public function requisitosConvocatoria($convocatoria_id)
+    {
+        return $this->belongsToMany(
+            ProgramaConvocatoria::class, 
+            'convocatorias_requisitos',
+            'requisito_id',
+            'convocatoria_id', 
+        )->withPivot('referencia') 
+        ->wherePivot('convocatoria_id', $convocatoria_id);
     }
 
     const CREATED_AT = 'fecha_creacion';

@@ -7,12 +7,13 @@ use App\Http\Services\EmailService;
 use App\Http\Services\CommonService;
 use App\Http\Services\SICAM32;
 use App\Http\Services\UnidadProductivaService;
+use App\Models\ProgramaConvocatoria;
 use App\Models\ResultadosDiagnostico;
 use App\Models\Sector;
-use App\Models\SectorSecciones;
 use App\Models\UnidadProductiva;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -42,14 +43,7 @@ class PerfilController extends Controller
     public function dashboard() 
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-
-        if ($unidadProductiva == null) 
-        {
-            return redirect()->route('company.select');
-        }
-
-        $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-        
+    
         if ($unidadProductiva != null)
         {
             if ($unidadProductiva->update_info == 0)
@@ -59,29 +53,92 @@ class PerfilController extends Controller
                 UnidadProductivaService::validarTiempoDiagnostico($unidadProductiva))
                     return redirect()->route('company.diagnostic');
 
+            $inscripcion = $unidadProductiva->inscripciones()->where('activarPreguntas', true)->first();
+            
+            if($inscripcion != null)
+            {
+                return redirect()->route('company.program.register', ['id' => $inscripcion->convocatoria_id]);
+            }
+
             $activarDIAGVOLUNTARIO = UnidadProductivaService::validarTiempoDiagnostico($unidadProductiva, 30);
             
-            $diagnostico = $unidadProductiva->diagnosticos->last();
-            $resultados = ResultadosDiagnostico::where('resultado_id', $diagnostico->resultado_id)->get();
+            $fechaActual = date('Y-m-d');
 
-            $dimensiones = $resultados->pluck('dimension')->toArray();
-            $resultados = $resultados->pluck('valor')->toArray();
-
+            $programs = ProgramaConvocatoria::query()
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->get();
+            
             $data = [
                 'footer'=> CommonService::footer(),
                 'links'=> CommonService::links(),
                 'stages'=> CommonService::etapas(),
                 'company'=> $unidadProductiva,
                 'helper_notifications'=> CommonService::notificaciones(),
-                'dimensions'=> json_encode($dimensiones),
-                'results'=> $resultados,
                 'activarDIAGVOLUNTARIO'=> $activarDIAGVOLUNTARIO,
+                'capsulas' => CommonService::capsulas(),
+                'programs' => $programs
             ];
             
             return view('website.company.dashboard', $data);
         }
         
-        return redirect()->route('home')->with('error', 'No se pudo obtener la información de la empresa');
+        return redirect()->route('company.select');
+    }
+
+    public function indicadores()
+    {
+        $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
+                
+        $data = DB::select("
+            SELECT c.fecha_respuesta, i.indicador_nombre, c.value
+            FROM convocatorias_respuestas c
+            INNER JOIN convocatorias_inscripciones ci ON ci.inscripcion_id = c.inscripcion_id and ci.unidadproductiva_id = {$unidadProductiva->unidadproductiva_id}
+            INNER JOIN inscripciones_requisitos r ON r.requisito_id = c.requisito_id
+            INNER JOIN programa_indicadores i ON i.indicador_id = r.indicador_id
+            ORDER BY c.fecha_respuesta
+        ");
+
+        $labels = [];
+        $datasets = [];
+
+        foreach ($data as $row) {
+            $fecha = $row->fecha_respuesta;
+            $indicador = $row->indicador_nombre;
+            $valor = $row->value;
+
+            // Agregar la fecha a las etiquetas si no existe
+            if (!in_array($fecha, $labels)) {
+                $labels[] = $fecha;
+            }
+
+            // Inicializar el dataset del indicador si no existe
+            if (!isset($datasets[$indicador])) {
+                $datasets[$indicador] = [
+                    'label' => $indicador,
+                    'data' => [],
+                    'borderWidth' => 1,
+                ];
+            }
+
+            // Agregar el valor al dataset del indicador
+            $datasets[$indicador]['data'][$fecha] = intval($valor);
+        }
+
+        // Asegurarse de que todos los datasets tengan los mismos índices
+        foreach ($datasets as &$dataset) {
+            $dataset['data'] = array_values(array_replace(array_flip($labels), $dataset['data']));
+        }
+
+        $datasets = array_values($datasets);
+
+        $dts = [
+            'unidadProductiva' => $unidadProductiva,
+            'labels' => $labels,
+            'datasets' => $datasets,
+        ];
+
+        return view('website.company.indicadores', $dts);
     }
 
     public function historialDiagnosticos(){

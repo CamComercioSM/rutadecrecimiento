@@ -9,6 +9,7 @@ use App\Nova\Resources\Empresarios\UnidadProductiva;
 use App\Nova\Resources\Programas\ProgramaConvocatoria;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\HasMany;
@@ -51,6 +52,11 @@ class ConvocatoriaInscripcion extends Resource
             File::make('Archivo', 'archivo')
                     ->disk('public')
                     ->path('aplications'),
+
+            Boolean::make('¿Activar preguntas nuevamente?', 'activarPreguntas')
+                    ->trueValue(1)
+                    ->falseValue(0) 
+                    ->sortable(), 
 
             HasMany::make('Respuestas', 'respuestas', ConvocatoriaRespuesta::class),
 

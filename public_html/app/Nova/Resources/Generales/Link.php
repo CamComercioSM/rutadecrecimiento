@@ -14,6 +14,7 @@ class Link extends Resource {
     use HasDependencies;
 
     public static $model = \App\Models\Link::class;
+    public static $search = ['name'];
 
     public static function label() {
         return 'URLs';

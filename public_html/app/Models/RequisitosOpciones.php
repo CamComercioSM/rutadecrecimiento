@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RequisitosOpciones extends Model
 {
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
-    protected $table = 'requisitos_opciones (nuevo)';
+    protected $table = 'requisitos_opciones';
 
     protected $primaryKey = 'opcionrequisito_id';
 

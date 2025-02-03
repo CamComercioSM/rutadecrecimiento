@@ -40,7 +40,7 @@ class DiagnosticoController extends Controller
         {
             $diagnostico = Diagnostico::where([ 
                 ['diagnostico_etapa_id', $unidadProductiva->etapa_id], 
-                ['diagnostico_etapa_id', $unidadProductiva->anual_sales] 
+                ['diagnostico_conventas', $unidadProductiva->anual_sales] 
             ])->first();
             
             if($diagnostico == null)

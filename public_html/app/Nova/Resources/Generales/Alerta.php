@@ -14,7 +14,7 @@ class Alerta extends Resource
 {
     public static $model = \App\Models\Alerta::class;
     public static $title = 'id';
-    public static $search = ['id'];
+    public static $search = ['id', 'comments'];
 
     public static function label() {
         return 'Alertas';

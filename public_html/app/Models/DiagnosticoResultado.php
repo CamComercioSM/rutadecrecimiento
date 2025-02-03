@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class DiagnosticoResultado extends Model
 {
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
-    protected $table = 'diagnosticos_resultados (diagnostics)';
+    protected $table = 'diagnosticos_resultados';
 
     protected $primaryKey = 'resultado_id';
 

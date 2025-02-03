@@ -11,7 +11,7 @@ class Etapa extends Model
 {
     use SoftDeletes, DatosAuditoriaTrait, UsuarioTrait;
 
-    protected $table = 'etapas (stages)';
+    protected $table = 'etapas';
     protected $primaryKey = 'etapa_id';
 
     protected $fillable = [
@@ -33,6 +33,11 @@ class Etapa extends Model
     public function etapaSiguiente()
     {
         return $this->belongsTo(Etapa::class, 'etapa_siguiente_id');
+    }
+
+    public function programas()
+    {
+        return $this->belongsToMany(Programa::class, 'programas_etapas', 'etapa_id', 'programa_id');
     }
 
 

@@ -74,7 +74,9 @@ var yRenderer = am5xy.AxisRendererY.new(root, {
 
 var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
   maxDeviation: 0.3,
-  renderer: yRenderer
+  renderer: yRenderer,
+  min: 0, // Mínimo del eje Y
+  max: 100 // Máximo del eje Y
 }));
 
 // Create series

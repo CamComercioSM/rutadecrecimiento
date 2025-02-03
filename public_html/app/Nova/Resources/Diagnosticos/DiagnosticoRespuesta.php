@@ -17,7 +17,11 @@ class DiagnosticoRespuesta extends Resource
     public static $search = [ 'resultado_id' ];
 
     public static function label() {
-        return 'Diagnosticos';
+        return 'Respuestas de diagnósticos';
+    }
+
+    public static function singularLabel(){
+        return 'Respuesta de diagnóstico';
     }
 
     public function fields(Request $request) {

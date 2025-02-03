@@ -13,7 +13,7 @@ class Capsula extends Resource
 {
     public static $model = \App\Models\Capsula::class;
     public static $title = 'id';
-    public static $search = ['capsula_id', 'nombre'];
+    public static $search = ['capsula_id', 'nombre', 'descripcion'];
 
     public static function label() {
         return 'Capsulas';

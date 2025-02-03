@@ -19,23 +19,26 @@
                   pointHoverBorderColor: 'rgb(12, 24, 146)'
           }, ]
           };
+
   const config = {
-  type: 'radar',
+         type: 'radar',
           data: data,
           options: {
-          elements: {
-          line: {
-          borderWidth: 3
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                        legend: { display: false, position: 'top' }
+                },
+                elements: { line: { borderWidth: 3 } },
+                scales: {
+                        r: {
+                                suggestedMin: 0,
+                                suggestedMax: 5
+                        }
+                }
           }
-          },
-                  scales: {
-                  r: {
-                  suggestedMin: 0,
-                          suggestedMax: 5
-                  }
-                  }
-          },
-          };
+        };
+
   const myChart = new Chart(document.getElementById('myChart'), config);
 </script>
 <style>

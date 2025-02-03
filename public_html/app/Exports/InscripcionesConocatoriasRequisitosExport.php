@@ -26,7 +26,7 @@ class InscripcionesConocatoriasRequisitosExport implements FromCollection, WithH
             ->chunk(1000, function ($respuestas) use (&$resultados) {
                 foreach ($respuestas as $respuesta) {
                     $resultados[] = [
-                        $respuesta->fecha_creacion,
+                        $respuesta->fecha_respuesta,
                         $respuesta->inscripcion->unidadproductiva->nit ?? '',
                         $respuesta->inscripcion->unidadproductiva->business_name ?? '',                        
                         $respuesta->requisito->requisito_titulo ?? '',

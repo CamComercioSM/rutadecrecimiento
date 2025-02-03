@@ -12,7 +12,7 @@ class Etapa extends Resource {
 
     public static $model = \App\Models\Etapa::class;
     public static $title = 'name';
-    public static $search = ['id', 'name'];
+    public static $search = ['etapa_id', 'name', 'description'];
 
     public static function label() {
         return 'Etapas';
@@ -20,7 +20,7 @@ class Etapa extends Resource {
 
     public function fields(Request $request) {
         return [
-            ID::make('id'),
+            ID::make('Id', 'etapa_id'),
 
             Text::make('Nombre', 'name')
                 ->rules('required'),

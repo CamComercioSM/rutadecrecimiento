@@ -15,7 +15,7 @@
         
             @foreach($companies as $company)
                 <div class="col-12 col-md-6 col-lg-4 my-2">
-                    <div class="card shadow-sm company-card text-center p-3">
+                    <div class="card h-100 shadow-sm company-card text-center p-3">
                         <div class="company-image-container">
                             <img 
                             src="
@@ -37,7 +37,13 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{$company->business_name}}</h5>
-                            <p class="card-text">NIT: {{$company->nit}}<br>Etapa: {{$company->etapa->name ?? ' - '}}</p>
+                            <p class="card-text">
+                                @if($company->unidadtipo_id != 1 && $company->unidadtipo_id != 2)
+                                    NIT: {{$company->nit}}<br>
+                                @endif
+                                Etapa: {{$company->etapa->name ?? ' - '}}
+                            </p>
+                            
                             
                             <a href="/seleccionarEmpresa?unidadproductiva={{$company->unidadproductiva_id}}" class="btn btn-primary">Seleccionar</a>
                         </div>

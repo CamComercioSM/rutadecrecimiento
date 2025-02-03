@@ -45,7 +45,7 @@
                 <a class="button button-primary mt-40" href="{{route('company.profile.update')}}">Actualizar información</a>
                 <a class="button button-secundary mt-10" href="{{route('company.password.update')}}">Actualizar contraseña</a>
             </div>
-            <div class="all" audio-tag="info_major">
+            <div class="all table-responsive" audio-tag="info_major">
                 <table>
                     <tr>
                         <td colspan="2" class="title">Información principal</td>

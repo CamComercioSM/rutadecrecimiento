@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Traits\DatosAuditoriaTrait;
 use App\Models\Traits\UsuarioTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Programa extends Model
@@ -43,6 +44,10 @@ class Programa extends Model
     public function convocatorias()
     {
         return $this->hasMany(ProgramaConvocatoria::class, 'programa_id', 'programa_id');
+    }
+
+    public function etapas(): BelongsToMany {
+        return $this->belongsToMany(Etapa::class, 'programas_etapas', 'programa_id', 'etapa_id');
     }
 
     public static $es_virtual = [
