@@ -158,6 +158,7 @@ class RegistroController extends Controller
         {
              /** @var User $user */
             $user = Auth::user();
+            dd($user);
             $unidad = $user->unidadesProductivas()->first();
             dd($unidad);
             $request->merge([
