@@ -66,7 +66,7 @@ class RegistroController extends Controller
 
     public function store(Request $request) 
     {
-        
+
         $api = SICAM32::consultarExpedienteMercantilporIdentificacion($request->value);
         
         // Validamos que la API haya respondido de manera correcta
@@ -75,7 +75,7 @@ class RegistroController extends Controller
 
         //Guardamos los valores en la variable values
         $values = $api->DATOS;
-
+        
         // Validamos si ya existe la empresa en el registro
 
         if(!Auth::check())
@@ -89,15 +89,28 @@ class RegistroController extends Controller
         if ($query)
             return redirect()->route('home')->with('error', 'La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión');
 
+
+
+
         $idRepre = $values->identificacionrl ?? $values->identificacion;
         $nombreRepre = $values->nombrerl ?? $values->nombre;
 
+        if( $values->organizacion == '01' ){
+            
+        //Creamos el usuario y contraseña para acceder al sistema
+        $user = UsuarioService::crearUsuario2($values->identificacion, $values->nombre, '', $request->email, $request->password);
+        }else{
+            
         //Creamos el usuario y contraseña para acceder al sistema
         $user = UsuarioService::crearUsuario2($idRepre, $nombreRepre, '', $request->email, $request->password);
+
+        }
+
 
         //Convierto la actividad comercial a numero
         $comercial_activity = substr($values->ciiu1, 1);
 
+        
         // Creamos la empresa con los datos temporales
         $company = New UnidadProductiva();
         $company->business_name = $values->nombre;
@@ -127,8 +140,13 @@ class RegistroController extends Controller
         $company->tipopersona_id = $tipoPersona->tipopersona_id;
         $company->type_person = $tipoPersona->tipoPersonaCODIGO;
 
-        $company->tipo_identificacion = 'NIT';
-        $company->identificacion = $request->password;
+        if( $values->organizacion == '01' ){
+                $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclase);
+                $company->identificacion = $values->identificacion;
+        }else{
+            $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclaserl);
+            $company->identificacion = $values->identificacionrl;
+        }
 
         $company->save();
 
@@ -144,6 +162,18 @@ class RegistroController extends Controller
         UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
        
         return redirect()->route('company.complete_info');
+    }
+
+    private function TraeCodigoTIpoIdentificon($idBuscar){
+
+        $lista = SICAM32::listadoTiposIdentificacion();
+        
+        foreach ($lista as $item) {
+            if($item->tipoIdentificacionID == $idBuscar){
+                return $item->tipoIdentificacionCODIGO;
+            }
+        }
+
     }
 
     public function storeLead(Request $request) 
@@ -234,9 +264,8 @@ class RegistroController extends Controller
         // Validamos si ya existe la empresa en el registro
         if ($query)
             return redirect()->route('home')->with('error', 'La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión');
-
         $user = UsuarioService::crearUsuario($UnidadProductiva->Persona);
-
+    
         // Creamos la empresa con los datos temporales
         $company = New UnidadProductiva();
         $company->business_name = $UnidadProductiva->unidadProductivaTITULO;
