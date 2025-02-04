@@ -23,7 +23,7 @@ Homestead.json
 .phpunit.result.cache
 public_html/public/videos/testimonio-1.mp4
 public_html/public/videos/testimonio-2.mp4
-
+.htaccess
 /.well-know
 /cgi-bin
 .user.ini
