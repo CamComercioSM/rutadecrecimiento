@@ -84,7 +84,7 @@
                                                     <h3>Registrado - Cerrado el {{ date('Y-m-d', strtotime($program->fecha_cierre_convocatoria)) }}</h3>
                                                 @endif
                                                 <div class="logo">
-                                                    <img src="{{ asset('storage/' . $program->programa->logo) }}" alt="">
+                                                    <img src="{{ asset('/' . $program->programa->logo) }}" alt="">
                                                 </div>
                                                 <div class="info">
                                                     <div class="title">
@@ -145,7 +145,7 @@
                                             <a href="{{ route('company.program.show', [$program->convocatoria_id]) }}" class="tarjeta_info_programa">
                                                 <h3>Recomendado</h3>
                                                 <div class="logo">
-                                                    <img src="{{ asset('storage/'.$program->programa->logo) }}" alt="">
+                                                    <img src="{{ asset('/'.$program->programa->logo) }}" alt="">
                                                 </div>
                                                 <div class="info">
                                                     <div class="title"> 
@@ -235,7 +235,7 @@
                                                 <a href="{{ route('company.program.show', [$program->convocatoria_id]) }}" class="tarjeta_info_programa">
                                                     <h3>Cerrado el {{ date('Y-m-d', strtotime($program->fecha_cierre_convocatoria)) }}</h3>
                                                     <div class="logo">
-                                                        <img src="{{ asset('storage/'.$program->programa->logo) }}" alt="">
+                                                        <img src="{{ asset('/'.$program->programa->logo) }}" alt="">
                                                     </div>
                                                     <div class="info">
                                                         <div class="title">
@@ -280,7 +280,7 @@
                                                 <a href="{{ route('company.program.show', [$program->convocatoria_id]) }}" class="tarjeta_info_programa">
                                                     <h3>Cerrado el {{ date('Y-m-d', strtotime($program->fecha_cierre_convocatoria)) }}</h3>
                                                     <div class="logo">
-                                                        <img src="{{ asset('storage/'.$program->programa->logo) }}" alt="">
+                                                        <img src="{{ asset('/'.$program->programa->logo) }}" alt="">
                                                     </div>
                                                     <div class="info">
                                                         <div class="title">
