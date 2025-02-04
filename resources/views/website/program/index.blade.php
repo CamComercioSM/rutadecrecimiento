@@ -18,7 +18,7 @@
                                 <img height="150" style="margin: 0 auto;"
                                     src="
                                         @if(!empty($unidadProductiva->logo))
-                                        {{ asset('storage/logos/' . $unidadProductiva->logo) }}
+                                           {{ asset( $unidadProductiva->logo) }}
                                         @else
                                             @if($unidadProductiva->unidadtipo_id == 1)
                                                 https://rutadecrecimiento.com/img/registro/idea_negocio.png

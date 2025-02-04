@@ -20,7 +20,7 @@
                             <img 
                             src="
                                 @if(!empty($company->logo))
-                            {{ asset('storage/logos/' . $company->logo) }}
+                               {{ asset( $company->logo) }}
                                 @else
                                     @if($company->unidadtipo_id == 1)
                                         https://rutadecrecimiento.com/img/registro/idea_negocio.png
