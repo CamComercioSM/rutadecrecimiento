@@ -10,7 +10,7 @@
             <div class="resume textl">
                 <div audio-tag="info_profile">
                     @if($company->logo != null)
-                    <div class="avatar" style="background-image: url('{{env('APP_URL').'/storage/logos/'.$company->logo}}') "></div>
+                    <div class="avatar" style="background-image: url('{{env('APP_URL').''.$company->logo}}') "></div>
                     @else
                     <div class="avatar avatar-empty"></div>
                     @endif
