@@ -308,10 +308,9 @@ class PerfilController extends Controller
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $name = time() . '-' . $file->getClientOriginalName();
-            $file->move(env('STORAGE_FILE') . 'storage/logos/', $name);
+            $file->move('/home/rutacrecimiento/public_html/archivos/storage/logos/', $name);
             $unidad->logo = 'storage/logos/'.$name;
         }
-        return $file;
         $unidad->save();
 
         return redirect()->route('company.profile')->with('success', 'Información actualizada correctamente');
