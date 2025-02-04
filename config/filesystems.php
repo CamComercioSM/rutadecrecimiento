@@ -37,7 +37,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => '/home/rutacrecimiento/public_html/archivos',
+            'root' => '/home/rutacrecimiento/public_html/archivos/',
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
