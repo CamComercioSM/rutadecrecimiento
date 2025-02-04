@@ -8,7 +8,7 @@
         <main>
             <div id="programs-show">
                 <div class="resume textl">
-                    <img class="logo" src="{{ asset('storage/'.$convocatoria->programa->logo) }}" alt="">
+                    <img class="logo" src="{{ asset(''.$convocatoria->programa->logo) }}" alt="">
                     <div audio-tag="info_program_info_show">
                         <h1 class="mt-4">
                             {{$convocatoria->programa->nombre}}
@@ -159,7 +159,7 @@
 
                                 <div class="col col-md-12 mb-5">
                                     <h2 class="text-center">Procedimiento</h2>
-                                    <img class="w-100" src="{{ asset('storage/'.$convocatoria->programa->procedimiento_imagen) }}" alt="">
+                                    <img class="w-100" src="{{ asset(''.$convocatoria->programa->procedimiento_imagen) }}" alt="">
                                 </div>
 
                                 <div class="col col-md-12 mb-4">

@@ -24,7 +24,7 @@
                             @if($link->type == 0)
                                 <a href="{{ $link->value }}" target="_blank" tabindex="8">{{ $link->name }}</a>
                             @else
-                            <a href="{{ asset('storage/'.$link->value) }}" target="_blank" tabindex="8">{{ $link->name }}</a>
+                            <a href="{{ asset(''.$link->value) }}" target="_blank" tabindex="8">{{ $link->name }}</a>
                             @endif
                         @endforeach
                     </li>
