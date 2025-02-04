@@ -84,7 +84,7 @@ class ProgramaController extends Controller
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();        
         $convocatoria = ProgramaConvocatoria::where('convocatoria_id', $request->id)
             ->with('programa')->first();
-    
+        dd($convocatoria);
         if (!$convocatoria) {
             return redirect()->route('programas.index')
                 ->withErrors(['error' => 'El programa no fue encontrado.']);
