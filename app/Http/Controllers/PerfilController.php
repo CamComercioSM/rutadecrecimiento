@@ -311,7 +311,7 @@ class PerfilController extends Controller
             $file->move(env('STORAGE_FILE') . 'storage/logos/', $name);
             $unidad->logo = 'storage/logos/'.$name;
         }
-
+        dd($file);
         $unidad->save();
 
         return redirect()->route('company.profile')->with('success', 'Información actualizada correctamente');
