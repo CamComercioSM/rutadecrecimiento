@@ -159,6 +159,7 @@ class RegistroController extends Controller
              /** @var User $user */
             $user = Auth::user();
             $unidad = $user->unidadesProductivas()->first();
+            dd($unidad);
             $request->merge([
                 'tipoPersonaID' => $unidad->identificacion ? 0 : 1,
                 'tipo_identificacion' => $unidad->identificacion ? 1 : 2,
@@ -172,6 +173,7 @@ class RegistroController extends Controller
                 'municipality' => $unidad->municipality_id,
                 'address' => $unidad->address,
             ]);
+
         }
 
         $tipoPersona = UnidadProductivaPersona::where('tipoPersonaCODIGO', $request->tipoPersonaID)->first();
