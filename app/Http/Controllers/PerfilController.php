@@ -65,6 +65,7 @@ class PerfilController extends Controller
             $fechaActual = date('Y-m-d');
 
             $programs = ProgramaConvocatoria::query()
+            ->join('programas', 'programas.programa_id', '=', 'programa_convocatorias.programa_id')
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
             ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
             ->get();
