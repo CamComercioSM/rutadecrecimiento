@@ -70,7 +70,7 @@
                             <div class="col d-flex align-items-stretch">
                                 <a class="h-100" href="{{$capsule->url_video}}" target="_blank">
                                 <div class="card shadow h-100 m-3" >
-                                    <img src="{{ asset( 'storage/'.$capsule->imagen ) }}" class="card-img-top" alt="{{$capsule->nombre}}">
+                                    <img src="{{ asset( ''.$capsule->imagen ) }}" class="card-img-top" alt="{{$capsule->nombre}}">
                                     <div class="card-body overflow-auto">
                                         <h5 class="card-title">
                                             

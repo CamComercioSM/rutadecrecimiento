@@ -66,7 +66,7 @@
                         @foreach($capsules as $capsule)
                             <li>
                                 <a class="h-100" href="{{$capsule->url_video}}" target="_blank">
-                                    <div class="img" style="background-image: url('{{ asset( 'storage/'.$capsule->imagen ) }}')"></div>
+                                    <div class="img" style="background-image: url('{{ asset( ''.$capsule->imagen ) }}')"></div>
                                     <div class="info">
                                         <h2>{{$capsule->nombre}}</h2>
                                         <p>
