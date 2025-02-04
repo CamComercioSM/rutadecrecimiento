@@ -309,7 +309,7 @@ class PerfilController extends Controller
             $file = $request->file('logo');
             $name = time() . '-' . $file->getClientOriginalName();
             $file->move(env('STORAGE_FILE') . 'storage/logos/', $name);
-            $unidad->logo = $name;
+            $unidad->logo = 'storage/logos/'.$name;
         }
 
         $unidad->save();
