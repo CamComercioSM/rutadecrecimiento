@@ -307,7 +307,7 @@ class PerfilController extends Controller
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $name = time() . '-' . $file->getClientOriginalName();
-            $file->move(env('STORAGE_FILE') . 'logos/', $name);
+            $file->move(env('STORAGE_FILE') . 'storage/logos/', $name);
             $unidad->logo = $name;
         }
 
