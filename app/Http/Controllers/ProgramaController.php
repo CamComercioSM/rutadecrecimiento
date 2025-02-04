@@ -82,7 +82,8 @@ class ProgramaController extends Controller
     public function programShow(Request $request)
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();        
-        $convocatoria = ProgramaConvocatoria::where('convocatoria_id', $request->id)
+        $convocatoria = ProgramaConvocatoria::join('programas', 'programas.programa_id', '=', 'programas_convocatorias.programa_id')
+            ->where('convocatoria_id', $request->id)
             ->with('programa')->first();
         dd($convocatoria);
         if (!$convocatoria) {
