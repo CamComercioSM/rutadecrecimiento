@@ -34,7 +34,7 @@
     <div class="wrap wrap-medium">
         <div class="footer">
             <div class="logo">
-                <img src="{{ asset('/'.$footer->footer_logo_rutac) }}" alt="Ruta C Logo footer">
+                <img src="{{ asset('storage/'.$footer->footer_logo_rutac) }}" alt="Ruta C Logo footer">
             </div>
             <div class="info">
                 <ul>
@@ -64,7 +64,7 @@
                         </li>
                     @else
                         <li>
-                            <a class="font-s-small"  href="{{ asset('/'.$link->value) }}" target="_blank" aria-label="{{ $link->name }} (opens in a new tab)">{{ $link->name }}</a>
+                            <a class="font-s-small"  href="{{ asset('storage/'.$link->value) }}" target="_blank" aria-label="{{ $link->name }} (opens in a new tab)">{{ $link->name }}</a>
                         </li>
                     @endif
                 @endforeach

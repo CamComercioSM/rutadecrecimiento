@@ -104,7 +104,7 @@
     <section class="banner swiper" tabindex="4">
         <ul class="swiper-wrapper">
             @foreach($banners as $banner)
-            <li class="swiper-slide" style="background-image: url('{{ asset('/'.$banner->image) }}')">
+            <li class="swiper-slide" style="background-image: url('{{ asset('storage/'.$banner->image) }}')">
                 <a href="{{ $banner->url }}" target="_blank">
                     <div class="content textl">
                         <h2>{{ $banner->title }}</h2>
@@ -191,7 +191,7 @@
             @include('website.layouts.button_audio', ['target' => 'histories'])
             <ul class="mt-40">
                 @foreach($histories as $history)
-                <li style="background-image: url('{{ asset('/'.$history->image) }}')" tabindex="11">
+                <li style="background-image: url('{{ asset('storage/'.$history->image) }}')" tabindex="11">
                     <a data-fancybox data-type="video" href="{{ $history->video_url }}">
                         <div class="image"></div>
                         <div class="name">
@@ -204,7 +204,7 @@
         </div>
     </section>
     <section class="briefcase margin-section">
-        <div class="wrap wrap-medium" style="background-image: url('{{ asset('/'.$data->discover_bg_image) }}')">
+        <div class="wrap wrap-medium" style="background-image: url('{{ asset('storage/'.$data->discover_bg_image) }}')">
             <p tabindex="12">{{ $data->discover_title }}</p>
             <ul>
                 <li>
