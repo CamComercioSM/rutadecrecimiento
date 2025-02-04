@@ -41,7 +41,7 @@
                                 <a class="card shadow h-100 m-3" title="Ver detalles" href="{{ route('company.program.show', ['id' => $program->convocatoria_id]) }}" >
                                                                         
                                     <img 
-                                    src="{{ asset('storage/' . $program->logo) }}" 
+                                    src="{{ asset('' . $program->logo) }}" 
                                     class="card-img-top" 
                                     alt="{{$program->nombre}}" 
                                     style="object-fit: cover; width: 100%; height: 200px;">
