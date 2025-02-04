@@ -160,7 +160,7 @@ class RegistroController extends Controller
             $user = Auth::user();
           
             $unidad = $user->unidadesProductivas()->first();
-            dd($unidad);
+        
             $request->merge([
                 'tipoPersonaID' => $unidad->identificacion ? 0 : 1,
                 'tipo_identificacion' => $unidad->identificacion ? 1 : 2,
