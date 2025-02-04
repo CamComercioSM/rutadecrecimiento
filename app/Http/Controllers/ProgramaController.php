@@ -85,7 +85,7 @@ class ProgramaController extends Controller
         $convocatoria = ProgramaConvocatoria::join('programas', 'programas.programa_id', '=', 'programas_convocatorias.programa_id')
             ->where('convocatoria_id', $request->id)
             ->with('programa')->first();
-        dd($convocatoria);
+        
         if (!$convocatoria) {
             return redirect()->route('programas.index')
                 ->withErrors(['error' => 'El programa no fue encontrado.']);
