@@ -108,6 +108,14 @@ class ProgramaController extends Controller
         if ($inscripcion && in_array($inscripcion->inscripcionestado_id, $states)) {
             $already_subscribed = true;
         }
+
+        if($can_apply == true)
+        {
+            $indicadores = $convocatoria->requisitosIndicadores()->count();
+            $requisitos = $convocatoria->requisitos()->count();
+            
+            $can_apply = ($indicadores + $requisitos) > 0;
+        }
         
         $data = [
             'footer'=> CommonService::footer(),

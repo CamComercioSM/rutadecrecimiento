@@ -165,14 +165,14 @@
                         </select>
                     </div>
                     <div class="form-group mb-3 registration_number">
-                        <label for="registration_number">Número de Matricula en la Cámara Seleccionada</label>
-                        <input id="registration_number" type="text" placeholder="Número de Matricula" name="registration_number" tabindex="17"  />
+                        <label for="registration_number">Número de Matricula en la Cámara Seleccionada *</label>
+                        <input id="registration_number" type="text" placeholder="Número de Matricula" name="registration_number" tabindex="17" required />
                     </div>
 
                     <!--datos para el matriulado en otra camara-->   
                     <div class="form-group mb-3 name_legal_representative">
                         <label for="name_legal_representative">Nombre del Respresentante Legal *</label>
-                        <input id="name_legal_representative" type="text" placeholder="Respresentante Legal" name="name_legal_representative" tabindex="17"  />
+                        <input id="name_legal_representative" type="text" placeholder="Respresentante Legal" name="name_legal_representative" tabindex="17" required />
                     </div>
                     <br />
                     <hr />                

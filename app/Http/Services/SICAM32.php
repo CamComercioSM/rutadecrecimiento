@@ -80,8 +80,6 @@ class SICAM32 {
           $Api::$MODO_PRUEBAS = true;
       }
 
-      $Api::$MODO_PRUEBAS = true;
-
       return $Api->ejecutar('tienda-apps', 'RutaC', $operacion, $datos);
     }    
   }
