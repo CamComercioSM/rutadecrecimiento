@@ -807,10 +807,14 @@ footer .pp ul{
     color:#fff;
     font-size:1.2rem
 }
+
+.c-dashboard header ul li {
+    position: relative;
+}
 .c-dashboard header ul li a .tip{
-    position:absolute;
+    position:fixed;
     transition:all 250ms ease;
-    left:55px;
+    left:75px;
     background:#fcb716;
     color:#fff;
     padding:5px;
