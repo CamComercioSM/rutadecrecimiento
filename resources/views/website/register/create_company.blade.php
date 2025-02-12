@@ -330,7 +330,10 @@ function abrirFormularioMatriculaOTRACAM() {
         $(".registration_number").show();
         $(".nit_registrado").show();
         $(".name_legal_representative").show();
+        $("#registration_number").attr("required", "required");
+        $("#name_legal_representative").attr("required", "required");
 }
+
 
 function abrirFormularioInformal() {
         $(".step-basic-user").slideDown();
@@ -347,6 +350,8 @@ function abrirFormularioInformal() {
         $(".registration_number").hide();
         $(".nit_registrado").hide();
         $(".name_legal_representative").hide();
+        $("#registration_number").removeAttr("required");
+        $("#name_legal_representative").removeAttr("required");
 }
 
 function abrirFormularioIdea() {
@@ -364,6 +369,8 @@ function abrirFormularioIdea() {
         $(".nit_registrado").hide();
         $(".name_legal_representative").hide();
         $(".step-basic-user").slideDown();
+        $("#registration_number").removeAttr("required");
+        $("#name_legal_representative").removeAttr("required");
 }
 
 function mostrarFormularioSegunTipoRegistro(tipoRegistroRUTAC) {
@@ -423,6 +430,8 @@ function abrirFormularioMatriculaCCSM() {
         $(".registration_number").hide();
         $(".nit_registrado").hide();
         $(".name_legal_representative").hide();
+        $("#registration_number").removeAttr("required");
+        $("#name_legal_representative").removeAttr("required");
 }
 
 </script>
