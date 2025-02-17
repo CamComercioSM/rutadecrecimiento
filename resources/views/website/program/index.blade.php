@@ -86,14 +86,14 @@
                                                 <div class="logo">
                                                     <img src="{{ asset('/' . $program->programa->logo) }}" alt="">
                                                 </div>
-                                                <div class="info">
+                                                <div class="info" style="max-height: 300px; overflow-y: auto;">
                                                     <div class="title">
                                                         <h2>
                                                             {{ $program->programa->nombre }} <br>
                                                             <small>{{$program->nombre}}</small>
                                                         </h2>
                                                     </div>
-                                                    <p>{{ $program->programa->descripcion }}</p>
+                                                    <p>{!! $program->programa->descripcion !!}</p>
                                                     <div class="more">Ver más información</div>
                                                 </div>
                                             </a>
@@ -147,14 +147,14 @@
                                                 <div class="logo">
                                                     <img src="{{ asset(''.$program->programa->logo) }}" alt="">
                                                 </div>
-                                                <div class="info">
+                                                <div class="info" style="max-height: 300px; overflow-y: auto;">
                                                     <div class="title"> 
                                                         <h2>
                                                             {{ $program->programa->nombre }} <br>
                                                             <small>{{$program->nombre}}</small>
                                                         </h2>
                                                     </div>
-                                                    <p>{{ $program->programa->descripcion }}</p>
+                                                    <p>{!! $program->programa->descripcion !!}</p>
                                                     <div class="more">Ver más información</div>
                                                 </div>
                                             </a>
@@ -196,7 +196,7 @@
                                             <div class="logo">
                                                 <img src="{{ asset($program->programa->logo ) }}" alt="">
                                             </div>
-                                            <div class="info">
+                                            <div class="info" style="max-height: 300px; overflow-y: auto;">
                                                 <div class="title">
                                                     <h2>
                                                         {{ $program->programa->nombre }} <br>
@@ -204,7 +204,7 @@
                                                     </h2>
                                                 </div>
                                                 <p>
-                                                    {{$program->programa->descripcion}}
+                                                    {!!$program->programa->descripcion!!}
                                                 </p>
                                                 <div class="more">Ver más información</div>
                                             </div>

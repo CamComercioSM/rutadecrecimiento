@@ -131,11 +131,11 @@
                                                 </td>
                                                 <td>
                                                     <h2>Dimensión</h2>
-                                                    <p> {{$convocatoria->programa->determinantes}} </p>
+                                                    <p> {!!$convocatoria->programa->determinantes!!} </p>
                                                 </td>
                                                 <td>
                                                     <h2>Aporte</h2>
-                                                    <p> {{$convocatoria->programa->informacion_adicional}} </p>
+                                                    <p> {!!$convocatoria->programa->informacion_adicional!!} </p>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -144,17 +144,17 @@
 
                                 <div class="col col-md-12 mb-5">
                                     <h2>El objetivo que se desea lograr</h2>
-                                    <p> {{$convocatoria->programa->objetivo}} </p>
+                                    <p> {!!$convocatoria->programa->objetivo!!} </p>
                                 </div>
 
                                 <div class="col col-md-6 mb-4">
                                     <h2>Duración del programa</h2>
-                                    <p> {{$convocatoria->programa->duracion}} </p>
+                                    <p> {!!$convocatoria->programa->duracion!!} </p>
                                 </div>
 
                                 <div class="col col-md-6 mb-4">
                                     <h2>Dirigido a</h2>
-                                    <p> {{$convocatoria->programa->dirigido_a}} </p>
+                                    <p> {!!$convocatoria->programa->dirigido_a!!} </p>
                                 </div>
 
                                 <div class="col col-md-12 mb-5">
@@ -164,7 +164,7 @@
 
                                 <div class="col col-md-12 mb-4">
                                     <h2>Información adicional</h2>
-                                    <p> {{$convocatoria->programa->herramientas_requeridas}} </p>
+                                    <p> {!!$convocatoria->programa->herramientas_requeridas!!} </p>
                                 </div>
 
                                 <div class="col col-md-12 mb-4">

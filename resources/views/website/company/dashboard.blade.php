@@ -50,7 +50,7 @@
                                             <b>{{$program->nombre}}</b>
                                         </h5>
                                         <div class="card-text mb-2" style="font-size: 1rem; color: black;">
-                                            {{$program->descripcion}}
+                                            {!!$program->descripcion!!}
                                         </div>
                                     </div>
                                 </a>
