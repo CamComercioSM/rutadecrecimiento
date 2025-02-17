@@ -161,7 +161,7 @@
                                 @if(!empty($convocatoria->programa->procedimiento_imagen))
                                 <div class="col col-md-12 mb-5">
                                     <h2 class="text-center">Procedimiento</h2>
-                                    <img class="w-100" src="{{ asset('storage/'.$convocatoria->programa->procedimiento_imagen) }}" alt="">
+                                    <img class="w-100" src="{{ asset(''.$convocatoria->programa->procedimiento_imagen) }}" alt="">
                                 </div>
                             @endif
                             
