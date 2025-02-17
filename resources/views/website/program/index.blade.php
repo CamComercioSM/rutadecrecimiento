@@ -194,7 +194,7 @@
                                     <li audio-tag="info_program_li_{{$key}}" class="">
                                         <a href="{{route('company.program.show', [$program->convocatoria_id])}}" class="tarjeta_info_programa">                                    
                                             <div class="logo">
-                                                <img src="{{ asset( 'storage/'.$program->programa->logo ) }}" alt="">
+                                                <img src="{{ asset($program->programa->logo ) }}" alt="">
                                             </div>
                                             <div class="info">
                                                 <div class="title">
