@@ -118,7 +118,7 @@
                             <div class="row d-flex">
                                 <div class="col col-md-12 mb-4">
                                     <h2>Beneficios</h2>
-                                    <p> {{$convocatoria->programa->beneficios}} </p>
+                                    <p> {!!$convocatoria->programa->beneficios!!} </p>
                                 </div>
 
                                 <div class="col col-md-12 mb-4">

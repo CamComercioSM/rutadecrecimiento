@@ -40,24 +40,7 @@ class ProgramaController extends Controller
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
             ->where('fecha_cierre_convocatoria', '>=', $fechaActual)->get();
     
-        $programas_cerrados = ProgramaConvocatoria::with('programa')
-            ->whereHas('programa', function ($query) use ($unidadProductiva) {
-                $query->whereDoesntHave('etapas', function ($q) use ($unidadProductiva) {
-                    $q->where('etapas.etapa_id', $unidadProductiva->etapa_id);
-                });
-            })
-            ->where('fecha_cierre_convocatoria', '<=', $fechaActual)->get();
-    
-        $programas_cerrados_recomendados = ProgramaConvocatoria::with('programa')
-            ->whereHas('programa', function ($query) use ($unidadProductiva) {
-                $query->whereHas('etapas', function ($q) use ($unidadProductiva) {
-                    $q->where('etapas.etapa_id', $unidadProductiva->etapa_id);
-                });
-            })
-            ->where('fecha_cierre_convocatoria', '<=', $fechaActual)
-            ->get();
-        
-      
+ 
         $helper_default = [
             'title' => 'Bienvenido',
             'message' => 'Te invitamos a seleccionar una opción del panel lateral izquierdo. En el menú principal, puedes seleccionar entre visualizar perfil, programas, cápsulas o cerrar sesión.',
@@ -70,8 +53,7 @@ class ProgramaController extends Controller
             'programas_inscrito' => $programas_inscrito,
             'programas_otros' => $programas_otros,
             'programs_recommend' => $programs_recommend,
-            'programas_cerrados' => $programas_cerrados,
-            'programas_cerrados_recomendados' => $programas_cerrados_recomendados,
+      
             'unidadProductiva' => $unidadProductiva,
             'nombreEtapa' => $unidadProductiva->etapa?->name, 
         ];
@@ -81,6 +63,7 @@ class ProgramaController extends Controller
 
     public function programShow(Request $request)
     {
+        
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();        
         $convocatoria = ProgramaConvocatoria::join('programas', 'programas.programa_id', '=', 'programas_convocatorias.programa_id')
             ->where('convocatoria_id', $request->id)

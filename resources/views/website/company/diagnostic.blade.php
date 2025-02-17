@@ -48,7 +48,7 @@
                 
                 @if($diagnosticoId == 1)
                     <section id="variable-0" class="variable">
-                        <h2 class="color-2 font-w-700">¿A cuánto ascienden sus ventas anuales?</h2>
+                        <h2 class="color-2 font-w-700">¿A cuánto ascienden sus ventas anuales expresados en miles de millones?</h2>
                         <ul class="hidden" style="padding:0" >
                             @foreach($ventas as $item)
                             <li>

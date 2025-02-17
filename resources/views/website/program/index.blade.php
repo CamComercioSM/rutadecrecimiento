@@ -217,92 +217,9 @@
                         @endforeach
                     </div>
                 
-                    <!--  programas cerrados recomendandos-->
-                    <div class="row justify-content-center mt-3">
-                        @if($programas_cerrados_recomendados->isNotEmpty())
-                            @foreach($programas_cerrados_recomendados as $key => $program)
-                                @php($noencontrado = true)
-                                @foreach($programas_inscrito as $key2 => $program2)
-                                    @if($program->convocatoria_id == $program2->convocatoria_id)
-                                        @php($noencontrado = false)
-                                    @endif
-                                @endforeach
-                
-                                @if($noencontrado && isset($program->convocatoria_id) && !empty($program->convocatoria_id))
-                                    <div class="col mb-4">
-                                        <ul>
-                                            <li audio-tag="info_program_li_{{ $key }}">
-                                                <a href="{{ route('company.program.show', [$program->convocatoria_id]) }}" class="tarjeta_info_programa">
-                                                    <h3>Cerrado el {{ date('Y-m-d', strtotime($program->fecha_cierre_convocatoria)) }}</h3>
-                                                    <div class="logo">
-                                                        <img src="{{ asset(''.$program->programa->logo) }}" alt="">
-                                                    </div>
-                                                    <div class="info">
-                                                        <div class="title">
-                                                            <h2>
-                                                                {{ $program->programa->nombre }} <br>
-                                                                <small>{{$program->nombre}}</small>
-                                                            </h2>
-                                                        </div>
-                                                        <p>{{ $program->programa->descripcion }}</p>
-                                                        <div class="more">Ver más información</div>
-                                                    </div>
-                                                </a>
-                                                @include('website.layouts.button_audio', ['target' => 'info_program_li_'.$key])
-                                            </li>
-                                        </ul>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @else
-                            <p class="text-center text-muted">No hay programas cerrados recomendados en este momento.</p>
-                        @endif
-                    </div>
+             
 
-                    <!--  programas cerrados -->
-                    <div class="row justify-content-center mt-3">
-                        @if($programas_cerrados->isNotEmpty())
-                            @foreach($programas_cerrados as $key => $program)
-                                @php($noencontrado = true)
-                
-                                @if($programas_inscrito->isNotEmpty())
-                                    @foreach($programas_inscrito as $key2 => $program2)
-                                        @if($program->convocatoria_id == $program2->convocatoria_id)
-                                            @php($noencontrado = false)
-                                        @endif
-                                    @endforeach
-                                @endif
-                
-                                @if($noencontrado && isset($program->convocatoria_id) && !empty($program->convocatoria_id))
-                                    <div class="col mb-4">
-                                        <ul>
-                                            <li audio-tag="info_program_li_{{ $key }}">
-                                                <a href="{{ route('company.program.show', [$program->convocatoria_id]) }}" class="tarjeta_info_programa">
-                                                    <h3>Cerrado el {{ date('Y-m-d', strtotime($program->fecha_cierre_convocatoria)) }}</h3>
-                                                    <div class="logo">
-                                                        <img src="{{ asset(''.$program->programa->logo) }}" alt="">
-                                                    </div>
-                                                    <div class="info">
-                                                        <div class="title">
-                                                            <h2>
-                                                                {{ $program->programa->nombre }} <br>
-                                                                <small>{{$program->nombre}}</small>
-                                                            </h2>
-                                                        </div>
-                                                        <p>{{ $program->programa->descripcion }}</p>
-                                                        <div class="more">Ver más información</div>
-                                                    </div>
-                                                </a>
-                                                @include('website.layouts.button_audio', ['target' => 'info_program_li_'.$key])
-                                            </li>
-                                        </ul>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @else
-                            <p class="text-center text-muted">No hay programas cerrados disponibles en este momento.</p>
-                        @endif
-                    </div>
+                 
 
                 </div>
             </div>
