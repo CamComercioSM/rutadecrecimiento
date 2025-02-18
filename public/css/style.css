@@ -4,7 +4,8 @@
     border:0;
     font-size:100%;
     font:inherit;
-    vertical-align:baseline
+    vertical-align:baseline;
+    line-height:1.2em !important;
 }
 article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section,img{
     display:block
