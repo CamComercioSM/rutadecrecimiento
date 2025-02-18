@@ -800,8 +800,8 @@ footer .pp ul{
     background:#0c1892;
     box-shadow:0 0 5px rgba(0,0,0,.8);
     border-radius:50%;
-    width:50px;
-    height:50px;
+    width:45px;
+    height:45px;
     position:relative
 }
 .c-dashboard header ul li a .icon{
@@ -1520,6 +1520,14 @@ footer .pp ul{
     font-size:.9rem;
     line-height:normal;
     font-weight:500
+}
+#programs-show > div.resume.textl > div > a {
+    display: block;
+    text-align: center;
+    padding: 0 20px;
+    line-height: 2.4rem !important;
+    font-size: 1rem;
+    border-radius: 15px;
 }
 #programs-show .resume .already-subscribed{
     display:block;

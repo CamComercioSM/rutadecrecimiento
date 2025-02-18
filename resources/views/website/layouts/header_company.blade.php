@@ -1,4 +1,4 @@
-<header data-step="1" data-title="Bienvenido a Ruta C" data-intro="En este menú encontrará las diferentes opciones de nuestra plataforma de clientes." style="width: 100px; overflow-y: auto;overflow-x:hidden">
+<header data-step="1" data-title="Bienvenido a Ruta C" data-intro="En este menú encontrará las diferentes opciones de nuestra plataforma de clientes." style="width: 80px; overflow-y: auto;">
     <ul>
         <li>
             <a class="logo" href="{{route('company.dashboard')}}">
