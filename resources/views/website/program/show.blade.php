@@ -127,25 +127,17 @@
                                     <p> {!!$convocatoria->programa->requisitos!!} </p>
                                 </div>
 
-                                <div class="col col-md-12 mb-4">
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <h2>Modalidad</h2>
-                                                    <p> {{$convocatoria->programa->es_virtual == 0 ? 'Presencial' : 'Virtual'}} </p>
-                                                </td>
-                                                <td>
-                                                    <h2>Dimensión</h2>
-                                                    <p> {!!$convocatoria->programa->determinantes!!} </p>
-                                                </td>
-                                                <td>
-                                                    <h2>Aporte</h2>
-                                                    <p> {!!$convocatoria->programa->informacion_adicional!!} </p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="col col-md-4 mb-4">
+                                    <h2>Modalidad</h2>
+                                    <p> {{$convocatoria->programa->es_virtual == 0 ? 'Presencial' : 'Virtual'}} </p>
+                                </div>
+                                <div class="col col-md-4 mb-4">
+                                    <h2>Dimensión</h2>
+                                    <p> {!!$convocatoria->programa->determinantes!!} </p>
+                                </div>
+                                <div class="col col-md-4 mb-4">
+                                    <h2>Aporte</h2>
+                                    <p> {!!$convocatoria->programa->informacion_adicional!!} </p>
                                 </div>
 
                                 <div class="col col-md-12 mb-5">

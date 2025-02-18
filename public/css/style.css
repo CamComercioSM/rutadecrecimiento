@@ -332,7 +332,7 @@ form .checkbox div a{
 }
 .button{
     display:block;
-    padding:0 20px;
+    padding: 10px 20px;
     line-height:40px;
     border-radius:5px;
     text-align:center;
@@ -1544,7 +1544,7 @@ footer .pp ul{
     background:#fcb716;
     color:#000;
     line-height:30px;
-    padding:0 20px;
+    padding:10px 20px;
     border-radius:15px;
     margin-top:10px;
     font-size:.8rem
@@ -2065,14 +2065,15 @@ em {
 }
 
 #programs-show li::before {
-    content: "✔"; /* Puedes cambiarlo por otro carácter Unicode */
+    content: "✔";
     font-size: 18px;
-    color: #007bff; /* Color del icono */
+    color: #fcb716;
     font-weight: bold;
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
+    text-shadow: 0 0 black;
 }
 
 
