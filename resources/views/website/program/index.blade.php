@@ -93,7 +93,9 @@
                                                             <small>{{$program->nombre}}</small>
                                                         </h2>
                                                     </div>
-                                                    <p>{!! $program->programa->descripcion !!}</p>
+                                                    <div class="text-dark">
+                                                        {!!$program->programa->descripcion!!}
+                                                    </div>
                                                     <div class="more">Ver más información</div>
                                                 </div>
                                             </a>
@@ -154,7 +156,9 @@
                                                             <small>{{$program->nombre}}</small>
                                                         </h2>
                                                     </div>
-                                                    <p>{!! $program->programa->descripcion !!}</p>
+                                                    <div class="text-dark">
+                                                        {!! $program->programa->descripcion !!}
+                                                    </div>
                                                     <div class="more">Ver más información</div>
                                                 </div>
                                             </a>
@@ -173,7 +177,7 @@
 
                     <div class="row justify-content-center">
                         <div class="col-12 mb-3">
-                            <h1 class="display-1">...más programas.</h1>
+                            <h1 class="display-1">...Más programas de otras etapas.</h1>
                         </div>
                     </div>
                     
@@ -203,9 +207,9 @@
                                                         <small>{{$program->nombre}}</small>
                                                     </h2>
                                                 </div>
-                                                <p>
+                                                <div class="text-dark">
                                                     {!!$program->programa->descripcion!!}
-                                                </p>
+                                                </div>
                                                 <div class="more">Ver más información</div>
                                             </div>
                                         </a>

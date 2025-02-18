@@ -37,7 +37,7 @@
             <div class="w-100">
                 <ul class="w-100">
                     @foreach($stages as $stage)    
-                    <li class="etapaAnimacionEntrada {{$stage->etapa_id == $company->etapa_id ? 'active' : null}} {{ $stage->etapa_id < $company->etapa_id ? 'completed' : null }}" style="animation-delay: {{$stage->etapa_id - 1 }}s; z-index: {{ ($stage->etapa_id == $company->etapa_id ? 999 : 99) - $stage->etapa_id}};" >
+                    <li class="etapaAnimacionEntrada {{$stage->etapa_id == $company->etapa_id ? 'active' : null}} {{ $stage->etapa_id < $company->etapa_id ? 'completed' : null }}" style="animation-delay: {{$stage->etapa_id - 1 }}s; z-index: {{ 99 - $stage->etapa_id}};" >
                         <button data-fancybox="dialog" data-src="#stage-{{$stage->etapa_id}}"
                                 @if($stage->etapa_id == 1) data-step="8"
                             data-intro="Puedes hacer clic sobre las etapas para obtener mayor información" @endif>
