@@ -366,6 +366,6 @@ class RegistroController extends Controller
             case 4: $logo = 'registrado_ccsm'; break;
         }
 
-        return "storage/logos/registro/$logo.png";
+        return "img/registro/$logo.png";
     }
 }

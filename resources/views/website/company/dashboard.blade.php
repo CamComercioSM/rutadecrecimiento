@@ -44,7 +44,7 @@
                                     src="{{ asset('' . $program->logo) }}" 
                                     class="card-img-top" 
                                     alt="{{$program->nombre}}" 
-                                    style="object-fit: cover; width: 100%; height: 200px;">
+                                    style="object-fit: contain; width: 100%; height: 200px;">
                                                                     <div class="card-body overflow-auto">
                                         <h5 class="card-title">
                                             <b>{{$program->nombre}}</b>
