@@ -83,12 +83,14 @@
                                         <h2>
                                             <b>Preguntas</b>
                 
-                                            <a class="btn btn-sm btn-info" style="float: right;" href="/exportarPreguntasInscripcionConvocatoria/{{$inscripcion->inscripcion_id}}">
-                                                Exportar
-                                            </a>
+                                            <div style="float: right;padding-top: .2rem;">
+                                                <a class="btn btn-sm py-0 btn-info"  href="/exportarPreguntasInscripcionConvocatoria/{{$inscripcion->inscripcion_id}}">
+                                                    Exportar
+                                                </a>
+                                            </div>
                                         </h2>
 
-                                        <ul class="list-group list-group-flush mt-4">
+                                        <ul class="list-group list-group-flush mt-4" style="max-height: 325px; overflow-y: auto;">
                                             @foreach ($inscripcion->respuestas as $resp)
                                             
                                                 <li class="list-group-item d-flex justify-content-between align-items-start">
