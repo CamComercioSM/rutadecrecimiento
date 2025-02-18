@@ -14,7 +14,7 @@
                             {{$convocatoria->programa->nombre}}
                         </h1>
                         <h2 class="mt-3">
-                            {{$convocatoria->nombre}}
+                            {{$convocatoria->nombre_convocatoria}}
                         </h2>
                         
                         @if($already_subscribed)
@@ -119,6 +119,10 @@
                                 <div class="col col-md-12 mb-4">
                                     <h2>Beneficios</h2>
                                     <p> {!!$convocatoria->programa->beneficios!!} </p>
+                                </div>
+                                <div class="col col-md-12 mb-4">
+                                    <h2>Requisitos</h2>
+                                    <p> {!!$convocatoria->programa->requisitos!!} </p>
                                 </div>
 
                                 <div class="col col-md-12 mb-4">

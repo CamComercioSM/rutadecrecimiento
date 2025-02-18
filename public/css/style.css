@@ -18,7 +18,7 @@ hr,input{
 }
 body{
     padding-bottom: 60px;
-    line-height:1
+    line-height:1em !important;
 }
 ol,ul{
     list-style:none
