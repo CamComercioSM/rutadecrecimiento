@@ -1507,14 +1507,14 @@ footer .pp ul{
     color:#333
 }
 #programs-show .resume .can-apply{
-    display:block;
-    text-align:center;
-    background:#0c1892;
-    color:#fff;
-    padding:0 20px;
-    line-height:30px;
-    font-size:.8rem;
-    border-radius:15px
+    display: block;
+    text-align: center;
+    background: #0c1892;
+    color: #fff;
+    padding: 0 20px;
+    line-height: 1.6rem !important;
+    font-size: 1rem;
+    border-radius: 15px;
 }
 #programs-show .resume .comments{
     font-size:.9rem;
