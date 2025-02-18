@@ -332,8 +332,8 @@ form .checkbox div a{
 }
 .button{
     display:block;
-    padding: 10px 20px;
-    line-height:40px;
+    padding: 0 20px;
+    line-height: 40px !important;
     border-radius:5px;
     text-align:center;
     border:none;
