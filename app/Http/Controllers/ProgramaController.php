@@ -349,10 +349,7 @@ class ProgramaController extends Controller
             ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
             ->where('con_matricula', '!=', 1)
             ->where(function ($query) use ($unidadProductiva) {
-                if (!is_null($unidadProductiva->registration_number)) {
-                    $query->where('con_matricula', -1);
-                }
-
+                
                 $query->whereHas('programa', function ($q) use ($unidadProductiva) {
                     $q->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
                         $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
@@ -363,6 +360,7 @@ class ProgramaController extends Controller
                         ->orWhereNull('sector_id');
                     });
                 });
+                
             })
             ->with('programa')->get();
 

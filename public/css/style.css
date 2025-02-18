@@ -1558,7 +1558,15 @@ footer .pp ul{
     padding:40px 0
 }
 #programs-show .info h2{
-    font-size:1.2rem
+    display: block;
+    text-align: center;
+    background: #0c1892;
+    color: #fff;
+    padding: 0 20px;
+    line-height: 1.6em !important;
+    font-size: 1.2rem;
+    border-radius: 15px;
+    margin-bottom: 7px;
 }
 #programs-show .info p{
     font-size:1rem;
