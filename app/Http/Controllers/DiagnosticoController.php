@@ -139,17 +139,14 @@ class DiagnosticoController extends Controller
         foreach ($grupos as $grupo) {
             $resultado_puntaje += $suma_grupos[$grupo->preguntagrupo_id] * ($grupo->preguntagrupo_peso / 100);
         }
-        
+
         $unidadProductiva->etapa_id = UnidadProductivaService::getEtapa($resultado_puntaje);
         $diagnostico->resultado_puntaje = $resultado_puntaje;
         $diagnostico->etapa_id = $unidadProductiva->etapa_id;
-        //$diagnostico->save();
+        $diagnostico->save();
 
         $unidadProductiva->complete_diagnostic = 1;
-
-
-        dd($unidadProductiva, $diagnostico);
-        //$unidadProductiva->save();
+        $unidadProductiva->save();
 
         return redirect()->route('company.dashboard');
     }
