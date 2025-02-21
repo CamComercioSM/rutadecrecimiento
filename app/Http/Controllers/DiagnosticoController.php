@@ -143,13 +143,13 @@ class DiagnosticoController extends Controller
         $unidadProductiva->etapa_id = UnidadProductivaService::getEtapa($resultado_puntaje);
         $diagnostico->resultado_puntaje = $resultado_puntaje;
         $diagnostico->etapa_id = $unidadProductiva->etapa_id;
-        $diagnostico->save();
+        //$diagnostico->save();
 
         $unidadProductiva->complete_diagnostic = 1;
 
 
         dd($unidadProductiva, $diagnostico);
-        $unidadProductiva->save();
+        //$unidadProductiva->save();
 
         return redirect()->route('company.dashboard');
     }
