@@ -129,7 +129,7 @@
 
                                 <div class="col col-md-4 mb-4">
                                     <h2>Modalidad</h2>
-                                    <p> {{$convocatoria->programa->es_virtual == 0 ? 'Presencial' : 'Virtual'}} </p>
+                                    <p> {{ $convocatoria->programa->es_virtual == 0 ? 'Presencial' : ($convocatoria->programa->es_virtual == 1 ? 'Virtual' : 'Presencial y Virtual') }} </p>
                                 </div>
                                 <div class="col col-md-4 mb-4">
                                     <h2>Dimensión</h2>
