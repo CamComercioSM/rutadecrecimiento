@@ -114,8 +114,8 @@
 
             <section class="step-basic-user hidden">
 
-                <h2 class="color-2 font-w-700" tabindex="12">Estás comenzando tu ruta de crecimiento</h2>
                 <!---  esto es para la primera vez nada mas 
+                <h2 class="color-2 font-w-700" tabindex="12">Estás comenzando tu ruta de crecimiento</h2>                
                 <a class="example mt-20" href="{{asset('img/content/lead-idea-negocio.jpg')}}" target="_blank" tabindex="13">
                     <img src="{{asset('img/content/lead-idea-negocio.jpg')}}" alt="">
                     <div class="info">
