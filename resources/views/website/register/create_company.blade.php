@@ -115,6 +115,7 @@
             <section class="step-basic-user hidden">
 
                 <h2 class="color-2 font-w-700" tabindex="12">Estás comenzando tu ruta de crecimiento</h2>
+                <!---  esto es para la primera vez nada mas 
                 <a class="example mt-20" href="{{asset('img/content/lead-idea-negocio.jpg')}}" target="_blank" tabindex="13">
                     <img src="{{asset('img/content/lead-idea-negocio.jpg')}}" alt="">
                     <div class="info">
@@ -122,6 +123,7 @@
                         <span class="mt-20 italic">click para ver guía</span>
                     </div>
                 </a>
+                -->
 
                 <form id="frm_sinmatriculaccsm" class="mt-20" method="post" action="{{route('register.lead')}}">
                     @csrf
