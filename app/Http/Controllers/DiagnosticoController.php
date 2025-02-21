@@ -87,7 +87,6 @@ class DiagnosticoController extends Controller
                     $item = new PreguntaOpcion();
                     $item->opcion_id = $opcion->VentasAnualesOpcionID;
                     $item->opcion_variable_response = $opcion->ventasAnualesNOMBRE;
-                    $item->opcion_percentage = $opcion->ventasAnualesPESO;
                     
                     $data['preguntas'][0]->opciones->push($item);
                 }
