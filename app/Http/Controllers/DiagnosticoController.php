@@ -110,6 +110,7 @@ class DiagnosticoController extends Controller
         $unidadProductiva->etapa_id = 1;
         $grupos = PreguntaGrupo::all();
         $suma_grupos = [];
+        $ventaanual_id = 1;
 
         foreach ($request->all() as $key => $value) 
         {
@@ -119,6 +120,9 @@ class DiagnosticoController extends Controller
 
                 $pregunta = DiagnosticoPregunta::find($pregunta_id);
                 $opcion = PreguntaOpcion::find($value);
+                if($pregunta->pregunta_rango_ventas){
+                    $ventaanual_id = $opcion->opcion_id;
+                }
 
                 $respuesta = New DiagnosticoRespuesta();
                 $respuesta->resultado_id = $diagnostico->resultado_id;
@@ -148,7 +152,7 @@ class DiagnosticoController extends Controller
 
         if ($unidadProductiva->anual_sales == 1) 
         {
-            $unidadProductiva->ventaanual_id = $request->anual_sales;
+            $unidadProductiva->ventaanual_id = $ventaanual_id;
             $unidadProductiva->etapa_id = UnidadProductivaService::getEtapa($resultado_puntaje);
         } 
 
