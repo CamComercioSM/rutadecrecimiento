@@ -130,20 +130,20 @@ class DiagnosticoController extends Controller
 
                 $respuesta->save();
 
-                if( !isset($suma_grupos[$pregunta->grupo_id]) )
+                if( !isset($suma_grupos[$pregunta->preguntagrupo_id]) )
                 {
-                    $suma_grupos[$pregunta->grupo_id] = 0;
+                    $suma_grupos[$pregunta->preguntagrupo_id] = 0;
                 }
 
-                $suma_grupos[$pregunta->grupo_id] += $respuesta->diagnosticorespuesta_porcentaje;
+                $suma_grupos[$pregunta->preguntagrupo_id] += $respuesta->diagnosticorespuesta_porcentaje;
             }
         }
 
         $resultado_puntaje = 0;
-
+        
         foreach ($grupos as $grupo) 
         {
-            $resultado_puntaje += $suma_grupos[$grupo->grupo_id] * ($grupo->preguntagrupo_peso/100);
+            $resultado_puntaje += $suma_grupos[$grupo->preguntagrupo_id] * ($grupo->preguntagrupo_peso/100);
         }
 
         if ($unidadProductiva->anual_sales == 1) 
