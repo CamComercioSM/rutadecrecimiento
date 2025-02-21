@@ -131,12 +131,12 @@
             }
     }
 </script>
-@if($diagnosticoId != 1)
+
 <script>
     $(document).ready(function () {
         $('#variable-{{$preguntas->first()->pregunta_id}}').removeClass('hidden');
     });
 </script>
-@endif
+
 @endif
 @endsection
