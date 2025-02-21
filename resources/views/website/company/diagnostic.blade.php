@@ -17,6 +17,10 @@
         <h1 class="size-l color-2 font-w-700"> ...ha sido validada y puede continuar el proceso de Diagnóstico de Ruta C...</h1>
         @endif
 
+        @if($arranquePOR == "FORZADO")
+        <h1  class="size-l color-2 font-w-700" >Por favor, actualiza tus datos para confirmar tu etapa empresarial.</h1>
+        @endif
+
         @if($arranquePOR == "ANUAL")
         <h1  class="size-l color-2 font-w-700" >Ya ha pasado 1 año desde tu último diagnostico. Vamos a comprobar cuanto hemos crecido durante ese tiempo.</h1>
         @endif

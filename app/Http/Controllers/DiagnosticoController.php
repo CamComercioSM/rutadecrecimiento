@@ -145,6 +145,9 @@ class DiagnosticoController extends Controller
         $diagnostico->etapa_id = $unidadProductiva->etapa_id;
         $diagnostico->save();
 
+        if ($unidadProductiva->forzar_diagnostico == 1)
+            $unidadProductiva->forzar_diagnostico = 0;
+
         $unidadProductiva->complete_diagnostic = 1;
         $unidadProductiva->save();
 
