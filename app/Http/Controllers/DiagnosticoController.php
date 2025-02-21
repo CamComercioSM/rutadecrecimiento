@@ -10,6 +10,7 @@ use App\Models\DiagnosticoRespuesta;
 use App\Models\DiagnosticoResultado;
 use App\Models\PreguntaOpcion;
 use App\Models\VentasAnuales;
+use App\Models\PreguntaGrupo;
 use Illuminate\Http\Request;
 
 class DiagnosticoController extends Controller
@@ -51,22 +52,48 @@ class DiagnosticoController extends Controller
                 ])->first();
             }   
 
-            $data['preguntas'] = DiagnosticoPregunta::whereNull('diagnostico_id')
+            if($diagnostico->diagnostico_conventas)
+            {
+                $data['preguntas'] = 
+                    DiagnosticoPregunta::where('pregunta_rango_ventas', 1)
+                    ->union(
+                        DiagnosticoPregunta::whereNull('diagnostico_id')->where('pregunta_rango_ventas', '!=', 1)
+                    )
                     ->union(
                         DiagnosticoPregunta::where('diagnostico_id', $diagnostico->diagnostico_id)
                     )
                     ->get();
+            }
+            else{
+                $data['preguntas'] = DiagnosticoPregunta::whereNull('diagnostico_id')->where('pregunta_rango_ventas', '!=', 1)
+                    ->union(
+                        DiagnosticoPregunta::where('diagnostico_id', $diagnostico->diagnostico_id)
+                    )
+                    ->get();
+            }
 
             $data['preguntas']->load('opciones');
 
-            $data['diagnosticoId'] = $diagnostico->diagnostico_id;
-         
-            if($unidadProductiva->anual_sales)
+            if($diagnostico->diagnostico_conventas)
             {
                 $sector = $unidadProductiva->sector()->first();
+                $opciones = VentasAnuales::where('sectorCODIGO',  $sector->sectorCODIGO )->get();
 
-                $data['ventas'] = VentasAnuales::where('sectorCODIGO',  $sector->sectorCODIGO )->get();
+                if (isset($data['preguntas'][0]) && isset($data['preguntas'][0]->opciones)) {
+                    $data['preguntas'][0]->setRelation('opciones', collect([]));
+                }
+
+                foreach ($opciones as $opcion) {
+                    $item = new PreguntaOpcion();
+                    $item->opcion_id = $opcion->VentasAnualesOpcionID;
+                    $item->opcion_variable_response = $opcion->ventasAnualesNOMBRE;
+                    $item->opcion_percentage = $opcion->ventasAnualesPESO;
+                    
+                    $data['preguntas'][0]->opciones->push($item);
+                }
             }
+
+            $data['diagnosticoId'] = $diagnostico->diagnostico_id;         
         }
 
         return view('website.company.diagnostic', $data);
@@ -82,7 +109,8 @@ class DiagnosticoController extends Controller
         $diagnostico->save();
 
         $unidadProductiva->etapa_id = 1;
-        $resultado_puntaje = 0;
+        $grupos = PreguntaGrupo::all();
+        $suma_grupos = [];
 
         foreach ($request->all() as $key => $value) 
         {
@@ -103,8 +131,20 @@ class DiagnosticoController extends Controller
 
                 $respuesta->save();
 
-                $resultado_puntaje += $respuesta->diagnosticorespuesta_porcentaje;
+                if( !isset($suma_grupos[$pregunta->grupo_id]) )
+                {
+                    $suma_grupos[$pregunta->grupo_id] = 0;
+                }
+
+                $suma_grupos[$pregunta->grupo_id] += $respuesta->diagnosticorespuesta_porcentaje;
             }
+        }
+
+        $resultado_puntaje = 0;
+
+        foreach ($grupos as $grupo) 
+        {
+            $resultado_puntaje += $suma_grupos[$grupo->grupo_id] * ($grupo->preguntagrupo_peso/100);
         }
 
         if ($unidadProductiva->anual_sales == 1) 

@@ -46,26 +46,6 @@
                 @csrf
                 <input type="hidden" name="diagnosticoId" value="{{$diagnosticoId}}" />
                 
-                @if($diagnosticoId == 1)
-                    <section id="variable-0" class="variable">
-                        <h2 class="color-2 font-w-700">¿A cuánto ascienden sus ventas anuales expresados en miles de millones?</h2>
-                        <ul class="hidden" style="padding:0" >
-                            @foreach($ventas as $item)
-                            <li>
-                                <label class="radio">
-                                    <input type="radio" id="anual_sales_{{$item->ventasAnualesID}}" name="anual_sales" value="{{$item->ventasAnualesID}}"/>
-                                    <div class="info">
-                                        <h3 class="font-w-500">{{$item->ventasAnualesNOMBRE}}</h3>
-                                    </div>
-                                </label>
-                            </li>
-                            @endforeach
-                        </ul>
-                        <button type="button"  id="btn_diagnosticosiguiente_conventas" class="button button-primary mt-20 button-next">Continuar</button>
-                        <a class="button button-secundary mt-10" href="{{route('company.diagnostic')}}">Regresar</a>
-                    </section>
-                @endif
-
                 @foreach($preguntas as $pregunta)
                     <section id="variable-{{$pregunta->pregunta_id}}" class="variable hidden">
                         <h2 class="color-2 font-w-700">{{$pregunta->pregunta_titulo}}</h2>
