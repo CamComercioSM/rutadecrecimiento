@@ -2053,11 +2053,13 @@ em {
 }
 
 #programs-show h2 {
-    font-weight: bold;
+    font-weight: bold;    
+    font-size: 18px;
 }
 
 #programs-show h4 {
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 14px;
 }
 
 #programs-show ul {

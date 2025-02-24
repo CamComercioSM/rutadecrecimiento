@@ -17,7 +17,7 @@
                             {{$convocatoria->nombre_convocatoria}}
                         </h2>
                         <h4 class="mt-3">
-                            Desde {{ \Carbon\Carbon::parse($convocatoria->fecha_apertura_convocatoria)->translatedFormat('j \d\e F \d\e Y') }} hasta  {{ \Carbon\Carbon::parse($convocatoria->fecha_cierre_convocatoria)->translatedFormat('j \d\e F \d\e Y') }}
+                            Desde <b>{{ \Carbon\Carbon::parse($convocatoria->fecha_apertura_convocatoria)->translatedFormat('j \d\e F \d\e Y') }}</b> hasta  <b>{{ \Carbon\Carbon::parse($convocatoria->fecha_cierre_convocatoria)->translatedFormat('j \d\e F \d\e Y') }}</b>
                         </h4>
                         
                         @if($already_subscribed)
