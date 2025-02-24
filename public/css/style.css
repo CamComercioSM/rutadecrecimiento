@@ -2052,6 +2052,14 @@ em {
     font-weight: 500;
 }
 
+#programs-show h2 {
+    font-weight: bold;
+}
+
+#programs-show h4 {
+    font-weight: bold;
+}
+
 #programs-show ul {
     list-style: none; /* Quita los estilos predeterminados de la lista */
     padding: 0;
