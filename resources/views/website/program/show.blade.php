@@ -16,6 +16,9 @@
                         <h2 class="mt-3">
                             {{$convocatoria->nombre_convocatoria}}
                         </h2>
+                        <h4 class="mt-3">
+                            Desde {{$convocatoria->fecha_apertura_convocatoria}} hasta  {{$convocatoria->fecha_cierre_convocatoria}} 
+                        </h4>
                         
                         @if($already_subscribed)
                             <div class="already-subscribed mt-20">
