@@ -129,7 +129,7 @@ class ProgramaController extends Controller
         {
             //valide si la empresa ya se encuentra inscrita en alguno de los estados donde ya no puede volverse a inscribir en un programa
             // Deshabilitado temporalmente
-            $exists = $company->inscripciones->whereIn('inscripcionestado_id', [1, 2, 4]);
+            $exists = $company->inscripciones->whereIn('inscripcionestado_id', [1, 2]);
             if (count($exists) > 2) {
                 return redirect()->back()->with('error', 'Ya hay dos solicitudes activas para diferentes programas. No puede inscribirse en más de dos programas');
             }
