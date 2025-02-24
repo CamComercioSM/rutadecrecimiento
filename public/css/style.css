@@ -2062,6 +2062,9 @@ em {
     font-size: 14px;
 }
 
+#programs-show h5 {    
+}
+
 #programs-show ul {
     list-style: none; /* Quita los estilos predeterminados de la lista */
     padding: 0;
