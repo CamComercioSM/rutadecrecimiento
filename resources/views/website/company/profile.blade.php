@@ -112,6 +112,10 @@
                         <td>{{$company->contact_phone ?? '-'}}</td>
                     </tr>
                     <tr>
+                        <td>Sexo</td>
+                        <td>{{$company->contact_sexo ?? '-'}}</td>
+                    </tr>
+                    <tr>
                         <td colspan="2" class="title">Información complementaria</td>
                     </tr>
                     <tr>

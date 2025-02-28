@@ -219,6 +219,7 @@ class PerfilController extends Controller
         $unidad->contact_position = $request->contact_position;
         $unidad->contact_email = $request->contact_email;
         $unidad->contact_phone = $request->contact_phone;
+        $unidad->contact_sexo = $request->contact_sexo;
 
         $unidad->website = $request->website;
         $unidad->social_instagram = $request->social_instagram;
@@ -299,7 +300,8 @@ class PerfilController extends Controller
         $unidad->contact_position = $request->contact_position;
         $unidad->contact_email = $request->contact_email;
         $unidad->contact_phone = $request->contact_phone;
-
+        $unidad->contact_sexo = $request->contact_sexo;
+        
         $unidad->website = $request->website;
         $unidad->social_instagram = $request->social_instagram;
         $unidad->social_facebook = $request->social_facebook;

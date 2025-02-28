@@ -110,6 +110,17 @@
                         <label>Celular *</label>
                         <input type="text" name="contact_phone" value="{{$company->mobile}}" required/>
                     </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="form-group mb-3">
+                            <label>Sexo *</label>
+                            <select name="contact_sexo" required>
+                                <option value="">SELECCIONE UNO</option>
+                                <option value="MASCULINO" @if($company->contact_sexo == 'MASCULINO') selected @endif>MASCULINO</option>
+                                <option value="FEMENINO" @if($company->contact_sexo == 'FEMENINO') selected @endif>FEMENINO</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row d-flex group mt-4">
