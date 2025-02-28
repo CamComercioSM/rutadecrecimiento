@@ -98,27 +98,7 @@
         transform: scale(1.2);
     }
     
-    .swiper-slide {
     
-        background-size: cover;
-     
-    }
-    
-    @media (max-width: 768px) {
-        .banner {
-            height: 200px !important;
-        }
-      
-        .swiper-slide {
-            height: 160px;
-            background-size: contain!important;
-  
-        }
-        .content.textl {
-            padding: 10px;
-            font-size: 14px;
-        }
-    }
 
 </style>
 
