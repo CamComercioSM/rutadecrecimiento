@@ -97,21 +97,16 @@
     .slick-arrow:hover{
         transform: scale(1.2);
     }
-    
-    
 
 </style>
 
 <div id="home">
-
- 
     <section class="banner swiper" tabindex="4">
         <ul class="swiper-wrapper">
             @foreach($banners as $banner)
-            <li class="swiper-slide" style="background-image: url('{{ asset(''.$banner->image) }}')'); 
-			background-size: cover;	background-repeat: no-repeat">
+            <li class="swiper-slide" style="background-image: url('{{ asset(''.$banner->image) }}')">
                 <a href="{{ $banner->url }}" target="_blank">
-                    <div class="content textl" >
+                    <div class="content textl">
                         <h2>{{ $banner->title }}</h2>
                         <p class="mt-10">{{ $banner->description }}</p>
                         <button class="button button-primary button-small mt-20">{{ $banner->text_button }}</button>
@@ -122,10 +117,7 @@
         </ul>
         <div class="swiper-pagination"></div>
     </section>
-
-
-
-
+    
     @if($Eventos)
     <section class="slider_eventos  margin-section">
         
@@ -299,6 +291,5 @@ $(document).ready(function () {
 });
 
 </script>
-
 
 @endsection
