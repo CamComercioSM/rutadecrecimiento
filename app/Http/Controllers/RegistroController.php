@@ -307,7 +307,7 @@ class RegistroController extends Controller
         $company->business_name = $UnidadProductiva->unidadProductivaTITULO;
         $company->description = $UnidadProductiva->unidadProductivaDESCRIPCION;
         
-        if ($request->tipo_registro_rutac == 4) {
+        if ($request->tipo_registro_rutac == 3) {
             $company->nit = $UnidadProductiva->unidadProductivaNIT;
             $company->registration_date = date("Y-m-d", strtotime($UnidadProductiva->unidadProductivaFCHMATRICULA));
         } else {
