@@ -123,6 +123,7 @@ class DiagnosticoController extends Controller
                 if (!isset($suma_grupos[$pregunta->preguntagrupo_id])) {
                     $suma_grupos[$pregunta->preguntagrupo_id] = 0;
                 }
+
                 $suma_grupos[$pregunta->preguntagrupo_id] += ($pregunta->pregunta_porcentaje / 100) * ($opcion->opcion_percentage);
 
                 if ($pregunta->pregunta_rango_ventas) {
@@ -133,6 +134,9 @@ class DiagnosticoController extends Controller
 
         if ($unidadProductiva->anual_sales == 1) {
             $unidadProductiva->ventaanual_id = $ventaanual_id;
+
+            $venta = VentasAnuales::find($ventaanual_id);
+            $unidadProductiva->tamano_id = $venta->tamano_id;
         }
 
         $resultado_puntaje = 0;

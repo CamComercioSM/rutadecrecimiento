@@ -341,7 +341,12 @@ class RegistroController extends Controller
         $company->type_person = $tipoPersona->tipoPersonaCODIGO;
 
         $company->logo = $this->getLogo($company->unidadtipo_id);
-       
+        
+        $company->contact_person = ($request->personaNOMBRES . " " . $request->personaAPELLIDOS);
+        $company->contact_email = $request->email;
+        $company->contact_phone = $request->phone;
+
+
         $company->save();
 
         SICAM32::actualizarIdRelacionadoUnidadProductiva($UnidadProductiva->unidadProductivaID, $company->unidadproductiva_id);
