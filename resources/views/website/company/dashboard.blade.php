@@ -155,7 +155,7 @@
 
     $('.carrucelProgramas').slick({
         slidesToShow: 2,
-        slidesToScroll: 3,
+        slidesToScroll: 2,
         infinite: true,
         autoplaySpeed: 5000,
         autoplay: true,
