@@ -327,7 +327,7 @@ class ProgramaController extends Controller
             ->where('con_matricula', 1)
             ->where(function ($query) use ($unidadProductiva) {
 
-                if (is_null($unidadProductiva->registration_number)) {
+                if (is_null($unidadProductiva->registration_number)||$unidadProductiva->registration_number='') {
                     $query->where('con_matricula', -1);
                 }
 
