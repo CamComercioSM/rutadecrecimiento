@@ -123,7 +123,7 @@
 
 <div id="home">
     <section class="banner swiper" tabindex="4">
-        <ul class="swiper-wrapper">
+        <ul class="swiper-wrapper" style="padding: 0px;">
             @foreach($banners as $banner)
             <li class="swiper-slide" style="background-image: url('{{ asset(''.$banner->image) }}');background-size: cover;	background-repeat: no-repeat">
                 <a href="{{ $banner->url }}" target="_blank">
