@@ -251,9 +251,8 @@
 var swiper = new Swiper(".swiper", {
         loop: true,
         speed: 1000,
-        loop: true,
         autoplay: {
-                delay: 6000,
+                delay: 60000,
                 disableOnInteraction: false,
         },
         pagination: {
