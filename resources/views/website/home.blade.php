@@ -102,21 +102,26 @@
         background-size: cover;        
     }
 
-@media (max-width: 768px) {
-    .banner {
-        height: 200px !important;
-    }
-  
-    .swiper-slide {
-        height: 160px;
-        background-size: cover!important;
+    @media (max-width: 768px) {
 
+        #home {
+            padding-top: 80px;
+        }
+
+        .banner {
+            height: 200px !important;
+        }
+    
+        .swiper-slide {
+            height: 100%;
+            background-size: cover!important;
+        }
+        
+        .content.textl {
+            padding: 10px;
+            font-size: 14px;
+        }
     }
-    .content.textl {
-        padding: 10px;
-        font-size: 14px;
-    }
-}
 </style>
 
 <div id="home">
