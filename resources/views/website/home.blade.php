@@ -141,12 +141,12 @@
         }
 
         .banner {
-            height: 200px !important;
+            height: 300px !important;
         }
     
         .swiper-slide {
             height: 100%;
-            background-size: auto 100%!important;
+            background-size:  100% 100%!important;
         }
         
         .content.textl {
