@@ -141,7 +141,7 @@
         }
 
         .banner {
-            height: 300px !important;
+            height: 250px !important;
         }
     
         .swiper-slide {
