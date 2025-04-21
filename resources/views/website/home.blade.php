@@ -99,8 +99,7 @@
     }
 
     .swiper-slide {    
-        background-size: cover;
-        padding: 0px;    
+        background-size: cover;        
     }
 
 @media (max-width: 768px) {
@@ -122,7 +121,7 @@
 
 <div id="home">
     <section class="banner swiper" tabindex="4">
-        <ul class="swiper-wrapper" style="">
+        <ul class="swiper-wrapper" style="padding: 0px; margin: 0px; list-style: none; display: block;">
             @foreach($banners as $banner)
             <li class="swiper-slide" style="background-image: url('{{ asset(''.$banner->image) }}');background-size: cover;	background-repeat: no-repeat">
                 <a href="{{ $banner->url }}" target="_blank">
