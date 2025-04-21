@@ -99,13 +99,45 @@
     }
 
     .swiper-slide {    
-        background-size: 100% 100%;        
+        background-size: auto 100%;        
+    }
+
+
+    @media screen and (min-width: 48em){
+        #home .banner{
+            height:660px
+        }
+    }
+    @media screen and (min-width: 48em){
+        #home .banner ul li a .content{
+            padding-right:300px;
+            width:100%;
+            max-width:700px
+        }
+    }
+    @media screen and (min-width: 48em){
+        #home .banner ul li a .content h2{
+            font-size:2.4rem
+        }
+    }
+
+    @media screen and (max-width: 48em){
+        #home .banner ul li{
+            background-position:left
+        }
+    }
+    @media screen and (max-width: 48em){
+        #home .banner ul li a .content{
+            width:90%;
+            margin-right:auto;
+            margin-left:auto
+        }
     }
 
     @media (max-width: 768px) {
 
         #home {
-            padding-top: 80px;
+            padding-top: 85px;
         }
 
         .banner {
@@ -114,7 +146,7 @@
     
         .swiper-slide {
             height: 100%;
-            background-size: 100% 100%!important;
+            background-size: auto 100%!important;
         }
         
         .content.textl {

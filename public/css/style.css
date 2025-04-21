@@ -861,24 +861,14 @@ footer .pp ul{
     text-align:left
 }
 #home{
-    padding-top:70px
+    padding-top:85px
 }
 #home .banner{
-    height:400px
-}
-@media screen and (min-width: 48em){
-    #home .banner{
-        height:660px
-    }
+    height:30vh;
 }
 #home .banner ul li{
     background-size:100% 100%;
     background-position:center
-}
-@media screen and (max-width: 48em){
-    #home .banner ul li{
-        background-position:left
-    }
 }
 #home .banner ul li a{
     width:100%;
@@ -890,28 +880,9 @@ footer .pp ul{
 #home .banner ul li a .content{
     padding-right:50px
 }
-@media screen and (min-width: 48em){
-    #home .banner ul li a .content{
-        padding-right:300px;
-        width:100%;
-        max-width:700px
-    }
-}
-@media screen and (max-width: 48em){
-    #home .banner ul li a .content{
-        width:90%;
-        margin-right:auto;
-        margin-left:auto
-    }
-}
 #home .banner ul li a .content h2{
     color:#0c1892;
     font-size:1.4rem
-}
-@media screen and (min-width: 48em){
-    #home .banner ul li a .content h2{
-        font-size:2.4rem
-    }
 }
 #home .banner ul li a .content p{
     font-size:1.1rem
