@@ -35,7 +35,7 @@
                                                 <h2 class="font-w-500">Tengo un negocio registrado con domicilio en el
                                                     Magdalena</h2>
                                                 <p style="font-weight: bold;">Cuento con registro activo como persona
-                                                    natural o juridica (empresa) ante la Cámara de Comercio de Santa Marta
+                                                    natural o jurídica (empresa) ante la Cámara de Comercio de Santa Marta
                                                     para el Magdalena</p>
                                             </div>
                                             <div class="float-end icono_opcion_registro">
@@ -57,7 +57,7 @@
                                             <div class="info">
                                                 <h3 class="font-w-500">Tengo un negocio registrado <strong>por fuera del
                                                         Magdalena</strong></h3>
-                                                <p>Cuento con registro activo como persona natural o juridica (empresa) ante
+                                                <p>Cuento con registro activo como persona natural o jurídica (empresa) ante
                                                     una Cámara de Comercio diferente a la de Santa Marta para el Magdalena
                                                 </p>
                                             </div>
@@ -109,7 +109,7 @@
                                             <div class="info">
                                                 <h3 class="font-w-500">Tengo un negocio sin registrar</h3>
                                                 <p>Tengo un negocio con ventas reales y/o empleados. Sin embargo, no está
-                                                    registrado o activo como persona natural o juridica (empresa) ante la
+                                                    registrado o activo como persona natural o jurídica (empresa) ante la
                                                     Cámara de Comercio</p>
                                             </div>
                                             <div class="float-end icono_opcion_registro">
