@@ -78,7 +78,7 @@
 
 
 
-        <!-- Google tag (gtag.js) -->
+        <!-- Google tag (gtag.js) general -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-7SF3H243L5"></script>
         <script>
     window.dataLayer = window.dataLayer || [];
@@ -87,6 +87,27 @@
     gtag('js', new Date());
     gtag('config', 'G-7SF3H243L5');
         </script>
+
+    <!-- Google tag (gtag.js) para WWW -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V5G1JQLRYD"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-V5G1JQLRYD');
+    </script>
+
+
+    <!-- Google tag (gtag.js) para subdomino APP -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4C0RHP4T19"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-4C0RHP4T19');
+    </script>
 
 
 
