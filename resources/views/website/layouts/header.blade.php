@@ -15,7 +15,7 @@
                 @if(!\Illuminate\Support\Facades\Auth::user())
                     <li> 
                         <a class="button button-primary" href="{{ route('register') }}">
-                            Registrate en Ruta C 
+                            Regístrate en Ruta C 
                         </a>
                     </li>
                     <li>

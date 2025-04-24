@@ -27,7 +27,7 @@
                                         <input type="radio" name="who" value="4"/>
                                         <div class="info">
                                             <h2 class="font-w-500">Tengo un negocio registrado con domicilio en el Magdalena</h2>
-                                            <p style="font-weight: bold;">Cuento con registro activo como persona natural o juridica (empresa) ante la Cámara de Comercio de Santa Marta para el Magdalena</p>
+                                            <p style="font-weight: bold;">Cuento con registro activo como persona natural o jurídica (empresa) ante la Cámara de Comercio de Santa Marta para el Magdalena</p>
                                         </div>
                                         <div class="float-end icono_opcion_registro">
                                             <img src="{{asset('img/registro/registrado_ccsm.png') }}" alt="registrado_ccsm" class="" />                                    
@@ -46,7 +46,7 @@
                                         <input type="radio" name="who" value="3"/>
                                         <div class="info"  >
                                             <h3 class="font-w-500">Tengo un negocio registrado <strong>por fuera del Magdalena</strong></h3>
-                                            <p>Cuento con registro activo como persona natural o juridica (empresa) ante una Cámara de Comercio diferente a la de Santa Marta para el Magdalena</p>
+                                            <p>Cuento con registro activo como persona natural o jurídica (empresa) ante una Cámara de Comercio diferente a la de Santa Marta para el Magdalena</p>
                                         </div>                                    
                                         <div class="float-end icono_opcion_registro">
                                         <img src="{{asset('img/registro/registrado_fuera_ccsm.png') }}" alt="registrado_fuera_ccsm" class="" />                                    
@@ -93,7 +93,7 @@
                                         <input type="radio" name="who" value="2"/>
                                         <div class="info">
                                             <h3 class="font-w-500">Tengo un negocio sin registrar</h3>
-                                            <p>Tengo un negocio con ventas reales y/o empleados. Sin embargo, no está registrado o activo como persona natural o juridica (empresa) ante la Cámara de Comercio</p>
+                                            <p>Tengo un negocio con ventas reales y/o empleados. Sin embargo, no está registrado o activo como persona natural o jurídica (empresa) ante la Cámara de Comercio</p>
                                         </div>
                                         <div class="float-end icono_opcion_registro">
                                         <img src="{{asset('img/registro/informal_negocio_en_casa.png') }}" alt="informal_negocio_en_casa"  class="" />                                    
@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label>Desde cuando tiene <span class="tituloSegunTipo" >...........</span> *</label>
+                        <label>Desde cuándo tiene <span class="tituloSegunTipo" >...........</span> *</label>
                         <input type="date" pattern="\d{4}-\d{2}-\d{2}"  name="registration_date" value="<?= date('Y-m-d') ?>" required style="text-transform: uppercase;" />
                     </div>
                     <div class="form-group mb-3">
@@ -167,8 +167,8 @@
                         </select>
                     </div>
                     <div class="form-group mb-3 registration_number">
-                        <label for="registration_number">Número de Matricula en la Cámara Seleccionada *</label>
-                        <input id="registration_number" type="text" placeholder="Número de Matricula" name="registration_number" tabindex="17" required />
+                        <label for="registration_number">Número de Matrícula en la Cámara Seleccionada *</label>
+                        <input id="registration_number" type="text" placeholder="Número de Matrícula" name="registration_number" tabindex="17" required />
                     </div>
 
                     <!--datos para el matriulado en otra camara-->   
@@ -242,7 +242,7 @@
                         <label class="checkbox">
                             <input type="checkbox" name="terms" value="1" tabindex="33" required />
                             <div>
-                                <span>Acepta nuestra</span> <a href="https://www.ccsm.org.co/proteccion-de-datos-personales.html" target="_blank" title="politica de privacidad">politica de privacidad</a> y nuestros <a  target="_blank" title="terminos y condiciones" href="{{env('APP_URL').'/storage/'.App\helpers::getSettingValue(2)}}"  >terminos y condiciones</a>
+                                <span>Acepta nuestra</span> <a href="https://www.ccsm.org.co/proteccion-de-datos-personales.html" target="_blank" title="politica de privacidad">política de privacidad</a> y nuestros <a  target="_blank" title="terminos y condiciones" href="{{env('APP_URL').'/storage/'.App\helpers::getSettingValue(2)}}"  >términos y condiciones</a>
                             </div>
                         </label>
                     </div>

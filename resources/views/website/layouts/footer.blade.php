@@ -2,7 +2,7 @@
     <div class="social-media">
         <ul>
             <li>
-                <div class="h6 font-s-medium">Siguenos en</div>
+                <div class="h6 font-s-medium">Síguenos en</div>
             </li>
             <li>
                 <a href="https://web.facebook.com/camcomercioSM/?_rdc=1&_rdr">
@@ -33,23 +33,21 @@
     </div>
     <div class="wrap wrap-medium">
         <div class="footer">
+            <a href="https://www.ccsm.org" target="_blank" aria-label="Camara de comercio (opens in a new tab)">
+                <img src="{{ asset(''.$footer->footer_logo_ally) }}" alt="Camara comercio">
+            </a>
             <div class="logo">
                 <img src="{{ asset(''.$footer->footer_logo_rutac) }}" alt="Ruta C Logo footer">
             </div>
             <div class="info">
                 <ul>
-                    <li>
-                        <a href="https://www.ccsm.org" target="_blank" aria-label="Camara de comercio (opens in a new tab)">
-                            <img src="{{ asset(''.$footer->footer_logo_ally) }}" alt="Camara comercio">
-                        </a>
-                    </li>
                     <li class="textl">
-                        <span class="font-s-small">más información en</span>
+                        <span class="font-s-small">Más información en</span>
                         <span class="block font-s-small" > <a class="font-s-small"  href="https://wa.me/{{ $footer->whatsapp }}?text=Me%20gustar%C3%ADa%20saber%20........."><img src="{{ asset('img/icons/whatsapp.png') }}" alt="WhatsApp" style="max-width: 32px; float: left;" /></a> WhatsApp {{ $footer->whatsapp }} </span>
                         <a class="font-s-small" href="https://{{ $footer->footer_ally_page }}" target="_blank" aria-label="{{ $footer->footer_ally_page }} (opens in a new tab)">{{ $footer->footer_ally_page }}</a>
                         <span class="block font-s-small">Llámanos a {{ $footer->footer_number_contact }}</span>
                         
-                        <span class="block font-s-small">Escribenos a {{ $footer->footer_email_contact }}</span>
+                        <span class="block font-s-small">Escríbenos a {{ $footer->footer_email_contact }}</span>
                         <p class="font-s-small">Dirección: {{ $footer->footer_address }}<br />{{ $footer->ubicacion_ciudad }}</p>
                     </li>
                 </ul>
