@@ -287,7 +287,7 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label>Desde cuando tiene <span class="tituloSegunTipo">...........</span> *</label>
+                            <label>Desde cuándo tiene <span class="tituloSegunTipo">...........</span> *</label>
                             <input type="date" pattern="\d{4}-\d{2}-\d{2}" name="registration_date"
                                 value="<?= date('Y-m-d') ?>" required style="text-transform: uppercase;" />
                         </div>
@@ -307,7 +307,7 @@
                             </select>
                         </div>
                         <div class="form-group mb-3 registration_number">
-                            <label for="registration_number">Número de Matricula en la Cámara Seleccionada *</label>
+                            <label for="registration_number">Número de Matrícula en la Cámara Seleccionada *</label>
                             <input id="registration_number" type="text" placeholder="Número de Matricula"
                                 name="registration_number" tabindex="17" required />
                         </div>
