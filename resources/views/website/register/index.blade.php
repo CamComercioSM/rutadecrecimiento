@@ -434,9 +434,9 @@
                                 <div>
                                     <span>Acepta nuestra</span> <a
                                         href="https://www.ccsm.org.co/proteccion-de-datos-personales.html" target="_blank"
-                                        title="politica de privacidad">politica de privacidad</a> y nuestros <a
+                                        title="politica de privacidad">política de privacidad</a> y nuestros <a
                                         target="_blank" title="terminos y condiciones"
-                                        href="{{ env('APP_URL') . '/storage/' . App\helpers::getSettingValue(2) }}">terminos y
+                                        href="{{ env('APP_URL') . '/storage/' . App\helpers::getSettingValue(2) }}">términos y
                                         condiciones</a>
                                 </div>
                             </label>
