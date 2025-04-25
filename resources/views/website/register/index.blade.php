@@ -10,7 +10,7 @@
             <div class="col-12 col-md-9">
                 <section class="step-1">
                     <h1 class="size-xl color-2 font-w-700" tabindex="4">Bienvenido al proceso de registro de Ruta C</h1>
-                    <p class="mt-5" tabindex="5">A continuación debera responder algunas preguntas con el objetivo de
+                    <p class="mt-5" tabindex="5">A continuación deberá responder algunas preguntas con el objetivo de
                         identificar el estado de su proyecto</p>
                     <button id="start-proccess" class="button button-primary button-small mt-20 margin-center"
                         tabindex="6">Iniciar proceso</button>
