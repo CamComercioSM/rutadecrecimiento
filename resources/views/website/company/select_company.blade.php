@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container my-5 mt-5">
-    <div class="my-5 mt-5" id="register">
+    <div class="my-5 mt-5 d-flex flex-column" id="register">
         <div class="row mt-5">
             <div class="col-12 my-2 text-center">
                 <h3>Seleccione una unidad productiva para continuar</h3>
