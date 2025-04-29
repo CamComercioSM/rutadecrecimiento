@@ -14,6 +14,7 @@
             </div>
         
             @foreach($companies as $company)
+                @if($company->etapa_intervencion != 'TRANSFORMADA')
                 <div class="col-12 col-md-6 col-lg-4 my-2">
                     <div class="card h-100 shadow-sm company-card text-center p-3">
                         <div class="company-image-container">
@@ -49,6 +50,53 @@
                         </div>
                     </div>
                 </div>
+                @endif
+            @endforeach
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12 my-2 text-center">
+                <h3>Unidades productivas transformadas</h3>
+            </div>
+        
+            @foreach($companies as $company)
+                @if($company->etapa_intervencion == 'TRANSFORMADA')
+                <div class="col-12 col-md-6 col-lg-4 my-2">
+                    <div class="card h-100 shadow-sm company-card text-center p-3" style="background-color: #eee;">
+                        <div class="company-image-container">
+                            <img 
+                            src="
+                                @if(!empty($company->logo))
+                               {{ asset( $company->logo) }}
+                                @else
+                                    @if($company->unidadtipo_id == 1)
+                                        https://rutadecrecimiento.com/img/registro/idea_negocio.png
+                                    @elseif($company->unidadtipo_id == 2)
+                                        https://rutadecrecimiento.com/img/registro/informal_negocio_en_casa.png
+                                    @elseif($company->unidadtipo_id == 3)
+                                        https://rutadecrecimiento.com/img/registro/registrado_fuera_ccsm.png
+                                    @elseif($company->unidadtipo_id == 4)
+                                        https://rutadecrecimiento.com/img/registro/registrado_ccsm.png
+                                    @endif
+                                @endif
+                            " 
+                            class="company-image" alt="Imagen de la empresa">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{$company->business_name}}</h5>
+                            <p class="card-text">
+                                @if($company->unidadtipo_id != 1 && $company->unidadtipo_id != 2)
+                                    NIT: {{$company->nit}}<br>
+                                @endif
+                                Etapa: {{$company->etapa->name ?? ' - '}}
+                            </p>
+                            
+                            
+                            <button class="btn btn-primary" disabled>Seleccionar</a>
+                        </div>
+                    </div>
+                </div>
+                @endif
             @endforeach
         </div>
     </div>
