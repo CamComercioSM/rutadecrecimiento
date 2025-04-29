@@ -5,7 +5,7 @@
 @section('content')
 <div class="container my-5 mt-5">
     <div class="my-5 mt-5 d-flex flex-column" id="register">
-        <div class="row mt-5">
+        <div class="row mt-5 justify-content-center">
             <div class="col-12 my-2 text-center">
                 <h3>Seleccione una unidad productiva para continuar</h3>
                 <a href="/registro" class="button button-primary w-auto" style="float: left;">
@@ -55,7 +55,7 @@
         </div>
 
         @if($companies->where('etapa_intervencion', 'TRANSFORMADA')->isNotEmpty())
-        <div class="row mt-5">
+        <div class="row mt-5 justify-content-center">
             <div class="col-12 my-2 text-center">
                 <h3>Unidades productivas transformadas</h3>
             </div>
