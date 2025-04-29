@@ -33,7 +33,7 @@ class PerfilController extends Controller
         $data = [
             'footer'=> CommonService::footer(),
             'links'=> CommonService::links(),
-            'companies'=> UnidadProductiva::where('user_id', $user) ->orderBy('fecha_creacion', 'desc')->get(),
+            'companies'=> UnidadProductiva::where('user_id', $user)->orderBy('fecha_creacion', 'desc')->get(),
         ];
      
 
