@@ -54,6 +54,7 @@
             @endforeach
         </div>
 
+        @if($companies->where('etapa_intervencion', 'TRANSFORMADA')->isNotEmpty())
         <div class="row mt-5">
             <div class="col-12 my-2 text-center">
                 <h3>Unidades productivas transformadas</h3>
@@ -99,6 +100,7 @@
                 @endif
             @endforeach
         </div>
+        @endif
     </div>
 </div>
 @endsection
