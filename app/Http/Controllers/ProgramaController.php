@@ -134,11 +134,14 @@ class ProgramaController extends Controller
                 return redirect()->back()->with('error', 'Ya hay cinco solicitudes activas para diferentes programas. No puede inscribirse en más de dos programas');
             }
 
-            if ($program->convocatoriaCONMATRICULA == "1") 
+            if ($program->con_matricula == "1") 
             {
                 $api = SICAM32::consultarExpedienteMercantilporIdentificacion($company->nit);
                 $values = $api->DATOS;
 
+                if(!$values){
+                    return redirect()->back()->with('error', 'No se encontró expediente mercantil asociado al nit ' . $company->nit);
+                }
                 UnidadProductivaService::validarRenovacion($values->fecharenovacion, $company->unidadproductiva_id);
                 UnidadProductivaService::validarSiguienteRenovacion($values->fechamatricula, $values->fecharenovacion, $company->unidadproductiva_id);
 
