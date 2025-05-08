@@ -286,6 +286,13 @@ $(document).ready(function () {
                 mostrarFormularioSegunTipoRegistro(id);
         });
 
+        $("#continue-step-2").on('click', function() {
+            let id = $("input[name='who']:checked").val();
+            if(id != undefined){
+                mostrarFormularioSegunTipoRegistro(id);
+            }
+        });
+
         $('#tipoPersonaID').on('change', function () {
                 var tipoPersonaID = $(this).val();
                 switch (tipoPersonaID) {
