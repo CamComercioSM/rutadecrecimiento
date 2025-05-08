@@ -48,7 +48,6 @@ class RegistroController extends Controller
                 return redirect()->back()->with('error', 'No se encontraron empresas según el tipo de búsqueda. Valide los datos e intente nuevamente.');
 
             $resultado = $api->DATOS->expedientes[0];
-
             $data = [
                 'section'=> CommonService::section(),
                 'footer'=> CommonService::footer(),
@@ -106,7 +105,7 @@ class RegistroController extends Controller
         $company->nit = $values->nit;
         $company->registration_number = $values->matricula;
         $company->registration_date = date("Y-m-d", strtotime($values->fechamatricula));
-        $company->registration_email = $values->emailcom;
+        $company->registration_email = $values->emailcom != '' ? $values->emailcom : $request->email;
         $company->address = $values->dircom;
         $company->mobile = $values->telcom1;
         $company->affiliated = $values->afiliado;

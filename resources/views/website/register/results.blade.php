@@ -16,12 +16,23 @@
                     <p class="mt-5">
                         A continuación se muestran los datos de la empresa que coinciden con los valores ingresados. <b>Por favor valide y confirme si es correcto.</b>
                     </p>
+                    @if($result->organizacion == '02')
+                    <p class="fs-5 text-black">
+                        Esta unidad es un establecimiento: <b>{{$result->nombre}}</b>
+                    </p>
+                    @endif
                     <ul class="company-result mt-20">
                         <li>Razon social: <b>{{$result->nombre}}</b></li>
                         <li>Email: <b>{{\App\helpers::maskPartialInfo($result->emailcom)}}</b></li>
                         <li>Nit: <b>{{$result->nit}}</b></li>
                     </ul>
+                    @if($result->organizacion != '02' && $result->emailcom == '')
+                    <p class="fs-5 text-black">
+                        El correo es necesario para continuar.
+                    </p>
+                    @else
                     <button id="start-proccess" class="button button-primary mt-20 margin-center">Es correcto y deseo continuar</button>
+                    @endif
                     <a href="{{route('register')}}" class="button button-secundary mt-10 margin-center">Los datos son incorrectos</a>
                 </section>
                 <section class="step-2 hidden">
