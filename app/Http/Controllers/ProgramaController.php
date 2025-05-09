@@ -149,10 +149,10 @@ class ProgramaController extends Controller
                 if ($api->RESPUESTA != 'EXITO')
                     return redirect()->back()->with('error', 'No se pudo validar en este momento. Espere unos minutos e intente nuevamente');
 
-                if ($values->estado != 'MA') {
+                if ($values->estado != 'MA' && $values->estado != 'IA') {
                     // Si la empresa no tiene el estado MA, quiere decir que no ha renovado su matricula. Y debe crearse una alerta.
                     UnidadProductivaService::crearAlerta(0, $company->unidadproductiva_id);
-                    return redirect()->back()->with('error', 'No se puede inscribir en este programa. La matrícula de su empresa no lo permite');
+                    return redirect()->back()->with('error', 'No se puede inscribir en este programa. La matrícula de su empresa no se encuentra activa');
                 }
             }
         }
