@@ -31,7 +31,21 @@
                         El correo es necesario para continuar.
                     </p>
                     @else
-                    <button id="start-proccess" class="button button-primary mt-20 margin-center">Es correcto y deseo continuar</button>
+                        @if(!Auth::check())
+                        <button id="start-proccess" class="button button-primary mt-20 margin-center">Es correcto y deseo continuar</button>
+                        @else
+                            <form method="post" action="{{route('register.save')}}" class="mt-20">
+                                @csrf
+                                
+                                <input type="hidden" name="kind" value="{{$kind}}"/>
+                                <input type="hidden" name="value" value="{{$result->nit}}"/>
+                                 <button type="submit"  class="button button-primary mt-20 margin-center">Es correcto y deseo continuar </button>
+                            </form>
+
+                        @endif
+
+                    
+
                     @endif
                     <a href="{{route('register')}}" class="button button-secundary mt-10 margin-center">Los datos son incorrectos</a>
                 </section>
