@@ -228,7 +228,7 @@ class RegistroController extends Controller
             $unidad = $user->unidadesProductivas()->first();
         
             $request->merge([
-                'tipoPersonaID' => $unidad->identificacion ? 0 : 1,
+                'tipoPersonaID' => $unidad->identificacion ? 0 : 2,
                 'tipo_identificacion' => $unidad->identificacion ? 1 : 2,
                 'document' => $unidad->identificacion ?? $unidad->nit,
                 'personaRAZONSOCIAL' => $unidad->name_legal_representative,
