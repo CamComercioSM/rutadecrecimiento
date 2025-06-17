@@ -59,11 +59,11 @@
                         <div class="group">
                             <div class="row">
                                 <label>Email</label>
-                                <input type="email" name="email" required/>
+                                <input type="email" name="email" value="{{$result->emailcom}}" required/>
                             </div>
                             <div class="row">
                                 <label>Contraseña</label>
-                                <input type="password" name="password" required/>
+                                <input type="text" name="password" value="{{$result->nit}}" required/>
                             </div>
                         </div>
                         <input type="submit" class="button button-primary mt-20 margin-center" value="Continuar" onclick="this.form.submit(); this.disabled=true; this.value='registrando…';" />
