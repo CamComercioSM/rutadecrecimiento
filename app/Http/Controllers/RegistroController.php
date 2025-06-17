@@ -86,28 +86,28 @@ class RegistroController extends Controller
         $values = $api->DATOS;
 
         // Validamos si ya existe el usuario solo si no hay sesión iniciada
-        if (!Auth::check()) {
-            if (!isset($request->email) || !filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-                return redirect()->route('home')->with('error', 'Correo electrónico inválido.');
-            }
+        // if (!Auth::check()) {
+        //     if (!isset($request->email) || !filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+        //         return redirect()->route('home')->with('error', 'Correo electrónico inválido.');
+        //     }
 
-            $user = User::where('email', $request->email)->first();
-            if ($user) {
-                return redirect()->route('home')->with('error', 'El correo electrónico ya se encuentra registrado. Utilice la opción de iniciar sesión.');
-            }
-        }
+        //     $user = User::where('email', $request->email)->first();
+        //     if ($user) {
+        //         return redirect()->route('home')->with('error', 'El correo electrónico ya se encuentra registrado. Utilice la opción de iniciar sesión.');
+        //     }
+        // }
 
-        $query = UnidadProductiva::where('nit', 'like', '%' . $values->nit . '%')->first();
-        if ($query)
-            return redirect()->route('home')->with('error', 'La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión');
+        // $query = UnidadProductiva::where('nit', 'like', '%' . $values->nit . '%')->first();
+        // if ($query)
+        //     return redirect()->route('home')->with('error', 'La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión');
 
 
-        //Creamos el usuario y contraseña para acceder al sistema
-        if ($values->organizacion == '01') {
-            $user = UsuarioService::crearUsuario2($values->identificacion, $values->nombre, '', $request->email, $request->password);
-        } else {
-            $user = UsuarioService::crearUsuario2($values->identificacionrl, $values->nombrerl, '', $request->email, $request->password);
-        }
+        // //Creamos el usuario y contraseña para acceder al sistema
+        // if ($values->organizacion == '01') {
+        //     $user = UsuarioService::crearUsuario2($values->identificacion, $values->nombre, '', $request->email, $request->password);
+        // } else {
+        //     $user = UsuarioService::crearUsuario2($values->identificacionrl, $values->nombrerl, '', $request->email, $request->password);
+        // }
 
         //Convierto la actividad comercial a numero
         $comercial_activity = substr($values->ciiu1, 1);
@@ -123,7 +123,7 @@ class RegistroController extends Controller
         $company->mobile = $values->telcom1;
         $company->affiliated = $values->afiliado;
         $company->comercial_activity = $comercial_activity;
-        $company->user_id = $user->id;
+        $company->user_id = 1;//$user->id;
 
         $company->tamano_id = $values->tamanoempresa;
         $company->camara_comercio = 32;
