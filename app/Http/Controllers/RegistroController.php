@@ -169,6 +169,8 @@ class RegistroController extends Controller
         $company->contact_email = $company->registration_email;
         $company->contact_phone = $company->mobile;
 
+        print_r($company->toArray());die();
+
         $company->save();
 
         UnidadProductivaService::validarRenovacion($values->fecharenovacion, $company->unidadproductiva_id);
