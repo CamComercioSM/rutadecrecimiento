@@ -20,15 +20,14 @@ class RegistroController extends Controller
     public function index()
     {
         $data = [
-            'section'=> CommonService::section(),
-            'footer'=> CommonService::footer(),
-            'links'=> CommonService::links(),
-            'camaras'=> SICAM32::listadoCamarasComercio(),
-            'tiposIdentificacion'=> SICAM32::listadoTiposIdentificacion()
+            'section' => CommonService::section(),
+            'footer' => CommonService::footer(),
+            'links' => CommonService::links(),
+            'camaras' => SICAM32::listadoCamarasComercio(),
+            'tiposIdentificacion' => SICAM32::listadoTiposIdentificacion()
         ];
 
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             return view('website.register.create_company', $data);
         }
 
@@ -41,66 +40,80 @@ class RegistroController extends Controller
     public function search(Request $request)
     {
         $api = SICAM32::buscarRegistroMercantil($request->search_type, $request->name);
- 
-        if (!empty($api)) 
-        {
+
+        if (!empty($api)) {
             if ($api->RESPUESTA != 'EXITO' || count($api->DATOS->expedientes) == 0)
                 return redirect()->back()->with('error', 'No se encontraron empresas según el tipo de búsqueda. Valide los datos e intente nuevamente.');
 
             $resultado = $api->DATOS->expedientes[0];
             $data = [
-                'section'=> CommonService::section(),
-                'footer'=> CommonService::footer(),
-                'links'=> CommonService::links(),
-                'kind'=>  $request->criterio,
-                'value'=>  $request->nombre,
-                'result'=>  $resultado,
+                'section' => CommonService::section(),
+                'footer' => CommonService::footer(),
+                'links' => CommonService::links(),
+                'kind' =>  $request->criterio,
+                'value' =>  $request->nombre,
+                'result' =>  $resultado,
             ];
 
             return view('website.register.results', $data);
-        } 
-        else {
+        } else {
             return redirect()->back()->with('error', 'No se encontraron empresas según el tipo de búsqueda. Valide los datos e intente nuevamente.');
         }
     }
 
-    public function store(Request $request) 
+    public function store(Request $request)
     {
+        // Llamada a la API externa
         $api = SICAM32::consultarExpedienteMercantilporIdentificacion($request->value);
-        
-        // Validamos que la API haya respondido de manera correcta
-        if ($api->RESPUESTA != 'EXITO')
-            return redirect()->route('home')->with('error', 'No pudimos validar su empresa. Intente nuevamente');
 
-        //Guardamos los valores en la variable values
-        $values = $api->DATOS;
-        
-        // Validamos si ya existe la empresa en el registro
-
-        if(!Auth::check())
-        {
-            $user = User::where('email', $request->email)->first();
-            if ($user)
-                return redirect()->route('home')->with('error', 'El correo electronico ya se encuentra registrado. Utilice la opción de iniciar sesión');
+        // Validación general del objeto de respuesta
+        if (!isset($api) || !is_object($api)) {
+            return redirect()->route('home')->with('error', 'No se recibió respuesta válida del servicio.');
         }
-        
+
+        // Validamos que la API haya respondido de manera correcta
+        if (!property_exists($api, 'RESPUESTA') || $api->RESPUESTA !== 'EXITO') {
+            $mensajeError = property_exists($api, 'MENSAJE') ? $api->MENSAJE : 'No pudimos validar su empresa. Intente nuevamente.';
+            return redirect()->route('home')->with('error', $mensajeError);
+        }
+
+        // Validamos que existan datos
+        if (!property_exists($api, 'DATOS') || empty($api->DATOS)) {
+            return redirect()->route('home')->with('error', 'La empresa no tiene información disponible o no fue encontrada.');
+        }
+
+        // Guardamos los valores en la variable values
+        $values = $api->DATOS;
+
+        // Validamos si ya existe el usuario solo si no hay sesión iniciada
+        if (!Auth::check()) {
+            if (!isset($request->email) || !filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+                return redirect()->route('home')->with('error', 'Correo electrónico inválido.');
+            }
+
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                return redirect()->route('home')->with('error', 'El correo electrónico ya se encuentra registrado. Utilice la opción de iniciar sesión.');
+            }
+        }
+
         $query = UnidadProductiva::where('nit', 'like', '%' . $values->nit . '%')->first();
         if ($query)
             return redirect()->route('home')->with('error', 'La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión');
 
 
         //Creamos el usuario y contraseña para acceder al sistema
-        if( $values->organizacion == '01' ){    
+        if ($values->organizacion == '01') {
             $user = UsuarioService::crearUsuario2($values->identificacion, $values->nombre, '', $request->email, $request->password);
-        }else{
+        } else {
             $user = UsuarioService::crearUsuario2($values->identificacionrl, $values->nombrerl, '', $request->email, $request->password);
         }
 
         //Convierto la actividad comercial a numero
         $comercial_activity = substr($values->ciiu1, 1);
-        
+
         // Creamos la empresa con los datos temporales
-        $company = New UnidadProductiva();
+        $company = new UnidadProductiva();
         $company->business_name = $values->nombre;
         $company->nit = $values->nit;
         $company->registration_number = $values->matricula;
@@ -119,25 +132,36 @@ class RegistroController extends Controller
         $tipoRegistro = UnidadProductivaTipo::where('unidadtipo_id', 4)->first();
         $company->unidadtipo_id = $tipoRegistro->unidadtipo_id;
         $company->tipo_registro_rutac = $tipoRegistro->unidadtipo_nombre;
+        $company->logo = $this->getLogo($tipoRegistro->unidadtipo_id);
 
-        /* EMPRESA FORMAL */
-        $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', 2)->first();
+        /* datos por tipo de persona */
+        $tipoPersona = null;
+        switch ($values->organizacion) {
+            case '01':
+                $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclase);
+                $company->identificacion = $values->identificacion;
+                $company->name_legal_representative = $values->nombre;
+                $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', 1)->first();
+                break;
+            case '02':
+                $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclaserl);
+                $company->identificacion = $values->identificacionrl;
+                $company->name_legal_representative = $values->nombrerl;
+                $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', 2)->first();
+                break;
+            default:
+                $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclaserl);
+                $company->identificacion = $values->identificacionrl;
+                $company->name_legal_representative = $values->nombrerl;
+                $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', 3)->first();
+                break;
+        }
         $company->tipopersona_id = $tipoPersona->tipopersona_id;
         $company->type_person = $tipoPersona->tipoPersonaCODIGO;
 
-        if( $values->organizacion == '01' ){
-            $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclase);
-            $company->identificacion = $values->identificacion;
-            $company->name_legal_representative = $values->nombre;
-        }else{
-            $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclaserl);
-            $company->identificacion = $values->identificacionrl;
-            $company->name_legal_representative = $values->nombrerl;
-        }
 
-        $company->logo = $this->getLogo($company->unidadtipo_id);
 
-        $municipio = Municipio::where('municipioCODIGODANE', $values->muncom )->first();
+        $municipio = Municipio::where('municipioCODIGODANE', $values->muncom)->first();
         $company->department_id  = $municipio->departamentoID;
         $company->municipality_id = $municipio->municipio_id;
 
@@ -150,12 +174,12 @@ class RegistroController extends Controller
         UnidadProductivaService::validarRenovacion($values->fecharenovacion, $company->unidadproductiva_id);
         UnidadProductivaService::validarSiguienteRenovacion($values->fechamatricula, $values->fecharenovacion, $company->unidadproductiva_id);
 
-        if(!Auth::check())
+        if (!Auth::check())
             Auth::login($user);
 
         $this->registarUnidadProductivaRutaC($company, $values);
         UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
-       
+
         return redirect()->route('company.complete_info');
     }
 
@@ -195,24 +219,24 @@ class RegistroController extends Controller
             'unidadProductivaREPRESENTANTELEGAL' => $company->name_legal_representative,
             'REQUEST1' => $company->toArray(),
         ];
-        
+
         $UnidadProductiva = SICAM32::registarNuevaUnidadProductiva($datos);
         SICAM32::actualizarIdRelacionadoUnidadProductiva($UnidadProductiva->unidadProductivaID, $company->unidadproductiva_id);
     }
 
-    private function TraeCodigoTIpoIdentificon($idBuscar){
+    private function TraeCodigoTIpoIdentificon($idBuscar)
+    {
 
         $lista = SICAM32::listadoTiposIdentificacion();
-        
+
         foreach ($lista as $item) {
-            if($item->tipoIdentificacionID == $idBuscar){
+            if ($item->tipoIdentificacionID == $idBuscar) {
                 return $item->tipoIdentificacionCODIGO;
             }
         }
-
     }
 
-    public function storeLead(Request $request) 
+    public function storeLead(Request $request)
     {
         /*
         if (!reCAPTCHAv3::validar($request->token))
@@ -220,13 +244,12 @@ class RegistroController extends Controller
                     ->with('error', 'No PASATE EL FILTRO DE SEGURIDAD ANTIROBOTS. Intentalo nuevamente');
         */
 
-        if(Auth::check())
-        {
-             /** @var User $user */
+        if (Auth::check()) {
+            /** @var User $user */
             $user = Auth::user();
-          
+
             $unidad = $user->unidadesProductivas()->first();
-        
+
             $request->merge([
                 'tipoPersonaID' => $unidad->identificacion ? 0 : 2,
                 'tipo_identificacion' => $unidad->identificacion ? 1 : 2,
@@ -240,7 +263,6 @@ class RegistroController extends Controller
                 'municipality' => $unidad->municipality_id,
                 'address' => $unidad->address,
             ]);
-
         }
 
         $tipoPersona = UnidadProductivaPersona::where('tipoPersonaCODIGO', $request->tipoPersonaID)->first();
@@ -266,7 +288,7 @@ class RegistroController extends Controller
             'unidadProductivaDESCRIPCION' => $request->description,
             'unidadProductivaEMAIL' => $request->email,
             'unidadProductivaENLACE' => $request->address,
-            'unidadProductivaTELEFONO' => $request->phone,            
+            'unidadProductivaTELEFONO' => $request->phone,
             'municipioCODIGODANE' => $municipio->municipioCODIGODANE,
             'unidadProductivaDIRECCION' => $request->address,
             'unidadProductivaCONTACTONOMBRE' => ($request->personaNOMBRES . " " . $request->personaAPELLIDOS),
@@ -279,20 +301,18 @@ class RegistroController extends Controller
             'unidadProductivaREPRESENTANTELEGAL' => $request->name_legal_representative,
             'REQUEST1' => $request->toArray(),
         ];
-        
+
         $UnidadProductiva = SICAM32::registarNuevaUnidadProductiva($datos);
 
-        if(!Auth::check())
-        {
+        if (!Auth::check()) {
             $user = User::where('email', $request->email)->first();
             if ($user)
                 return redirect()->route('home')->with('error', 'El correo electronico ya se encuentra registrado. Utilice la opción de iniciar sesión');
         }
-        
+
         if ($request->tipo_registro_rutac == 3) {
             $query = UnidadProductiva::where('nit', 'like', '%' . $UnidadProductiva->unidadProductivaNIT . '%')->first();
-        } 
-        else {
+        } else {
             $query = UnidadProductiva::where('nit', 'like', '%' . $UnidadProductiva->unidadProductivaCODIGO . '%')->first();
         }
 
@@ -300,12 +320,12 @@ class RegistroController extends Controller
         if ($query)
             return redirect()->route('home')->with('error', 'La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión');
         $user = UsuarioService::crearUsuario($UnidadProductiva->Persona);
-    
+
         // Creamos la empresa con los datos temporales
-        $company = New UnidadProductiva();
+        $company = new UnidadProductiva();
         $company->business_name = $UnidadProductiva->unidadProductivaTITULO;
         $company->description = $UnidadProductiva->unidadProductivaDESCRIPCION;
-        
+
         if ($request->tipo_registro_rutac == 3) {
             $company->nit = $UnidadProductiva->unidadProductivaNIT;
             $company->registration_date = date("Y-m-d", strtotime($UnidadProductiva->unidadProductivaFCHMATRICULA));
@@ -316,7 +336,7 @@ class RegistroController extends Controller
 
         if ($request->tipo_registro_rutac == 1) {
             $company->anual_sales = 0;
-        } 
+        }
 
         $company->registration_number = $UnidadProductiva->unidadProductivaMATRICULA;
         $company->registration_email = $UnidadProductiva->unidadProductivaEMAIL;
@@ -327,7 +347,7 @@ class RegistroController extends Controller
         $company->department_viejo = $UnidadProductiva->departamentoID;
         $company->mobile = $UnidadProductiva->unidadProductivaTELEFONO;
         $company->name_legal_representative = $UnidadProductiva->unidadProductivaCONTACTONOMBRE;
-        
+
         $company->affiliated = 0;
         $company->user_id = $user->id;
         $company->tipo_identificacion = $UnidadProductiva->Persona->tipoIdentificacionCODIGO;
@@ -340,7 +360,7 @@ class RegistroController extends Controller
         $company->type_person = $tipoPersona->tipoPersonaCODIGO;
 
         $company->logo = $this->getLogo($company->unidadtipo_id);
-        
+
         $company->contact_person = ($request->personaNOMBRES . " " . $request->personaAPELLIDOS);
         $company->contact_email = $request->email;
         $company->contact_phone = $request->phone;
@@ -349,25 +369,32 @@ class RegistroController extends Controller
         $company->save();
 
         SICAM32::actualizarIdRelacionadoUnidadProductiva($UnidadProductiva->unidadProductivaID, $company->unidadproductiva_id);
-        
+
         UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
 
-        if(!Auth::check())
+        if (!Auth::check())
             Auth::login($user);
-        
+
         return redirect()->route('company.complete_info');
     }
-    
+
     private function getLogo($tipo)
     {
         $logo = '';
 
-        switch($tipo)
-        {
-            case 1: $logo = 'idea_negocio'; break;
-            case 2: $logo = 'informal_negocio_en_casa'; break;
-            case 3: $logo = 'registrado_fuera_ccsm'; break;
-            case 4: $logo = 'registrado_ccsm'; break;
+        switch ($tipo) {
+            case 1:
+                $logo = 'idea_negocio';
+                break;
+            case 2:
+                $logo = 'informal_negocio_en_casa';
+                break;
+            case 3:
+                $logo = 'registrado_fuera_ccsm';
+                break;
+            case 4:
+                $logo = 'registrado_ccsm';
+                break;
         }
 
         return "img/registro/$logo.png";
