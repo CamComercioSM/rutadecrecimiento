@@ -40,7 +40,7 @@ class RegistroController extends Controller
     public function search(Request $request)
     {
         $api = SICAM32::buscarRegistroMercantil($request->search_type, $request->name);
-
+    
         if (!empty($api)) {
             if ($api->RESPUESTA != 'EXITO' || count($api->DATOS->expedientes) == 0)
                 return redirect()->back()->with('error', 'No se encontraron empresas según el tipo de búsqueda. Valide los datos e intente nuevamente.');
@@ -65,7 +65,7 @@ class RegistroController extends Controller
     {
         // Llamada a la API externa
         $api = SICAM32::consultarExpedienteMercantilporIdentificacion($request->value);
-
+        
         // Validación general del objeto de respuesta
         if (!isset($api) || !is_object($api)) {
             return redirect()->route('home')->with('error', 'No se recibió respuesta válida del servicio.');
@@ -136,6 +136,7 @@ class RegistroController extends Controller
 
         /* datos por tipo de persona */
         $tipoPersona = null;
+        
         switch ($values->organizacion) {
             case '01':
                 $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclase);
@@ -184,7 +185,7 @@ class RegistroController extends Controller
 
     private function registarUnidadProductivaRutaC($company, $api)
     {
-        $tipoPersona = UnidadProductivaPersona::where('tipoPersonaCODIGO', $company->tipopersona_id)->first();
+        $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', $company->tipopersona_id)->first();
 
         $datos = [
             'personaNIT' => $company->nit,
