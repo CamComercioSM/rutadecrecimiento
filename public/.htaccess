@@ -14,8 +14,15 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+    # Permitir acceso directo a robots.txt y sitemap.xml
+    RewriteCond %{REQUEST_URI} ^/(robots\.txt|sitemap\.xml)$ [NC]
+    RewriteRule .* - [L]
+
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+
