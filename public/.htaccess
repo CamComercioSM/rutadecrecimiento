@@ -3,7 +3,19 @@
         Options -MultiViews -Indexes
     </IfModule>
 
-    RewriteEngine On
+    RewriteEngine On 
+
+    # Redirigir solo la ruta exacta /nova a /dashboard
+    RewriteRule ^nova/resources(/.*)?$ /dashboard [R=301,L]
+    RewriteRule ^nova/dashboards/main$ /dashboard [R=301,L]
+    RewriteRule ^nova/dashboards$ /dashboard [R=301,L]
+    RewriteRule ^nova$ /dashboard [R=301,L]
+
+
+    # Bloquear acceso a /nova/resources y /nova/dashboards excepto desde admin.rutadecrecimiento.com
+#    RewriteCond %{REQUEST_URI} ^/nova/(resources|dashboards) [NC]
+#    RewriteCond %{HTTP_HOST} !^admin\.rutadecrecimiento\.com$ [NC]
+#    RewriteRule ^ - [F,L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -14,15 +26,8 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Permitir acceso directo a robots.txt y sitemap.xml
-    RewriteCond %{REQUEST_URI} ^/(robots\.txt|sitemap\.xml)$ [NC]
-    RewriteRule .* - [L]
-
-
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
-
-
