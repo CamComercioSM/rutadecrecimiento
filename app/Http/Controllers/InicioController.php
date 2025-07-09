@@ -8,6 +8,7 @@ use App\Models\CiiuActividad;
 use App\Models\Municipio;
 use App\Models\SectorSecciones;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InicioController extends Controller
 {
@@ -46,13 +47,25 @@ class InicioController extends Controller
             get(['municipio_id as id', 'municipionombreoficial as name']);
     }
 
-    public function getSecciones(Request $request) 
-    {    
-        return 
-            SectorSecciones::where('macroSectorID', $request->id)->
-            orderBy('ciiuSeccionTITULO', 'asc')->
-            get(['ciiuSeccionID as id', 'ciiuSeccionTITULO as name']);
+    public function getSecciones(Request $request)
+    {
+        $sectorId = $request->id;
+    
+        $secciones = DB::table('ciiu_macrosectores')
+            ->join('ciiu_actividades', 'ciiu_macrosectores.sector_id', '=', 'ciiu_actividades.macroSectorID')
+            ->join('ciiu_secciones', 'ciiu_actividades.ciiuSeccionID', '=', 'ciiu_secciones.ciiuSeccionID')
+            ->where('ciiu_macrosectores.sector_id', $sectorId)
+            ->select(
+                'ciiu_secciones.ciiuSeccionID as id',
+                'ciiu_secciones.ciiuSeccionTITULO as name'
+            )
+            ->groupBy('ciiu_secciones.ciiuSeccionID', 'ciiu_secciones.ciiuSeccionTITULO')
+            ->orderBy('ciiu_secciones.ciiuSeccionTITULO', 'asc')
+            ->get();
+    
+        return response()->json($secciones);
     }
+    
 
     public function getActividades(Request $request) 
     {    
