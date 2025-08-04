@@ -26,7 +26,8 @@ class ProgramaController extends Controller
             ->whereHas('inscripciones', function ($query) use ($unidadProductiva) {
                 $query->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id);
             })
-            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)            
+            ->orderBy('fecha_apertura_convocatoria', 'desc')
             ->get();
     
         $programs_recommend = $this->getRecomendados($unidadProductiva, $fechaActual);
