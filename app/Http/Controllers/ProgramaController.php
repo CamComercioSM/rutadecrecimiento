@@ -27,7 +27,7 @@ class ProgramaController extends Controller
                 $query->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id);
             })
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)            
-            ->orderBy('fecha_apertura_convocatoria', 'desc')
+            ->orderBy('fecha_cierre_convocatoria', 'desc')
             ->get();
     
         $programs_recommend = $this->getRecomendados($unidadProductiva, $fechaActual);
@@ -40,7 +40,7 @@ class ProgramaController extends Controller
             })
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
             ->where('fecha_cierre_convocatoria', '>=', $fechaActual)           
-            ->orderBy('fecha_apertura_convocatoria', 'desc')->get();
+            ->orderBy('fecha_cierre_convocatoria', 'desc')->get();
     
  
         $helper_default = [
@@ -347,7 +347,8 @@ class ProgramaController extends Controller
                     });
                 });
             })
-            ->with('programa')->get();
+            ->with('programa')           
+            ->orderBy('fecha_apertura_convocatoria', 'desc')->get();
 
         $programs_recommend2 = ProgramaConvocatoria::query()
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
@@ -367,7 +368,8 @@ class ProgramaController extends Controller
                 });
                 
             })
-            ->with('programa')->get();
+            ->with('programa')           
+            ->orderBy('fecha_apertura_convocatoria', 'desc')->get();
 
         return $programs_recommend1->merge($programs_recommend2);
     }
