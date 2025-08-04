@@ -20,7 +20,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [InicioController::class, 'index'])->name('home');
+//Route::get('/', [InicioController::class, 'index'])->name('home');
+Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('company.dashboard');
+    }
+    return app(\App\Http\Controllers\InicioController::class)->index();
+})->name('home');
+
 Route::get('/mapa-sitio', [InicioController::class, 'mapa'])->name('site.map');
 
 /* Rutas de registro */
