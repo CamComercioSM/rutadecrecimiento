@@ -39,7 +39,8 @@ class ProgramaController extends Controller
                 });
             })
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
-            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)->get();
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)           
+            ->orderBy('fecha_apertura_convocatoria', 'desc')->get();
     
  
         $helper_default = [
