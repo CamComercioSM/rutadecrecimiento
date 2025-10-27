@@ -26,8 +26,7 @@ class ProgramaController extends Controller
             ->whereHas('inscripciones', function ($query) use ($unidadProductiva) {
                 $query->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id);
             })
-            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)            
-            ->orderBy('fecha_cierre_convocatoria', 'desc')
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
             ->get();
     
         $programs_recommend = $this->getRecomendados($unidadProductiva, $fechaActual);
@@ -39,8 +38,7 @@ class ProgramaController extends Controller
                 });
             })
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
-            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)           
-            ->orderBy('fecha_cierre_convocatoria', 'desc')->get();
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)->get();
     
  
         $helper_default = [
@@ -88,8 +86,8 @@ class ProgramaController extends Controller
         $inscripcion = ConvocatoriaInscripcion::where('convocatoria_id', $convocatoria->convocatoria_id)
             ->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id)
             ->latest()->first();
-        $states = [0, 1, 2, 4, 5]; // Estados en los cuales no puede volver a inscribirse en un programa
-        
+        $states = [0, 1, 3, 2, 4, 5]; // Estados en los cuales no puede volver a inscribirse en un programa
+ 
         if ($inscripcion && in_array($inscripcion->inscripcionestado_id, $states)) {
             $already_subscribed = true;
         }
@@ -347,8 +345,7 @@ class ProgramaController extends Controller
                     });
                 });
             })
-            ->with('programa')           
-            ->orderBy('fecha_apertura_convocatoria', 'desc')->get();
+            ->with('programa')->get();
 
         $programs_recommend2 = ProgramaConvocatoria::query()
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
@@ -368,8 +365,7 @@ class ProgramaController extends Controller
                 });
                 
             })
-            ->with('programa')           
-            ->orderBy('fecha_apertura_convocatoria', 'desc')->get();
+            ->with('programa')->get();
 
         return $programs_recommend1->merge($programs_recommend2);
     }

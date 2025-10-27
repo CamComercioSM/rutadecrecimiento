@@ -20,10 +20,6 @@ class DiagnosticoController extends Controller
     {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
 
-        if (!($unidadProductiva->sector_id > 0)) {
-            return redirect()->route('company.complete_info');
-        }
-
         if ($request->anual_sales != null) {
             $unidadProductiva->anual_sales = $request->anual_sales;
             $unidadProductiva->save();
@@ -154,6 +150,24 @@ class DiagnosticoController extends Controller
 
         $unidadProductiva->complete_diagnostic = 1;
         $unidadProductiva->save();
+
+        // Enviar correo de diagnóstico completado
+        if ($unidadProductiva->user_id) {
+            $user = \App\Models\User::find($unidadProductiva->user_id);
+            if ($user) {
+                $nombreUsuario = $user->name . ' ' . $user->lastname;
+                $etapa = \App\Models\Etapa::find($unidadProductiva->etapa_id);
+                $nombreEtapa = $etapa ? $etapa->name : 'Etapa no definida';
+                
+                \App\Http\Services\EmailService::enviarCorreoDiagnosticoCompletado(
+                    $unidadProductiva->registration_email, 
+                    $nombreUsuario, 
+                    $unidadProductiva->business_name, 
+                    $resultado_puntaje, 
+                    $nombreEtapa
+                );
+            }
+        }
 
         return redirect()->route('company.dashboard');
     }

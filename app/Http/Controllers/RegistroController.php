@@ -3,240 +3,135 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\CommonService;
+use App\Http\Services\CrearUnidadService;
 use App\Http\Services\reCAPTCHAv3;
 use App\Http\Services\SICAM32;
 use App\Http\Services\UnidadProductivaService;
 use App\Http\Services\UsuarioService;
-use App\Models\Municipio;
+use App\Models\Sector;
 use App\Models\UnidadProductiva;
 use App\Models\UnidadProductivaPersona;
 use App\Models\UnidadProductivaTipo;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class RegistroController extends Controller
 {
+    private const MENSAJE_EXISTE_UNIDAD = "La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión";
+    private const MENSAJE_EXISTE_USUARIO = "El correo electrónico ya se encuentra registrado. Utilice la opción de iniciar sesión";
+    private const MENSAJE_EXISTE_USUARIO_UNIDAD = "El correo electrónico ya se encuentra registrado en una unidad productiva.";
+    private const MENSAJE_NO_ENCONTRO_UNIDAD = "No se encontraron empresas según el tipo de búsqueda. Valide los datos e intente nuevamente.";
+    private const MENSAJE_NO_VALIDADA = "No pudimos validar su empresa. Intente nuevamente.";
+
     public function index()
-    {
+    { 
         $data = [
-            'section' => CommonService::section(),
             'footer' => CommonService::footer(),
             'links' => CommonService::links(),
             'camaras' => SICAM32::listadoCamarasComercio(),
-            'tiposIdentificacion' => SICAM32::listadoTiposIdentificacion()
+            'tiposIdentificacion' => SICAM32::listadoTiposIdentificacion(),
+            'departamentos' => CommonService::departamentos(),
+            'listaCargos'=> SICAM32::listadoViculosCargos(),
+            'sectores'=> Sector::get(),
+            'loguin'=> Auth::check()
         ];
-
-        if (Auth::check()) {
-            return view('website.register.create_company', $data);
-        }
-
-        $data['departamentos'] = CommonService::departamentos();
-        $data['municipios'] = CommonService::municipios();
 
         return view('website.register.index', $data);
     }
 
+    // Buscar unidad en CCMS
     public function search(Request $request)
     {
-        $api = SICAM32::buscarRegistroMercantil($request->search_type, $request->name);
-    
-        if (!empty($api)) {
-            if ($api->RESPUESTA != 'EXITO' || count($api->DATOS->expedientes) == 0)
-                return redirect()->back()->with('error', 'No se encontraron empresas según el tipo de búsqueda. Valide los datos e intente nuevamente.');
-
-            $resultado = $api->DATOS->expedientes[0];
-            $data = [
-                'section' => CommonService::section(),
-                'footer' => CommonService::footer(),
-                'links' => CommonService::links(),
-                'kind' =>  $request->criterio,
-                'value' =>  $request->nombre,
-                'result' =>  $resultado,
-            ];
-
-            return view('website.register.results', $data);
-        } else {
-            return redirect()->back()->with('error', 'No se encontraron empresas según el tipo de búsqueda. Valide los datos e intente nuevamente.');
-        }
-    }
-
-    public function store(Request $request)
-    {
-        // Llamada a la API externa
-        $api = SICAM32::consultarExpedienteMercantilporIdentificacion($request->value);
+        $api = SICAM32::buscarRegistroMercantil($request->search_type, $request->search_name);
         
-        // Validación general del objeto de respuesta
-        if (!isset($api) || !is_object($api)) {
-            return redirect()->route('home')->with('error', 'No se recibió respuesta válida del servicio.');
+        if (empty($api) || $api->RESPUESTA !== 'EXITO' || count($api->DATOS->expedientes) === 0) {
+            return [ 'success'=> false, 'mensaje'=> self::MENSAJE_NO_ENCONTRO_UNIDAD ];
         }
 
-        // Validamos que la API haya respondido de manera correcta
-        if (!property_exists($api, 'RESPUESTA') || $api->RESPUESTA !== 'EXITO') {
-            $mensajeError = property_exists($api, 'MENSAJE') ? $api->MENSAJE : 'No pudimos validar su empresa. Intente nuevamente.';
-            return redirect()->route('home')->with('error', $mensajeError);
-        }
-
-        // Validamos que existan datos
-        if (!property_exists($api, 'DATOS') || empty($api->DATOS)) {
-            return redirect()->route('home')->with('error', 'La empresa no tiene información disponible o no fue encontrada.');
-        }
-
-        // Guardamos los valores en la variable values
-        $values = $api->DATOS;
-
-        // Validamos si ya existe el usuario solo si no hay sesión iniciada
-        if (!Auth::check()) {
-            if (!isset($request->email) || !filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-                return redirect()->route('home')->with('error', 'Correo electrónico inválido.');
-            }
-
-            $user = User::where('email', $request->email)->first();
-            if ($user) {
-                return redirect()->route('home')->with('error', 'El correo electrónico ya se encuentra registrado. Utilice la opción de iniciar sesión.');
+        $listado = [];
+        
+        foreach($api->DATOS->expedientes as $item)
+        {
+            if($item->nit && $item->nombre && $item->matricula)
+            {
+                $listado[] = 
+                [ 
+                    'nombre'=> $item->nombre, 
+                    'nit'=> $item->nit,
+                    'matricula'=> $item->matricula,
+                    'fechamatricula'=> (DateTime::createFromFormat("Ymd", $item->fechamatricula))->format("Y-m-d"),
+                ];
             }
         }
 
-        $query = UnidadProductiva::where('nit', 'like', '%' . $values->nit . '%')->first();
-        if ($query)
-            return redirect()->route('home')->with('error', 'La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión');
-
-
-        //Creamos el usuario y contraseña para acceder al sistema
-        if ($values->organizacion == '01') {
-            $user = UsuarioService::crearUsuario2($values->identificacion, $values->nombre, '', $request->email, $request->password);
-        } else {
-            $user = UsuarioService::crearUsuario2($values->identificacionrl, $values->nombrerl, '', $request->email, $request->password);
+        if (count($listado) === 0) {
+            return [ 'success'=> false, 'mensaje'=> self::MENSAJE_NO_ENCONTRO_UNIDAD ];
         }
-
-        //Convierto la actividad comercial a numero
-        $comercial_activity = substr($values->ciiu1, 1);
-
-        // Creamos la empresa con los datos temporales
-        $company = new UnidadProductiva();
-        $company->business_name = $values->nombre;
-        $company->nit = $values->nit;
-        $company->registration_number = $values->matricula;
-        $company->registration_date = date("Y-m-d", strtotime($values->fechamatricula));
-        $company->registration_email = $values->emailcom != '' ? $values->emailcom : $request->email;
-        $company->address = $values->dircom;
-        $company->mobile = $values->telcom1;
-        $company->affiliated = $values->afiliado;
-        $company->comercial_activity = $comercial_activity;
-        $company->user_id = $user->id;
-
-        $company->tamano_id = $values->tamanoempresa;
-        $company->camara_comercio = 32;
-
-        /* FORMAL DEL MAGDALENA */
-        $tipoRegistro = UnidadProductivaTipo::where('unidadtipo_id', 4)->first();
-        $company->unidadtipo_id = $tipoRegistro->unidadtipo_id;
-        $company->tipo_registro_rutac = $tipoRegistro->unidadtipo_nombre;
-        $company->logo = $this->getLogo($tipoRegistro->unidadtipo_id);
-
-        /* datos por tipo de persona */
-        $tipoPersona = null;
         
-        switch ($values->organizacion) {
-            case '01':
-                $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclase);
-                $company->identificacion = $values->identificacion;
-                $company->name_legal_representative = $values->nombre;
-                $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', 1)->first();
-                break;
-            case '02':
-                $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclaserl);
-                $company->identificacion = $values->identificacionrl;
-                $company->name_legal_representative = $values->nombrerl;
-                $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', 2)->first();
-                break;
-            default:
-                $company->tipo_identificacion = $this->TraeCodigoTIpoIdentificon($values->idclaserl);
-                $company->identificacion = $values->identificacionrl;
-                $company->name_legal_representative = $values->nombrerl;
-                $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', 3)->first();
-                break;
-        }
-        $company->tipopersona_id = $tipoPersona->tipopersona_id;
-        $company->type_person = $tipoPersona->tipoPersonaCODIGO;
-
-
-
-        $municipio = Municipio::where('municipioCODIGODANE', $values->muncom)->first();
-        $company->department_id  = $municipio->departamentoID;
-        $company->municipality_id = $municipio->municipio_id;
-
-        $company->contact_person = $company->name_legal_representative;
-        $company->contact_email = $company->registration_email;
-        $company->contact_phone = $company->mobile;
-        $company->save();
-
-        UnidadProductivaService::validarRenovacion($values->fecharenovacion, $company->unidadproductiva_id);
-        UnidadProductivaService::validarSiguienteRenovacion($values->fechamatricula, $values->fecharenovacion, $company->unidadproductiva_id);
-
-        if (!Auth::check())
-            Auth::login($user);
-
-        $this->registarUnidadProductivaRutaC($company, $values);
-        UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
-
-        return redirect()->route('company.complete_info');
+        return [ 'success'=> true, 'listado'=> $listado ];
     }
 
-    private function registarUnidadProductivaRutaC($company, $api)
+    // Buscar unidad en CCMS detalles
+    public function searchDetail(Request $request)
     {
-        $tipoPersona = UnidadProductivaPersona::where('tipopersona_id', $company->tipopersona_id)->first();
+        //if( $this->existeUnidad($request->search_nit, "") ){
+        //    return [ 'success' => false, 'mensaje' => self::MENSAJE_EXISTE_UNIDAD ];
+        //}
+        
+        $api = SICAM32::consultarExpedienteMercantilporIdentificacion($request->search_nit);
 
-        $datos = [
-            'personaNIT' => $company->nit,
-            'tipoPersonaRUTAC' => $tipoPersona->tipopersona_id,
-            'tipoPersonaCODIGO' => $tipoPersona->tipoPersonaNOMBRE,
-            'tipoIdentificacionCODIGO' => $company->tipo_identificacion,
-            'personaIDENTIFICACION' => $company->identificacion,
-            'personaRAZONSOCIAL' => $company->business_name,
-            'personaNOMBRES' => $company->name_legal_representative,
-            'personaAPELLIDOS' => '',
-            'correoDIRECCION' => $company->registration_email,
-            'telefonoNUMEROCELULAR' => $company->mobile,
-            'direccionCOMERCIAL' => $company->address,
-            'unidadProductivaTIPOREGISTRORUTAC' => $company->tipo_registro_rutac,
-            'unidadProductivaTIPOREGISTRORUTACID' => $company->unidadtipo_id,
-            'unidadProductivaFCHINICIO' => $company->registration_date,
-            'unidadProductivaTITULO' => $company->business_name,
-            'unidadProductivaDESCRIPCION' => $company->description,
-            'unidadProductivaEMAIL' => $company->registration_email,
-            'unidadProductivaENLACE' => $company->address,
-            'unidadProductivaTELEFONO' => $company->mobile,
-            'municipioCODIGODANE' => $api->muncom,
-            'unidadProductivaDIRECCION' => $company->address,
-            'unidadProductivaCONTACTONOMBRE' => $company->name_legal_representative,
-            'unidadProductivaCONTACTOEMAIL' => $company->registration_email,
-            'unidadProductivaCONTACTOTELEFONO' => $company->mobile,
-            'unidadProductivaCAMARADECOMERCIO' => $company->camara_comercio,
-            'unidadProductivaMATRICULA' => $company->registration_number,
-            'unidadProductivaFCHMATRICULA' => $company->registration_date,
-            'unidadProductivaNIT' => $company->nit,
-            'unidadProductivaREPRESENTANTELEGAL' => $company->name_legal_representative,
-            'REQUEST1' => $company->toArray(),
+        if (!is_object($api) || $api->RESPUESTA !== 'EXITO' || empty($api->DATOS)) {
+            $error = $api->MENSAJE ?? self::MENSAJE_NO_VALIDADA;
+
+            return [ 'success' => false, 'mensaje' => $error ];
+        }
+
+        $datos = CrearUnidadService::datosApi($api->DATOS);
+        
+        return [ 'success'=> true, 'datos'=> $datos ];
+    }
+
+    // Crear usuario
+    public function crearUsuario(Request $request)
+    {
+        $exists = User::where('email', $request->user_email)->exists();
+
+        if(!$exists)
+        {
+            $user = UsuarioService::crearUsuario($request);
+        }
+        
+        return [
+            'success' => true,
+            'existe' => $exists,
+            'mensaje' => $exists ? self::MENSAJE_EXISTE_USUARIO : null,
+            'user_id' => $user->id ?? null,
         ];
-
-        $UnidadProductiva = SICAM32::registarNuevaUnidadProductiva($datos);
-        SICAM32::actualizarIdRelacionadoUnidadProductiva($UnidadProductiva->unidadProductivaID, $company->unidadproductiva_id);
     }
 
-    private function TraeCodigoTIpoIdentificon($idBuscar)
+    public function validarUsuario(Request $request)
     {
-
-        $lista = SICAM32::listadoTiposIdentificacion();
-
-        foreach ($lista as $item) {
-            if ($item->tipoIdentificacionID == $idBuscar) {
-                return $item->tipoIdentificacionCODIGO;
-            }
+        $user = User::where('email', $request->user_email)->first();
+        
+        if ($user != null)
+        {
+            return [ 'success' => false, 'mensaje' => self::MENSAJE_EXISTE_USUARIO ];
         }
+
+        $user = UnidadProductiva::where('registration_email', $request->user_email)->first();
+
+        if ($user != null)
+        {
+            return [ 'success' => true, 'unidad' => true, 'mensaje' => self::MENSAJE_EXISTE_USUARIO_UNIDAD ];
+        }
+        
+        return [ 'success' => true ];
     }
 
-    public function storeLead(Request $request)
+    // Guardar registro
+    public function store(Request $request)
     {
         /*
         if (!reCAPTCHAv3::validar($request->token))
@@ -244,159 +139,63 @@ class RegistroController extends Controller
                     ->with('error', 'No PASATE EL FILTRO DE SEGURIDAD ANTIROBOTS. Intentalo nuevamente');
         */
 
-        if (Auth::check()) {
-            /** @var User $user */
-            $user = Auth::user();
-
-            $unidad = $user->unidadesProductivas()->first();
-
-            $request->merge([
-                'tipoPersonaID' => $unidad->identificacion ? 0 : 2,
-                'tipo_identificacion' => $unidad->identificacion ? 1 : 2,
-                'document' => $unidad->identificacion ?? $unidad->nit,
-                'personaRAZONSOCIAL' => $unidad->name_legal_representative,
-                'personaNOMBRES' => $unidad->name_legal_representative,
-                'personaAPELLIDOS' => '',
-                'email' => $unidad->registration_email,
-                'phone' => $unidad->mobile,
-                'department' => $unidad->department_id,
-                'municipality' => $unidad->municipality_id,
-                'address' => $unidad->address,
-            ]);
+        if( $this->existeUnidad($request->nit_registrado, $request->business_name) ){
+            return [ 'success' => false, 'mensaje' => self::MENSAJE_EXISTE_UNIDAD ];
         }
 
         $tipoPersona = UnidadProductivaPersona::where('tipoPersonaCODIGO', $request->tipoPersonaID)->first();
         $tipoRegistro = UnidadProductivaTipo::where('unidadtipo_id', $request->tipo_registro_rutac)->first();
-        $tipoIdentificacionCODIGO = $this->TraeCodigoTIpoIdentificon($request->tipo_identificacion);
-        $municipio = Municipio::where('municipio_id', $request->municipality)->first();
 
-        $datos = [
-            'tipoPersonaRUTAC' => $tipoPersona->tipopersona_id,
-            'tipoPersonaCODIGO' => $tipoPersona->tipoPersonaNOMBRE,
-            'tipoIdentificacionCODIGO' => $tipoIdentificacionCODIGO,
-            'personaIDENTIFICACION' => $request->document,
-            'personaRAZONSOCIAL' => $request->personaRAZONSOCIAL,
-            'personaNOMBRES' => $request->personaNOMBRES,
-            'personaAPELLIDOS' => $request->personaAPELLIDOS,
-            'correoDIRECCION' => $request->email,
-            'telefonoNUMEROCELULAR' => $request->phone,
-            'direccionCOMERCIAL' => $request->address,
-            'unidadProductivaTIPOREGISTRORUTAC' => $tipoRegistro->unidadtipo_nombre,
-            'unidadProductivaTIPOREGISTRORUTACID' => $tipoRegistro->unidadtipo_id,
-            'unidadProductivaFCHINICIO' => $request->registration_date,
-            'unidadProductivaTITULO' => $request->business_name,
-            'unidadProductivaDESCRIPCION' => $request->description,
-            'unidadProductivaEMAIL' => $request->email,
-            'unidadProductivaENLACE' => $request->address,
-            'unidadProductivaTELEFONO' => $request->phone,
-            'municipioCODIGODANE' => $municipio->municipioCODIGODANE,
-            'unidadProductivaDIRECCION' => $request->address,
-            'unidadProductivaCONTACTONOMBRE' => ($request->personaNOMBRES . " " . $request->personaAPELLIDOS),
-            'unidadProductivaCONTACTOEMAIL' => $request->email,
-            'unidadProductivaCONTACTOTELEFONO' => $request->phone,
-            'unidadProductivaCAMARADECOMERCIO' => $request->camara_comercio,
-            'unidadProductivaMATRICULA' => $request->registration_number,
-            'unidadProductivaFCHMATRICULA' => $request->registration_date,
-            'unidadProductivaNIT' => $request->nit_registrado,
-            'unidadProductivaREPRESENTANTELEGAL' => $request->name_legal_representative,
-            'REQUEST1' => $request->toArray(),
-        ];
+        if (Auth::check())
+            $request->merge(['user_id' => auth()->id()]);
 
+        // Crear unidad
+        $company = CrearUnidadService::crear($request, $tipoPersona, $tipoRegistro);
+
+        //Registra la unidad en ruta C
+        $this->registarUnidadProductivaRutaC($company);
+
+        // loguear al usuario
+        $this->loguinUser($request->user_id);
+        
+        // Set por defecto la unidad creada
+        UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
+
+        return [ 'success' => true ];
+    }
+
+
+    // Registrar la unidad productiva en ruta c
+    private function registarUnidadProductivaRutaC($company)
+    {
+        $datos = CrearUnidadService::datosRegistroRutaC($company);
         $UnidadProductiva = SICAM32::registarNuevaUnidadProductiva($datos);
-
-        if (!Auth::check()) {
-            $user = User::where('email', $request->email)->first();
-            if ($user)
-                return redirect()->route('home')->with('error', 'El correo electronico ya se encuentra registrado. Utilice la opción de iniciar sesión');
-        }
-
-        if ($request->tipo_registro_rutac == 3) {
-            $query = UnidadProductiva::where('nit', 'like', '%' . $UnidadProductiva->unidadProductivaNIT . '%')->first();
-        } else {
-            $query = UnidadProductiva::where('nit', 'like', '%' . $UnidadProductiva->unidadProductivaCODIGO . '%')->first();
-        }
-
-        // Validamos si ya existe la empresa en el registro
-        if ($query)
-            return redirect()->route('home')->with('error', 'La empresa ya se encuentra registrada. Utilice la opción de iniciar sesión');
-        $user = UsuarioService::crearUsuario($UnidadProductiva->Persona);
-
-        // Creamos la empresa con los datos temporales
-        $company = new UnidadProductiva();
-        $company->business_name = $UnidadProductiva->unidadProductivaTITULO;
-        $company->description = $UnidadProductiva->unidadProductivaDESCRIPCION;
-
-        if ($request->tipo_registro_rutac == 3) {
-            $company->nit = $UnidadProductiva->unidadProductivaNIT;
-            $company->registration_date = date("Y-m-d", strtotime($UnidadProductiva->unidadProductivaFCHMATRICULA));
-        } else {
-            $company->nit = $UnidadProductiva->unidadProductivaCODIGO;
-            $company->registration_date = date("Y-m-d", strtotime($UnidadProductiva->unidadProductivaFCHINICIO));
-        }
-
-        if ($request->tipo_registro_rutac == 1) {
-            $company->anual_sales = 0;
-        }
-
-        $company->registration_number = $UnidadProductiva->unidadProductivaMATRICULA;
-        $company->registration_email = $UnidadProductiva->unidadProductivaEMAIL;
-        $company->address = $UnidadProductiva->unidadProductivaDIRECCION;
-        $company->municipality_id = $UnidadProductiva->municipioID;
-        $company->municipality_viejo = $UnidadProductiva->municipioID;
-        $company->department_id = $UnidadProductiva->departamentoID;
-        $company->department_viejo = $UnidadProductiva->departamentoID;
-        $company->mobile = $UnidadProductiva->unidadProductivaTELEFONO;
-        $company->name_legal_representative = $UnidadProductiva->unidadProductivaCONTACTONOMBRE;
-
-        $company->affiliated = 0;
-        $company->user_id = $user->id;
-        $company->tipo_identificacion = $UnidadProductiva->Persona->tipoIdentificacionCODIGO;
-        $company->identificacion = $UnidadProductiva->Persona->personaIDENTIFICACION;
-
-        $company->unidadtipo_id = $tipoRegistro->unidadtipo_id;
-        $company->tipo_registro_rutac = $tipoRegistro->unidadtipo_nombre;
-
-        $company->tipopersona_id = $tipoPersona->tipopersona_id;
-        $company->type_person = $tipoPersona->tipoPersonaCODIGO;
-
-        $company->logo = $this->getLogo($company->unidadtipo_id);
-
-        $company->contact_person = ($request->personaNOMBRES . " " . $request->personaAPELLIDOS);
-        $company->contact_email = $request->email;
-        $company->contact_phone = $request->phone;
-
-
-        $company->save();
 
         SICAM32::actualizarIdRelacionadoUnidadProductiva($UnidadProductiva->unidadProductivaID, $company->unidadproductiva_id);
 
-        UnidadProductivaService::setUnidadProductiva($company->unidadproductiva_id);
+        return $UnidadProductiva;
+    }
+
+    // validar si existe la unidad productiva
+    private function existeUnidad($nit, $name): bool
+    {
+        $query = UnidadProductiva::where(function($q) use ($name, $nit) {
+            $q->where('business_name', 'like', "%$name%");
+            
+            if (!empty($nit)) {
+                $q->orWhere('nit', 'like', "%$nit%");
+            }
+        });
+
+        return $query->exists();
+    }
+
+    private function loguinUser($id)
+    {
+        $user = User::find($id);
 
         if (!Auth::check())
             Auth::login($user);
-
-        return redirect()->route('company.complete_info');
     }
 
-    private function getLogo($tipo)
-    {
-        $logo = '';
-
-        switch ($tipo) {
-            case 1:
-                $logo = 'idea_negocio';
-                break;
-            case 2:
-                $logo = 'informal_negocio_en_casa';
-                break;
-            case 3:
-                $logo = 'registrado_fuera_ccsm';
-                break;
-            case 4:
-                $logo = 'registrado_ccsm';
-                break;
-        }
-
-        return "img/registro/$logo.png";
-    }
 }
