@@ -67,7 +67,7 @@ class DiagnosticoController extends Controller
 
             if ($diagnostico->diagnostico_conventas) {
                 $sector = $unidadProductiva->sector()->first();
-                $opciones = VentasAnuales::where('sectorCODIGO',  $sector->sectorCODIGO)->get();
+                $opciones = VentasAnuales::where('sectorCODIGO',  $sector->sectorCODIGO ?? null)->get();
 
                 if (isset($data['preguntas'][0]) && isset($data['preguntas'][0]->opciones)) {
                     $data['preguntas'][0]->setRelation('opciones', collect([]));
