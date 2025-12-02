@@ -158,7 +158,7 @@ class ProgramaController extends Controller {
         $variables = $indicadores->merge($requisitos);
 
         if (count($variables) == 0) {
-            return redirect()->back()->with('error', 'No hay variables vinculadas al programa');
+            //return redirect()->back()->with('error', 'No hay variables vinculadas al programa');
         }
 
 
