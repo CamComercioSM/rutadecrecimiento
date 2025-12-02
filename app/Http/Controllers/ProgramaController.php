@@ -325,13 +325,9 @@ class ProgramaController extends Controller {
             });
 
         // Si la unidad NO tiene matrícula → programas que NO la exigen
-        if (empty($unidadProductiva->registration_number)) {
-            $query->where('con_matricula', '!=', 1);
-        } else {
-            // Si tiene matrícula → programas que la exigen
+        if (!empty($unidadProductiva->registration_number)) {
             $query->where('con_matricula', 1);
         }
-
         return $query->with('programa')->get();
     }
 }
