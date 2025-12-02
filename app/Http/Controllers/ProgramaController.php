@@ -170,8 +170,8 @@ class ProgramaController extends Controller {
             */
             foreach ($variables as $key => $variable) {
                 $answer = ConvocatoriaRespuesta::whereHas('inscripcion', function ($q) use ($company) {
-                        $q->where('unidadproductiva_id', $company->unidadproductiva_id);
-                    })
+                    $q->where('unidadproductiva_id', $company->unidadproductiva_id);
+                })
                     ->where('requisito_id', $variable->requisito_id)
                     ->where('fecha_creacion', '>=', $fecha)
                     ->get()->last();
@@ -225,8 +225,8 @@ class ProgramaController extends Controller {
             foreach ($variables as $key => $variable) {
 
                 $answer = ConvocatoriaRespuesta::whereHas('inscripcion', function ($q) use ($company) {
-                        $q->where('unidadproductiva_id', $company->unidadproductiva_id);
-                    })
+                    $q->where('unidadproductiva_id', $company->unidadproductiva_id);
+                })
                     ->where('requisito_id', $variable->requisito_id)
                     ->where('fecha_creacion', '>=', $fechaMenos1Mes)
                     ->get()->last();
@@ -303,49 +303,35 @@ class ProgramaController extends Controller {
         return view('website.capsule.index', $data);
     }
 
+    /**
+     * Obtiene programas recomendados según etapa, sector y tipo de registro.
+     *
+     * @param  object $unidadProductiva
+     * @param  string $fechaActual
+     * @return \Illuminate\Support\Collection
+     */
     private function getRecomendados($unidadProductiva, $fechaActual) {
-        $programs_recommend1 = ProgramaConvocatoria::query()
+        $query = ProgramaConvocatoria::query()
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
             ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
-            ->where('con_matricula', 1)
-            ->where(function ($query) use ($unidadProductiva) {
+            ->whereHas('programa', function ($q) use ($unidadProductiva) {
+                $q->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
+                    $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                })
+                    ->where(function ($q) use ($unidadProductiva) {
+                        $q->where('sector_id', $unidadProductiva->sector_id)
+                            ->orWhereNull('sector_id');
+                    });
+            });
 
-                if (is_null($unidadProductiva->registration_number) || $unidadProductiva->registration_number == '') {
-                    $query->where('con_matricula', '!=', 1);
-                }
+        // Si la unidad NO tiene matrícula → programas que NO la exigen
+        if (empty($unidadProductiva->registration_number)) {
+            $query->where('con_matricula', '!=', 1);
+        } else {
+            // Si tiene matrícula → programas que la exigen
+            $query->where('con_matricula', 1);
+        }
 
-                $query->whereHas('programa', function ($q) use ($unidadProductiva) {
-                    $q->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
-                        $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
-                    })
-                        ->where(function ($q) use ($unidadProductiva) {
-                            $q->whereNotNull('sector_id')
-                                ->where('sector_id', $unidadProductiva->sector_id)
-                                ->orWhereNull('sector_id');
-                        });
-                });
-            })
-            ->with('programa')->get();
-
-        $programs_recommend2 = ProgramaConvocatoria::query()
-            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
-            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
-            ->where('con_matricula', '!=', 1)
-            ->where(function ($query) use ($unidadProductiva) {
-
-                $query->whereHas('programa', function ($q) use ($unidadProductiva) {
-                    $q->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
-                        $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
-                    })
-                        ->where(function ($q) use ($unidadProductiva) {
-                            $q->whereNotNull('sector_id')
-                                ->where('sector_id', $unidadProductiva->sector_id)
-                                ->orWhereNull('sector_id');
-                        });
-                });
-            })
-            ->with('programa')->get();
-
-        return $programs_recommend1->merge($programs_recommend2);
+        return $query->with('programa')->get();
     }
 }
