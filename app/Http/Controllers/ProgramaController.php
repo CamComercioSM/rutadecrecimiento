@@ -96,7 +96,7 @@ class ProgramaController extends Controller {
 
             $can_apply = ($indicadores + $requisitos) > 0;
         }
-        */
+         */
 
         $data = [
             'footer' => CommonService::footer(),
@@ -172,8 +172,8 @@ class ProgramaController extends Controller {
             */
             foreach ($variables as $key => $variable) {
                 $answer = ConvocatoriaRespuesta::whereHas('inscripcion', function ($q) use ($company) {
-                        $q->where('unidadproductiva_id', $company->unidadproductiva_id);
-                    })
+                    $q->where('unidadproductiva_id', $company->unidadproductiva_id);
+                })
                     ->where('requisito_id', $variable->requisito_id)
                     ->where('fecha_creacion', '>=', $fecha)
                     ->get()->last();
@@ -227,8 +227,8 @@ class ProgramaController extends Controller {
             foreach ($variables as $key => $variable) {
 
                 $answer = ConvocatoriaRespuesta::whereHas('inscripcion', function ($q) use ($company) {
-                        $q->where('unidadproductiva_id', $company->unidadproductiva_id);
-                    })
+                    $q->where('unidadproductiva_id', $company->unidadproductiva_id);
+                })
                     ->where('requisito_id', $variable->requisito_id)
                     ->where('fecha_creacion', '>=', $fechaMenos1Mes)
                     ->get()->last();
@@ -305,65 +305,70 @@ class ProgramaController extends Controller {
         return view('website.capsule.index', $data);
     }
 
-/**
- * Obtiene programas recomendados según etapa, sector y tipo de registro.
- * - Las empresas con matrícula verán convocatorias con con_matricula = 1.
- * - Las empresas sin matrícula verán convocatorias con con_matricula != 1.
- * - El campo sector se filtra correctamente desde programas_convocatorias.
- *
- * @param  object $unidadProductiva
- * @param  string $fechaActual
- * @return \Illuminate\Support\Collection
- */
-private function getRecomendados($unidadProductiva, $fechaActual)
-{
-    // -----------------------------
-    // 1️⃣ Convocatorias para formales (con matrícula)
-    // -----------------------------
-    $programs_recommend1 = ProgramaConvocatoria::query()
-        ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
-        ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
-        ->where('con_matricula', 1)
-        ->where(function ($query) use ($unidadProductiva) {
-            // Filtra por etapa y sector (sector en tabla programas_convocatorias)
-            $query->where(function ($q) use ($unidadProductiva) {
-                $q->where('programas_convocatorias.sector_id', $unidadProductiva->sector_id)
-                  ->orWhereNull('programas_convocatorias.sector_id');
-            })
-            ->whereHas('programa', function ($q) use ($unidadProductiva) {
-                $q->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
+
+
+
+    /**
+     * Obtiene programas recomendados según etapa, sector y tipo de registro.
+     *
+     * @param  \App\Models\UnidadProductiva  $unidadProductiva
+     * @param  string  $fechaActual  Formato YYYY-MM-DD
+     * @return \Illuminate\Support\Collection
+     */
+    private function getRecomendados($unidadProductiva, $fechaActual) {
+        // ---------------------------------------------------
+        // 1️⃣ Convocatorias para empresas FORMAL (con matrícula)
+        // ---------------------------------------------------
+        $programs_recommend1 = ProgramaConvocatoria::query()
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->where('con_matricula', 1)
+            ->where(function ($query) use ($unidadProductiva) {
+
+                // Filtrar por sector en tabla correcta (programas_convocatorias)
+                $query->where(function ($q) use ($unidadProductiva) {
+                    $q->where('programas_convocatorias.sector_id', $unidadProductiva->sector_id)
+                        ->orWhereNull('programas_convocatorias.sector_id');
+                });
+
+                // Filtrar por etapa en tabla de relación programas_etapas
+                $query->whereHas('programa.etapas', function ($subQuery) use ($unidadProductiva) {
                     $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
                 });
-            });
-        })
-        ->with('programa')
-        ->get();
-
-    // -----------------------------
-    // 2️⃣ Convocatorias para informales / ideas (sin matrícula)
-    // -----------------------------
-    $programs_recommend2 = ProgramaConvocatoria::query()
-        ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
-        ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
-        ->where('con_matricula', '!=', 1)
-        ->where(function ($query) use ($unidadProductiva) {
-            $query->where(function ($q) use ($unidadProductiva) {
-                $q->where('programas_convocatorias.sector_id', $unidadProductiva->sector_id)
-                  ->orWhereNull('programas_convocatorias.sector_id');
             })
-            ->whereHas('programa', function ($q) use ($unidadProductiva) {
-                $q->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
+            ->with('programa')
+            ->get();
+
+        // ---------------------------------------------------
+        // 2️⃣ Convocatorias para empresas INFORMAL / IDEA (sin matrícula)
+        // ---------------------------------------------------
+        $programs_recommend2 = ProgramaConvocatoria::query()
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->where(function ($q) {
+                // Las informales e ideas verán convocatorias sin restricción o explícitamente abiertas
+                $q->where('con_matricula', '!=', 1)
+                    ->orWhereNull('con_matricula');
+            })
+            ->where(function ($query) use ($unidadProductiva) {
+
+                // Filtrar por sector en tabla correcta
+                $query->where(function ($q) use ($unidadProductiva) {
+                    $q->where('programas_convocatorias.sector_id', $unidadProductiva->sector_id)
+                        ->orWhereNull('programas_convocatorias.sector_id');
+                });
+
+                // Filtrar por etapa (ej: Descubrimiento)
+                $query->whereHas('programa.etapas', function ($subQuery) use ($unidadProductiva) {
                     $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
                 });
-            });
-        })
-        ->with('programa')
-        ->get();
+            })
+            ->with('programa')
+            ->get();
 
-    // -----------------------------
-    // 3️⃣ Devuelve la unión de ambas colecciones
-    // -----------------------------
-    return $programs_recommend1->merge($programs_recommend2);
-}
-
+        // ---------------------------------------------------
+        // 3️⃣ Devolver la combinación de ambos conjuntos
+        // ---------------------------------------------------
+        return $programs_recommend1->merge($programs_recommend2);
+    }
 }
