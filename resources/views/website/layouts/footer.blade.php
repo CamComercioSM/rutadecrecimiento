@@ -33,22 +33,35 @@
     </div>
     <div class="wrap wrap-medium">
         <div class="footer">
+            @if(isset($footer->footer_logo_ally) && !empty($footer->footer_logo_ally))
             <a href="https://www.ccsm.org" target="_blank" aria-label="Camara de comercio (opens in a new tab)">
                 <img src="{{ asset(''.$footer->footer_logo_ally) }}" alt="Camara comercio">
             </a>
+            @endif
+            @if(isset($footer->footer_logo_rutac) && !empty($footer->footer_logo_rutac))
             <div class="logo">
                 <img src="{{ asset(''.$footer->footer_logo_rutac) }}" alt="Ruta C Logo footer">
             </div>
+            @endif
             <div class="info">
                 <ul>
                     <li class="textl">
                         <span class="font-s-small">Más información en</span>
+                        @if(isset($footer->whatsapp) && !empty($footer->whatsapp))
                         <span class="block font-s-small" > <a class="font-s-small"  href="https://wa.me/{{ $footer->whatsapp }}?text=Me%20gustar%C3%ADa%20saber%20........."><img src="{{ asset('img/icons/whatsapp.png') }}" alt="WhatsApp" style="max-width: 32px; float: left;" /></a> WhatsApp {{ $footer->whatsapp }} </span>
+                        @endif
+                        @if(isset($footer->footer_ally_page) && !empty($footer->footer_ally_page))
                         <a class="font-s-small" href="https://{{ $footer->footer_ally_page }}" target="_blank" aria-label="{{ $footer->footer_ally_page }} (opens in a new tab)">{{ $footer->footer_ally_page }}</a>
+                        @endif
+                        @if(isset($footer->footer_number_contact) && !empty($footer->footer_number_contact))
                         <span class="block font-s-small">Llámanos a {{ $footer->footer_number_contact }}</span>
-                        
+                        @endif
+                        @if(isset($footer->footer_email_contact) && !empty($footer->footer_email_contact))
                         <span class="block font-s-small">Escríbenos a {{ $footer->footer_email_contact }}</span>
-                        <p class="font-s-small">Dirección: {{ $footer->footer_address }}<br />{{ $footer->ubicacion_ciudad }}</p>
+                        @endif
+                        @if(isset($footer->footer_address) && !empty($footer->footer_address))
+                        <p class="font-s-small">Dirección: {{ $footer->footer_address }}@if(isset($footer->ubicacion_ciudad) && !empty($footer->ubicacion_ciudad))<br />{{ $footer->ubicacion_ciudad }}@endif</p>
+                        @endif
                     </li>
                 </ul>
             </div>
