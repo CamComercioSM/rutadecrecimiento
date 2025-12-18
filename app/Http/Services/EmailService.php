@@ -14,6 +14,39 @@ class EmailService
     }
 
     /**
+     * Wrapper compatible con llamadas antiguas tipo EmailService::send($to, $subject, $view, $data)
+     * Renderiza la vista Blade y envía el HTML por la API.
+     *
+     * @param mixed $data Objeto/array con datos para la vista. Si no es array, se pasa como ['data' => $data].
+     */
+    public static function send(string $to, string $subject, string $view, mixed $data = []): bool
+    {
+        try {
+            $viewData = is_array($data) ? $data : ['data' => $data];
+            if (!array_key_exists('data', $viewData)) {
+                // Si el array no trae 'data', mantenemos compatibilidad con plantillas existentes
+                $viewData['data'] = $data;
+            }
+
+            $html = view($view, $viewData)->render();
+
+            return self::enviarCorreoPersonalizado([
+                'to' => $to,
+                'subject' => $subject,
+                'html' => $html,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Excepción en EmailService::send', [
+                'error' => $e->getMessage(),
+                'to' => $to,
+                'subject' => $subject,
+                'view' => $view,
+            ]);
+            return false;
+        }
+    }
+
+    /**
      * Envía un correo HTML personalizado usando la API
      */
     public static function enviarCorreoPersonalizado(array $data): bool
