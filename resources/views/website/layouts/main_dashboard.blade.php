@@ -62,5 +62,48 @@
 @include('website.mantenimiento.modal_aviso') 
 
         <!-- <a href="https://wa.me/573218150243?text=Me%20gustaría%20saber%20........." class="whatsapp" target="_blank"> <i class="fa fa-whatsapp whatsapp-icon"></i></a> -->
+
+
+
+
+<script>
+    var url = 'https://wati-integration-prod-service.clare.ai/v2/watiWidget.js?30967';
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = url;
+    var options = {
+        "enabled": true,
+        "chatButtonSetting": {
+            "backgroundColor": "#00e785",
+            "ctaText": "Escríbenos 24/7",
+            "borderRadius": "25",
+            "marginLeft": "0",
+            "marginRight": "25",
+            "marginBottom": "25",
+            "ctaIconWATI": false,
+            "position": "left"
+        },
+        "brandSetting": {
+            "brandName": "RutaC CamComercoSM",
+            "brandSubTitle": "undefined",
+            "brandImg": "https://cdnsicam.net/img/rutac/rutac-whatsapp-cuadrado.png",
+            "welcomeText": "Bienvenid@s, ¿Cómo podemos ayudarte?\n",
+            "messageText": "Hola, me gustaria saber mas de ......... [www.rutadecrecimiento.com]",
+            "backgroundColor": "#00e785",
+            "ctaText": "Escríbenos 24/7",
+            "borderRadius": "25",
+            "autoShow": false,
+            "phoneNumber": "573218150243"
+        }
+    };
+    s.onload = function() {
+        CreateWhatsappChatWidget(options);
+    };
+    var x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+</script>
+
+
 </body>
 </html>
