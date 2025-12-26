@@ -122,7 +122,7 @@
             "brandSubTitle": "undefined",
             "brandImg": "https://cdnsicam.net/img/rutac/rutac-whatsapp-cuadrado.png",
             "welcomeText": "Bienvenid@s, ¿Cómo podemos ayudarte?\n",
-            "messageText": "Hola, me gustaria saber mas de {{ page_title }} {{ page_link }}",
+            "messageText": "Hola, me gustaria saber mas de ......... [www.rutadecrecimiento.com]",
             "backgroundColor": "#00e785",
             "ctaText": "Escríbenos 24/7",
             "borderRadius": "25",
