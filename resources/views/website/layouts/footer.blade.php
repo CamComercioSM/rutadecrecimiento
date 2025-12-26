@@ -48,11 +48,11 @@
                     <li class="textl">
                         <span class="font-s-small">Más información en</span>
                         @if (isset($footer->whatsapp) && !empty($footer->whatsapp))
-                            {{-- <span class="block font-s-small"> <a class="font-s-small"
+                            <span class="block font-s-small"> <a class="font-s-small"
                                     href="https://wa.me/{{ $footer->whatsapp }}?text=Me%20gustar%C3%ADa%20saber%20........."><img
                                         src="{{ asset('img/icons/whatsapp.png') }}" alt="WhatsApp"
                                         style="max-width: 32px; float: left;" /></a> WhatsApp {{ $footer->whatsapp }}
-                            </span> --}}
+                            </span>
                         @endif
                         @if (isset($footer->footer_ally_page) && !empty($footer->footer_ally_page))
                             <a class="font-s-small" href="https://{{ $footer->footer_ally_page }}" target="_blank"
@@ -115,7 +115,7 @@
             "marginRight": "20",
             "marginBottom": "20",
             "ctaIconWATI": false,
-            "position": "right"
+            "position": "left"
         },
         "brandSetting": {
             "brandName": "RutaC CamComercoSM",
