@@ -88,7 +88,7 @@
             "brandName": "RutaC CamComercoSM",
             "brandSubTitle": "undefined",
             "brandImg": "https://cdnsicam.net/img/rutac/rutac-whatsapp-cuadrado.png",
-            "welcomeText": "Bienvenid@s, ¿Cómo podemos ayudarte?\n",
+            "welcomeText": "Hola {{$company->business_name}}, ¿Cómo podemos ayudarte?\n",
             "messageText": "Hola, me puedes ayudar con ......... [app.rutadecrecimiento.com]",
             "backgroundColor": "#00e785",
             "ctaText": "Escríbenos 24/7",
