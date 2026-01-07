@@ -53,6 +53,7 @@ class ProgramaController extends Controller {
             'programs_recommend' => $programs_recommend,
 
             'unidadProductiva' => $unidadProductiva,
+            'company' => $unidadProductiva,
             'nombreEtapa' => $unidadProductiva->etapa?->name,
         ];
 
