@@ -17,83 +17,78 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 
-class PerfilController extends Controller
-{
-    public function SeleccionarUnidadProductiva(Request $request) 
-    {
-        if($request->unidadproductiva && $request->unidadproductiva > 0)
-        {
+class PerfilController extends Controller {
+    public function SeleccionarUnidadProductiva(Request $request) {
+        if ($request->unidadproductiva && $request->unidadproductiva > 0) {
             UnidadProductivaService::setUnidadProductiva($request->unidadproductiva);
 
-            return redirect()->route('company.dashboard');    
+            return redirect()->route('company.dashboard');
         }
 
         $user = Auth::user();
         $userId = $user->id;
 
         $data = [
-            'footer'=> CommonService::footer(),
-            'links'=> CommonService::links(),
-            'companies'=> UnidadProductiva::where('user_id', $userId)->orderBy('fecha_creacion', 'desc')->get(),
-            'user'=> $user,
+            'footer' => CommonService::footer(),
+            'links' => CommonService::links(),
+            'companies' => UnidadProductiva::where('user_id', $userId)->orderBy('fecha_creacion', 'desc')->get(),
+            'user' => $user,
             'show_complete_registration_modal' => $user->como_se_entero === null,
         ];
-     
+
 
         return view('website.company.select_company', $data);
     }
 
-    public function dashboard() 
-    {
+    public function dashboard() {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-    
-        if ($unidadProductiva != null)
-        {
+
+        if ($unidadProductiva != null) {
             if ($unidadProductiva->update_info == 0)
                 return redirect()->route('company.complete_info');
 
-            if ($unidadProductiva->complete_diagnostic == 0 || 
-                UnidadProductivaService::validarTiempoDiagnostico($unidadProductiva))
-                    return redirect()->route('company.diagnostic');
+            if (
+                $unidadProductiva->complete_diagnostic == 0 ||
+                UnidadProductivaService::validarTiempoDiagnostico($unidadProductiva)
+            )
+                return redirect()->route('company.diagnostic');
 
             $inscripcion = $unidadProductiva->inscripciones()->where('activarPreguntas', true)->first();
-            
-            if($inscripcion != null)
-            {
+
+            if ($inscripcion != null) {
                 return redirect()->route('company.program.register', ['id' => $inscripcion->convocatoria_id]);
             }
 
             $activarDIAGVOLUNTARIO = UnidadProductivaService::validarTiempoDiagnostico($unidadProductiva, 30);
-            
+
             $fechaActual = date('Y-m-d');
 
             $programs = ProgramaConvocatoria::query()
-            ->join('programas', 'programas.programa_id', '=', 'programas_convocatorias.programa_id')
-            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
-            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
-            ->get();
-            
+                ->join('programas', 'programas.programa_id', '=', 'programas_convocatorias.programa_id')
+                ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+                ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+                ->get();
+
             $data = [
-                'footer'=> CommonService::footer(),
-                'links'=> CommonService::links(),
-                'stages'=> CommonService::etapas(),
-                'company'=> $unidadProductiva,
-                'helper_notifications'=> CommonService::notificaciones(),
-                'activarDIAGVOLUNTARIO'=> $activarDIAGVOLUNTARIO,
+                'footer' => CommonService::footer(),
+                'links' => CommonService::links(),
+                'stages' => CommonService::etapas(),
+                'company' => $unidadProductiva,
+                'helper_notifications' => CommonService::notificaciones(),
+                'activarDIAGVOLUNTARIO' => $activarDIAGVOLUNTARIO,
                 'capsulas' => CommonService::capsulas(),
                 'programs' => $programs
             ];
-            
+
             return view('website.company.dashboard', $data);
         }
-        
+
         return redirect()->route('company.select');
     }
 
-    public function indicadores()
-    {
+    public function indicadores() {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-                
+
         $data = DB::select("
             SELECT c.fecha_respuesta, i.indicador_nombre, c.value
             FROM convocatorias_respuestas c
@@ -138,6 +133,7 @@ class PerfilController extends Controller
 
         $dts = [
             'unidadProductiva' => $unidadProductiva,
+            'company' => $unidadProductiva,
             'labels' => $labels,
             'datasets' => $datasets,
         ];
@@ -145,71 +141,64 @@ class PerfilController extends Controller
         return view('website.company.indicadores', $dts);
     }
 
-    public function historialDiagnosticos(){
+    public function historialDiagnosticos() {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-    
-        if ($unidadProductiva) 
-        {
+
+        if ($unidadProductiva) {
             $data = [
                 'company' => $unidadProductiva,
             ];
-    
+
             return view('website.company.historial_diagnosticos', $data);
         }
-    
+
         return redirect()->route('home')->with('error', 'No se pudo obtener la información de la empresa');
     }
-    
-    public function historialDiagnosticoDetalle($id)
-    {
+
+    public function historialDiagnosticoDetalle($id) {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-    
-        if ($unidadProductiva) 
-        {
+
+        if ($unidadProductiva) {
             $diagnostico = $unidadProductiva->diagnosticos()->find($id);
-                
-            if ($diagnostico) 
-            {        
+
+            if ($diagnostico) {
                 $resultados = ResultadosDiagnostico::where('resultado_id', $diagnostico->resultado_id)->get();
-                
+
                 $dimensiones = $resultados->pluck('dimension')->toArray();
                 $resultados = $resultados->pluck('valor')->toArray();
-    
+
                 $data = [
                     'company' => $unidadProductiva,
                     'diagnostico' => $diagnostico,
                     'dimensions' => json_encode($dimensiones),
                     'results' => $resultados,
                 ];
-    
+
                 return view('website.company.historial_diagnostico_detalle', $data);
             }
         }
-    
+
         return redirect()->route('company.historialDiagnosticos');
     }
-    
-    public function exportarPreguntasDiagnostico($id)
-    {
+
+    public function exportarPreguntasDiagnostico($id) {
         return Excel::download(new DiagnosticoRespuestasExport($id), 'diagnostico-respuestas.xlsx');
     }
-    
-    public function completarInformacion() 
-    {
+
+    public function completarInformacion() {
         $data = [
-            'footer'=> CommonService::footer(),
-            'links'=> CommonService::links(),
-            'departments'=> CommonService::departamentos(),
-            'company'=> UnidadProductivaService::getUnidadProductiva(),
-            'listaCargos'=> SICAM32::listadoViculosCargos(),
-            'sectores'=> Sector::get(),
+            'footer' => CommonService::footer(),
+            'links' => CommonService::links(),
+            'departments' => CommonService::departamentos(),
+            'company' => UnidadProductivaService::getUnidadProductiva(),
+            'listaCargos' => SICAM32::listadoViculosCargos(),
+            'sectores' => Sector::get(),
         ];
 
         return view('website.company.complete_info', $data);
     }
 
-    public function completarInformacionGuardar(Request $request) 
-    {
+    public function completarInformacionGuardar(Request $request) {
         $unidad = UnidadProductivaService::getUnidadProductiva();
 
         $unidad->department_id = $request->department;
@@ -245,50 +234,47 @@ class PerfilController extends Controller
         return redirect()->route('company.diagnostic');
     }
 
-    public function perfil() 
-    {
+    public function perfil() {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
-        
+
         if (!$unidadProductiva) {
             abort(404, 'Unidad productiva no encontrada o no asociada al usuario.');
         }
-     
-        $programas_inscrito = []; 
-    
+
+        $programas_inscrito = [];
+
         $data = [
             'footer' => CommonService::footer(),
             'links' => CommonService::links(),
             'helper_notifications' => CommonService::notificaciones(),
-            'departments' => CommonService::departamentos(), 
-            'municipalities' => CommonService::municipios(), 
+            'departments' => CommonService::departamentos(),
+            'municipalities' => CommonService::municipios(),
             'programas_inscrito' => $programas_inscrito,
             'company' => $unidadProductiva,
             'user' => Auth::user(),
         ];
-       
+
         return view('website.company.profile', $data);
     }
-    
 
-    public function actualizarPerfil() 
-    {
+
+    public function actualizarPerfil() {
         $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
         $listaCargos = SICAM32::listadoViculosCargos();
-      
+
         $data = [
-            'footer'=> CommonService::footer(),
-            'links'=> CommonService::links(),
-            'departments'=> CommonService::departamentos(),
-            'municipalities' => CommonService::municipios(), 
-            'company'=> $unidadProductiva,
-            'listaCargos'=> $listaCargos,
+            'footer' => CommonService::footer(),
+            'links' => CommonService::links(),
+            'departments' => CommonService::departamentos(),
+            'municipalities' => CommonService::municipios(),
+            'company' => $unidadProductiva,
+            'listaCargos' => $listaCargos,
         ];
 
         return view('website.company.profile_update', $data);
     }
 
-    public function actualizarPerfilGuardar(Request $request) 
-    {
+    public function actualizarPerfilGuardar(Request $request) {
         $unidad = UnidadProductivaService::getUnidadProductiva();
 
         $unidad->description = $request->description;
@@ -304,7 +290,7 @@ class PerfilController extends Controller
         $unidad->contact_email = $request->contact_email;
         $unidad->contact_phone = $request->contact_phone;
         $unidad->contact_sexo = $request->contact_sexo;
-        
+
         $unidad->website = $request->website;
         $unidad->social_instagram = $request->social_instagram;
         $unidad->social_facebook = $request->social_facebook;
@@ -314,20 +300,18 @@ class PerfilController extends Controller
             $file = $request->file('logo');
             $name = time() . '-' . $file->getClientOriginalName();
             $file->move('/home/rutacrecimiento/public_html/archivos/storage/logos/', $name);
-            $unidad->logo = 'storage/logos/'.$name;
+            $unidad->logo = 'storage/logos/' . $name;
         }
         $unidad->save();
 
         return redirect()->route('company.profile')->with('success', 'Información actualizada correctamente');
     }
 
-    public function actualizarPassword() 
-    {
+    public function actualizarPassword() {
         return view('website.company.password_update');
     }
 
-    public function actualizarPasswordGuardar(Request $request) 
-    {    
+    public function actualizarPasswordGuardar(Request $request) {
         /** @var User $user */
         $user = Auth::user();
 
@@ -344,34 +328,28 @@ class PerfilController extends Controller
     }
 
 
-    public function grafico($id) 
-    {
-        if($id != null && $id > 0)
-        {
+    public function grafico($id) {
+        if ($id != null && $id > 0) {
             $unidadProductiva = UnidadProductiva::find($id);
-        }
-        else
-        {
+        } else {
             $unidadProductiva = UnidadProductivaService::getUnidadProductiva();
         }
 
-        if ($unidadProductiva != null)
-        {
+        if ($unidadProductiva != null) {
             $diagnostico = $unidadProductiva->diagnosticos->last();
-           
+
             $resultados = ResultadosDiagnostico::where('resultado_id', $diagnostico->resultado_id)->get();
 
             $dimensiones = $resultados->pluck('dimension')->toArray();
             $resultados = $resultados->pluck('valor')->toArray();
-            
+
             $data = [
-                'company'=> $unidadProductiva,
-                'dimensions'=> json_encode($dimensiones),
-                'results'=> json_encode($resultados),
+                'company' => $unidadProductiva,
+                'dimensions' => json_encode($dimensiones),
+                'results' => json_encode($resultados),
             ];
-    
+
             return view('website.company.radial_graphic', $data);
         }
     }
-
 }
