@@ -102,6 +102,7 @@ class ProgramaController extends Controller {
             'footer' => CommonService::footer(),
             'links' => CommonService::links(),
             'unidadProductiva' => $unidadProductiva,
+            'company' => $unidadProductiva,
             'convocatoria' => $convocatoria,
             'helper_notifications' => CommonService::notificaciones(),
             'already_subscribed' => $already_subscribed,
