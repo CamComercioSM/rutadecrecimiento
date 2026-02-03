@@ -53,7 +53,7 @@
                 @foreach($preguntas as $pregunta)
                     <section id="variable-{{$pregunta->pregunta_id}}" class="variable hidden">
                         <h2 class="color-2 font-w-700">{{$pregunta->pregunta_titulo}}</h2>
-                        <h4 class="color-2 font-w-700">{{$pregunta->pregunta_desc}}</h4>
+                        <h4 class="color-2 font-w-700" style="font-size: 14px;color: #0c1892EE;">{{$pregunta->pregunta_desc}}</h4>
                     
                         <ul style="padding:0" >  
                             @foreach($pregunta->opciones as $item)
