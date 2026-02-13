@@ -29,6 +29,7 @@
             <div class="col-12 col-md-10">                
                 @include('website.register.parciales.tipoRegistro')
                 @include('website.register.parciales.matriculaCCSM')
+                @include('website.register.parciales.matriculaEstablecimiento')
                 @include('website.register.parciales.matriculaFormal')
                 @include('website.register.parciales.infoUnidad')
                 @include('website.register.parciales.contacto')

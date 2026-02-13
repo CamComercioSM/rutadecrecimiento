@@ -1,13 +1,14 @@
-<section class="w-100 hidden" id="tipoRegistro" >
+<section class="w-100 hidden" id="tipoRegistro">
     <h2 class="color-2 font-w-700 my-5">
         Actualmente...
     </h2>
 
-    <h2 class="color-3 font-w-900 mb-3 mt-4">... soy una empresa o persona registrada en una cámara de comercio:</h2>
+    <h2 class="color-3 font-w-900 mb-3 mt-4">... soy una empresa o persona registrada en una cámara de comercio y ... </h2>
 
     <div class="text-center">
-        <div class="row">
-            <div class="col_ col-xs-12 col-sm-12 col-md-6 mb-4">
+        <div class="row registro_fila_arriba ">
+
+            <div class="col_ col-xs-12 col-sm-12 col-md-4 mb-4">
 
                 <ul class="question-1 opcion_registro opcion_registrado_ccsm m-0 p-0 ">
                     <li>
@@ -17,13 +18,13 @@
                             <div class="info">
                                 <h2 class="font-w-500">Tengo un negocio registrado con domicilio en el
                                     Magdalena</h2>
-                                <p style="font-weight: bold;">Cuento con registro activo como persona
+                                <p style="font-weight: bold;font-size:0.7em;">Cuento con registro activo como persona
                                     natural o jurídica (empresa) ante la Cámara de Comercio de Santa Marta
                                     para el Magdalena</p>
                             </div>
                             <div class="float-end icono_opcion_registro">
-                                <img src="{{ asset('img/registro/registrado_ccsm.png') }}"
-                                    alt="registrado_ccsm" class="" />
+                                <img src="{{ asset('img/registro/registrado_ccsm.png') }}" alt="registrado_ccsm"
+                                     class="" />
                             </div>
                         </label>
                     </li>
@@ -31,7 +32,34 @@
 
             </div>
 
-            <div class="col_  col-xs-12 col-sm-12 col-md-6 mb-4">
+
+            <div class="col_ col-xs-12 col-sm-12 col-md-4 mb-4">
+
+                <ul class="question-1 opcion_establecimiento m-0 p-0">
+                    <li>
+                        <div class="animated-border-box-glow_encendido"></div>
+                        <label class="radio animated-border-box_encendido">
+                            <input type="radio" name="tipoRegistroRUTAC" value="5" />
+                            <div class="info">
+                                <h3 class="font-w-500">Tengo un establecimiento de comercio registrado en el Magdalena</h3>
+                                <p>Ya tengo una empresa o persona registrada y deseo registrar un local, sede, punto de venta o sitio de comercio.</p>
+                            </div>
+                            <div class="float-end icono_opcion_registro">
+                                <img src="https://cdnsicam.net/img/rutac/registro_establecimientos.png" 
+                                     alt="establecimiento_comercio" />
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+
+
+            </div>
+
+
+
+
+
+            <div class="col_ col-xs-12 col-sm-12 col-md-4 mb-4">
                 <ul class="question-1 opcion_registro opcion_registrado_fuera  m-0 p-0 ">
                     <li>
                         <div class="animated-border-box-glow_encendido"></div>
@@ -46,40 +74,24 @@
                             </div>
                             <div class="float-end icono_opcion_registro">
                                 <img src="{{ asset('img/registro/registrado_fuera_ccsm.png') }}"
-                                    alt="registrado_fuera_ccsm" class="" />
+                                     alt="registrado_fuera_ccsm" class="" />
                             </div>
                         </label>
                     </li>
                 </ul>
 
             </div>
+
+
+
+
         </div>
     </div>
 
     <h2 class="color-3 font-w-900 mb-3 mt-4">Otras opciones para registrarse</h2>
 
     <div class="text-center">
-        <div class="row">
-            <div class="col_ col-xs-12 col-sm-12 col-md-6 mb-4">
-
-                <ul class="question-1 opcion_registro m-0 p-0 ">
-                    <li>
-                        <div class="animated-border-box-glow_encendido"></div>
-                        <label class="radio animated-border-box_encendido">
-                            <input type="radio" name="tipoRegistroRUTAC" value="1" />
-                            <div class="info">
-                                <h3 class="font-w-500">Tengo una idea de negocio</h3>
-                                <p>No tengo ventas, no estoy registrado ante Cámara de Comercio</p>
-                            </div>
-                            <div class="float-end icono_opcion_registro">
-                                <img src="{{ asset('img/registro/idea_negocio.png') }}" alt="idea_negocio"
-                                    class="" />
-                            </div>
-                        </label>
-                    </li>
-                </ul>
-
-            </div>
+        <div class="row registro_fila_abajo">
             <div class="col_ col-xs-12 col-sm-12 col-md-6 mb-4">
 
                 <ul class="question-1 opcion_registro   m-0 p-0 ">
@@ -95,7 +107,7 @@
                             </div>
                             <div class="float-end icono_opcion_registro">
                                 <img src="{{ asset('img/registro/informal_negocio_en_casa.png') }}"
-                                    alt="informal_negocio_en_casa" class="" />
+                                     alt="informal_negocio_en_casa" class="" />
                             </div>
                         </label>
                     </li>
@@ -103,12 +115,32 @@
 
 
             </div>
+            <div class="col_ col-xs-12 col-sm-12 col-md-6 mb-4">
+
+                <ul class="question-1 opcion_registro m-0 p-0 ">
+                    <li>
+                        <div class="animated-border-box-glow_encendido"></div>
+                        <label class="radio animated-border-box_encendido">
+                            <input type="radio" name="tipoRegistroRUTAC" value="1" />
+                            <div class="info">
+                                <h3 class="font-w-500">Tengo una idea de negocio</h3>
+                                <p>No tengo ventas, no estoy registrado ante Cámara de Comercio</p>
+                            </div>
+                            <div class="float-end icono_opcion_registro">
+                                <img src="{{ asset('img/registro/idea_negocio.png') }}" alt="idea_negocio"
+                                     class="" />
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+
+            </div>
         </div>
     </div>
 
     <div class="d-flex justify-content-center mt-4">
-        <a href="{{$loguin ? '/seleccionarEmpresa' : '/' }}" class="button button-secundary w-auto mx-1">Cancelar</a>
-        <button id="tipoRegistroBtn" class="button button-primary w-auto" >Continuar</button>
+        <a href="{{ $loguin ? '/seleccionarEmpresa' : '/' }}" class="button button-secundary w-auto mx-1">Cancelar</a>
+        <button id="tipoRegistroBtn" class="button button-primary w-auto">Continuar</button>
     </div>
 </section>
 
@@ -116,22 +148,21 @@
     $(document).ready(function () {
 
         $('#tipoRegistroBtn').on('click', function () {
-           redireccionarTipoRegistro();
-        });
-
-        $('input[name="tipoRegistroRUTAC"]').change(function() {
             redireccionarTipoRegistro();
         });
 
-        function redireccionarTipoRegistro()
-        {
+        $('input[name="tipoRegistroRUTAC"]').change(function () {
+            redireccionarTipoRegistro();
+        });
+
+        function redireccionarTipoRegistro() {
             let tipoRegistroRUTAC = $('input[name="tipoRegistroRUTAC"]:checked').val();
 
             $("#tipoRegistro").slideUp();
             $("#banner_info_idea").hide();
 
             $('#tipoPersonaID').val("0");
-            
+
             $('#address').attr('required', true);
             $('#registration_email').attr('required', true);
             $('#mobile').attr('required', true);
@@ -144,18 +175,43 @@
 
             toogleCamposFormal(false);
 
-            switch (tipoRegistroRUTAC) 
-            {
-                case "1": abrirFormularioIdea(); break;
-                case "2": abrirFormularioInformal(); break;
-                case "3": abrirFormularioMatriculaOTRACAM(); break;
-                case "4": abrirFormularioMatriculaCCSM(); break;
-                default: break;
-            }  
+            switch (tipoRegistroRUTAC) {
+                case "1":
+                    abrirFormularioIdea();
+                    break;
+                case "2":
+                    abrirFormularioInformal();
+                    break;
+                case "3":
+                    abrirFormularioMatriculaOTRACAM();
+                    break;
+                case "4":
+                    abrirFormularioMatriculaCCSM();
+                    break;
+                case "5":
+                    abrirFormularioEstablecimiento();
+                    break;
+                default:
+                    break;
+            }
         }
 
-        function abrirFormularioMatriculaCCSM() 
-        {
+        function abrirFormularioEstablecimiento() {
+
+            toogleCamposFormal(true);
+
+            $(".tituloSegunTipo").html("Registrar Establecimiento de Comercio");
+
+            // Marcamos que estamos en modo establecimiento
+            $("#matriculaCCSM").attr("data-tipo", "establecimiento");
+
+            $("#matriculaCCSMBusqueda h2").html("Busca el establecimiento registrado");
+            $("#matriculaCCSMBtn").text("BUSCAR ESTABLECIMIENTO");
+
+            $("#matriculaEstablecimiento").slideDown();
+        }
+
+        function abrirFormularioMatriculaCCSM() {
             toogleCamposFormal(true);
             $("#camara_comercio option[value='32']").show();
 
@@ -163,8 +219,7 @@
             $("#matriculaCCSM").slideDown();
         }
 
-        function abrirFormularioMatriculaOTRACAM() 
-        {
+        function abrirFormularioMatriculaOTRACAM() {
             $('#campoTipoOrganizacion').hide();
             $("#camara_comercio option[value='32']").hide();
             $('#business_name').addClass('input-readonly');
@@ -174,8 +229,7 @@
         }
 
 
-        function abrirFormularioInformal() 
-        {            
+        function abrirFormularioInformal() {
             $('#campoTipoOrganizacion').hide();
 
             $('#sector_id').attr('required', false);
@@ -186,8 +240,7 @@
             $("#infoUnidad").slideDown();
         }
 
-        function abrirFormularioIdea() 
-        {
+        function abrirFormularioIdea() {
             $('#campoTipoOrganizacion').hide();
             $('#datosContacto').hide();
             $('#datosSector').hide();
@@ -205,21 +258,23 @@
             $("#infoUnidad").slideDown();
         }
 
-        function toogleCamposFormal(sw)
-        {            
+        function toogleCamposFormal(sw) {
             const ids = [
                 'camara_comercio', 'sector_id', 'seccion', 'ciiuactividad_id',
                 'department_id', 'municipality_id',
-                'business_name', 'registration_number', 'nit_registrado', 'name_legal_representative', 'razon_social',
+                'business_name', 'registration_number', 'nit_registrado', 'name_legal_representative',
+                'razon_social',
                 'registration_date', 'address', 'registration_email'
             ];
 
-            if(sw)
-            {
-                ids.forEach(e => { $('#'+e).addClass('input-readonly'); });     
-            }
-            else {
-                ids.forEach(e => { $('#'+e).removeClass('input-readonly'); });     
+            if (sw) {
+                ids.forEach(e => {
+                    $('#' + e).addClass('input-readonly');
+                });
+            } else {
+                ids.forEach(e => {
+                    $('#' + e).removeClass('input-readonly');
+                });
             }
         }
 

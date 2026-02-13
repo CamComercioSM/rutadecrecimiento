@@ -65,6 +65,18 @@ class SICAM32 {
 
     return $resultado;
   }
+  
+  
+  public static function buscarRegistroMercantilEstablecimiento($criterio, $valor) 
+  {
+    $resultado = self::ejecutarOperacion('buscarRegistroMercantilEstablecimiento', [
+          'criterio_busqueda' => $criterio,
+          'palabra_clave' => $valor,
+          'pagina' => '0'
+      ]);
+
+    return $resultado;
+  }
 
   public static function consultarExpedienteMercantilporIdentificacion($value) 
   {
