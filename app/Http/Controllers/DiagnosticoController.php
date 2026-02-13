@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\CommonService;
 use App\Http\Services\UnidadProductivaService;
+use App\Http\Services\WhatsAppPlantillaService;
 use App\Models\Diagnostico;
 use App\Models\DiagnosticoPregunta;
 use App\Models\DiagnosticoRespuesta;
@@ -168,6 +169,9 @@ class DiagnosticoController extends Controller
                 );
             }
         }
+
+        // Envío automático WhatsApp plantilla rutac_diagnostico_finalizado_1ro
+        WhatsAppPlantillaService::enviarDiagnosticoFinalizado($unidadProductiva);
 
         return redirect()->route('company.dashboard');
     }
