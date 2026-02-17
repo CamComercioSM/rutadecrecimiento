@@ -131,7 +131,7 @@ class RegistroController extends Controller {
             ];
 
             // 🔥 Limitar a 5 resultados
-            if (count($listado) >= 5) {
+            if (count($listado) >= 3) {
                 break;
             }
         }
