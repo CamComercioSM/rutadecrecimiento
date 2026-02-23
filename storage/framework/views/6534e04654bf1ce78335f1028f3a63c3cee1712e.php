@@ -199,8 +199,9 @@
         function abrirFormularioEstablecimiento() {
 
             toogleCamposFormal(true);
+            $("#camara_comercio option[value='32']").show();
 
-            $(".tituloSegunTipo").html("Registrar Establecimiento de Comercio");
+            $(".tituloSegunTipo").html("Establecimiento de Comercio");
 
             // Marcamos que estamos en modo establecimiento
             $("#matriculaCCSM").attr("data-tipo", "establecimiento");

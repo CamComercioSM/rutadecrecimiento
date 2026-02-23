@@ -51,7 +51,7 @@ class helpers {
             $date_diagnostic = $diagnostic->created_at;
             $date_now = Carbon::now();
             $diasDesdeDiagnostic = $date_now->diffInDays($date_diagnostic);
-            if ( $diasDesdeDiagnostic  >= $dias)
+            if ($diasDesdeDiagnostic  >= $dias)
                 return true;
         }
         return false;
@@ -61,8 +61,8 @@ class helpers {
         if (!Auth::check()) {
             return false;
         }
-    
-        $company = UnidadProductiva::find(Auth::user()->company_id); 
+
+        $company = UnidadProductiva::find(Auth::user()->company_id);
         return $company;
     }
 
@@ -123,9 +123,9 @@ class helpers {
         } else {
             return 5; //Madurez
         }
-    }    
-    
-    static function nombreEtapa($etapaID) {                
+    }
+
+    static function nombreEtapa($etapaID) {
         $stage = Stage::find($etapaID);
         return $stage->name;
     }
@@ -155,29 +155,25 @@ class helpers {
     }
 
     public function getMunicipalities(Request $request) {
-        
-        $municipalities = 
-            Municipio::where('departamentoID', $request->id)->
-            orderBy('municipionombreoficial', 'asc')->
-            get(['municipio_id as id', 'municipionombreoficial as name']);
+
+        $municipalities =
+            Municipio::where('departamentoID', $request->id)->orderBy('municipionombreoficial', 'asc')->get(['municipio_id as id', 'municipionombreoficial as name']);
 
         return $municipalities;
     }
 
     static function getMunicipios() {
-        
-        $municipalities = 
-            Municipio::orderBy('municipionombreoficial', 'asc')->
-            get(['municipio_id as id', 'municipionombreoficial as name']);
+
+        $municipalities =
+            Municipio::orderBy('municipionombreoficial', 'asc')->get(['municipio_id as id', 'municipionombreoficial as name']);
 
         return $municipalities;
     }
 
     static function getDepartamentos() {
-        
-        $municipalities = 
-            Departamento::orderBy('departamentonombreoficial', 'asc')->
-            get(['departamentoid as id', 'departamentonombreoficial as name']);
+
+        $municipalities =
+            Departamento::orderBy('departamentonombreoficial', 'asc')->get(['departamentoid as id', 'departamentonombreoficial as name']);
 
         return $municipalities;
     }
@@ -193,7 +189,7 @@ class helpers {
         if ($diff->y > 2)
             self::createAlertCompany(2, $company_id);
     }
-    
+
     /*
      * Valide si la ultima fecha de renovacion de camara de comercio esta vigente
      * Siempre vencen los 30 de marzo de cada año
@@ -219,7 +215,7 @@ class helpers {
         if ($validate)
             return true;
 
-        $alert = New Alert();
+        $alert = new Alert();
         $alert->company_id = $company_id;
         $alert->kind = $kind;
         $alert->save();
@@ -250,5 +246,17 @@ class helpers {
             // Si no se encuentra ninguna coincidencia con el patrón, la URL es inválida
             return false;
         }
+    }
+
+    public static function firstNotEmpty(...$values) {
+        foreach ($values as $value) {
+            // Validamos que no sea null y que no sea cadena vacía o solo espacios
+            if ($value !== null && trim($value) !== '') {
+                return $value;
+            }
+        }
+
+        // Si todos vienen vacíos o nulos, retornamos null (o '' si así lo prefieres)
+        return null;
     }
 }

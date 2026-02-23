@@ -59,7 +59,7 @@ class RegistroController extends Controller {
                 ];
             }
             // 🔥 Limitar a 5 resultados
-            if (count($listado) >= 5) {
+            if (count($listado) >= 3) {
                 break;
             }
         }
@@ -155,7 +155,7 @@ class RegistroController extends Controller {
         //    return [ 'success' => false, 'mensaje' => self::MENSAJE_EXISTE_UNIDAD ];
         //}
 
-        $api = SICAM32::consultarExpedienteMercantilporIdentificacion($request->search_nit);
+        $api = SICAM32::consultarExpedienteMercantilporMatricula($request->matricula);
 
         if (!is_object($api) || $api->RESPUESTA !== 'EXITO' || empty($api->DATOS)) {
             $error = $api->MENSAJE ?? self::MENSAJE_NO_VALIDADA;

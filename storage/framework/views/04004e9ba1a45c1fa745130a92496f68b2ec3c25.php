@@ -130,6 +130,8 @@
                 },
                 success: function (response) {
 
+                    console.log(response);
+
                     if (!response.success) {
                         return mostrarAlerta(response.mensaje);
                     }
@@ -137,6 +139,10 @@
                     for (let input in response.datos) {
                         $("#" + input).val(response.datos[input]);
                     }
+
+                    initselect('/municipios/listado', response.datos.department_id , '#municipality_id', response.datos.municipality_id);
+                    initselect('/secciones/listado', response.datos.sector_id, '#seccion', response.datos.seccion);
+                    initselect('/actividades/listado', response.datos.seccion, '#ciiuactividad_id', response.datos.ciiuactividad_id);
 
                     $("#matriculaEstablecimiento").slideUp();
                     $("#matriculaFormal").slideDown();

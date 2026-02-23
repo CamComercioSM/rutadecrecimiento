@@ -30,9 +30,10 @@
             <div class="col-12 col-md-12 form-group mb-3" id="campoTipoOrganizacion" >
                 <div class="form-group">
                     <label class="form-label">Tipo de Organización </label>
-                    <select class="form-select input-readonly" id="tipoPersonaID" name="tipoPersonaID" required>
+                    <select class="form-select " id="tipoPersonaID" name="tipoPersonaID" required >
                         <option value="0" selected="" class="selecPersonaNatural">PERSONA NATURAL</option>
                         <option value="2" class="selecPersonaJuridica">PERSONA JURÍDICA O EMPRESA</option>
+                        <option value="1" class="selecEstablecimiento">ESTABLECIMIENTO DE COMERCIO</option>
                     </select>
                 </div>
             </div>
@@ -181,7 +182,7 @@
 
             let tipoRegistroRUTAC = $('input[name="tipoRegistroRUTAC"]:checked').val();
 
-            if(tipoRegistroRUTAC === '4' || tipoRegistroRUTAC === '3')
+            if(tipoRegistroRUTAC === '5' || tipoRegistroRUTAC === '4' || tipoRegistroRUTAC === '3')
             {
                 $("#matriculaFormal").slideDown();
             }

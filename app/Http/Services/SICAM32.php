@@ -87,6 +87,15 @@ class SICAM32 {
     return $resultado;
   }
 
+  public static function consultarExpedienteMercantilporMatricula($value) 
+  {
+    $resultado = self::ejecutarOperacion('consultarExpedienteMercantilporMatricula', [
+        'matricula' => $value,
+    ]);
+
+    return $resultado;
+  }
+
   private static function ejecutarOperacion($operacion, $datos = []) 
   {
     global $Api;

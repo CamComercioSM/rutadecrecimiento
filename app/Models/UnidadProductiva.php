@@ -140,6 +140,7 @@ class UnidadProductiva extends Model
             2 => 'informal_negocio_en_casa',
             3 => 'registrado_fuera_ccsm',
             4 => 'registrado_ccsm',
+            5 => 'establecimiento_ccsm',
         ];
 
         return "img/registro/" . $logos[$tipo] . ".png";
