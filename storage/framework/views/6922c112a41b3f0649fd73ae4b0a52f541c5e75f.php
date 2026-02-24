@@ -1,10 +1,10 @@
 <section class="w-100 hidden" id="infoUnidad">
-    <h2 class="color-2 font-w-700 my-5" >
+    <h2 class="color-2 font-w-700 my-5">
         Estás comenzando tu ruta de crecimiento
     </h2>
-   
-    <div id="banner_info_idea">                    
-        <a class="card p-3 mt-20" href="<?php echo e(asset('img/content/lead-idea-negocio.jpg')); ?>" target="_blank" >
+
+    <div id="banner_info_idea">
+        <a class="card p-3 mt-20" href="<?php echo e(asset('img/content/lead-idea-negocio.jpg')); ?>" target="_blank">
             <div class="row">
                 <div class="col-12 col-md-4">
                     <img src="<?php echo e(asset('img/content/lead-idea-negocio.jpg')); ?>" alt="">
@@ -20,32 +20,34 @@
         </a>
     </div>
 
-    <form class="mt-4" id="infoUnidadForm" >
-        
+    <form class="mt-4" id="infoUnidadForm">
+
         <div class="row">
             <div class="col-12 col-md-12 mb-3">
                 <h4>Datos de su <span class="tituloSegunTipo">...........</span> </h4>
             </div>
 
-            <div class="col-12 col-md-12 form-group mb-3" id="campoTipoOrganizacion" >
+            <div class="col-12 col-md-12 form-group mb-3" id="campoTipoOrganizacion">
                 <div class="form-group">
                     <label class="form-label">Tipo de Organización </label>
-                    <select class="form-select " id="tipoPersonaID" name="tipoPersonaID" required >
+                    <select class="form-select " id="tipoPersonaID" name="tipoPersonaID" required>
                         <option value="0" selected="" class="selecPersonaNatural">PERSONA NATURAL</option>
                         <option value="2" class="selecPersonaJuridica">PERSONA JURÍDICA O EMPRESA</option>
                         <option value="1" class="selecEstablecimiento">ESTABLECIMIENTO DE COMERCIO</option>
                     </select>
                 </div>
             </div>
-                            
+
             <div class="col-12 col-md-12 form-group mb-3">
-                <label class="form-label" >Nombre </label>
-                <input type="text" class="form-control" id="business_name" name="business_name" placeholder="Nombre" required />
+                <label class="form-label">Nombre </label>
+                <input type="text" class="form-control" id="business_name" name="business_name" placeholder="Nombre"
+                    required />
             </div>
 
             <div class="col-12 col-md-12 form-group mb-3">
                 <label class="form-label">¿Desde cuándo lo tiene?</label>
-                <input type="date" class="form-control" pattern="\d{4}-\d{2}-\d{2}" id="registration_date" name="registration_date" value="<?= date('Y-m-d') ?>" required />
+                <input type="date" class="form-control" pattern="\d{4}-\d{2}-\d{2}" id="registration_date"
+                    name="registration_date" value="<?= date('Y-m-d') ?>" required />
             </div>
 
             <div class="col-12 col-md-12 form-group mb-3">
@@ -62,71 +64,84 @@
             </div>
 
             <div class="col-12 col-md-6 form-group mb-3">
-                <label class="form-label" >Seleccione un departamento </label>
+                <label class="form-label">Seleccione un departamento </label>
                 <select class="form-select" id="department_id" name="department_id" required>
-                    <option value="" selected disabled >Seleccione una opción</option>
+                    <option value="" selected disabled>Seleccione una opción</option>
                     <?php $__currentLoopData = $departamentos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option value="<?php echo e($item->id); ?>"><?php echo e($item->name); ?></option>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="col-12 col-md-6 form-group mb-3">
-                <label class="form-label" >Seleccione un municipio </label>
+                <label class="form-label">Seleccione un municipio </label>
                 <select class="form-select" id="municipality_id" name="municipality_id" required>
-                    <option  selected disabled data-depto="0">Seleccione un departamento</option>
+                    <option selected disabled data-depto="0">Seleccione un departamento</option>
                 </select>
             </div>
 
             <div class="col-12 col-md-12 form-group mb-3">
-                <label class="form-label" >Dirección</label>
-                <input type="text" class="form-control" name="address" id="address" placeholder="Dirección" required/>
+                <label class="form-label">Dirección</label>
+                <input type="text" class="form-control" name="address" id="address" placeholder="Dirección"
+                    required />
             </div>
         </div>
 
         <div class="row" id="datosContacto">
             <div class="col-12 col-md-4 form-group mb-3">
-                <label class="form-label" >Email </label>
-                <input type="email" class="form-control" id="registration_email" name="registration_email" placeholder="Correo Electrónico" required>
+                <label class="form-label">Email </label>
+                <input type="email" class="form-control" id="registration_email" name="registration_email"
+                    placeholder="Correo Electrónico" required>
             </div>
             <div class="col-12 col-md-4 form-group mb-3">
-                <label class="form-label" >Celular </label>
-                <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Celular" required/>
+                <label class="form-label">Celular</label>
+                <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Ej: 3001234567"
+                    maxlength="15" required />
+                <small class="text-muted">
+                    Ingrese solo números, sin espacios ni símbolos.
+                </small>
             </div>
+
             <div class="col-12 col-md-4 form-group mb-3">
-                <label class="form-label" >Teléfono (opcional)</label>
-                <input type="text" class="form-control" placeholder="Teléfono" name="telephone" id="telephone" />
+                <label class="form-label">WhatsApp</label>
+                <input type="text" class="form-control" name="telephone" id="telephone"
+                    placeholder="Ej: +573001234567" />
+                <small class="text-muted">
+                    Debe incluir código de país. Ejemplo: +57XXXXXXXXXX
+                </small>
             </div>
         </div>
 
-        <div class="row" id="datosSector" >
+        <div class="row" id="datosSector">
 
-            <div class="col-12 col-md-12"> <hr> </div>
+            <div class="col-12 col-md-12">
+                <hr>
+            </div>
 
             <div class="col-12 col-md-6 form-group mb-3">
-                <label class="form-label" >Sector </label>
+                <label class="form-label">Sector </label>
                 <select class="form-select" id="sector_id" name="sector_id" required>
-                    <option  selected disabled >Seleccione una opción</option> 
+                    <option selected disabled>Seleccione una opción</option>
                     <?php $__currentLoopData = $sectores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <option  value="<?php echo e($item->sector_id); ?>"><?php echo e($item->sectorNOMBRE); ?></option>
+                        <option value="<?php echo e($item->sector_id); ?>"><?php echo e($item->sectorNOMBRE); ?></option>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
 
             <div class="col-12 col-md-6 form-group mb-3">
-                <label class="form-label" >Sección </label>
+                <label class="form-label">Sección </label>
                 <select class="form-select" id="seccion" name="seccion" required>
-                    <option  selected disabled >Seleccione un sector</option>
+                    <option selected disabled>Seleccione un sector</option>
                 </select>
             </div>
 
             <div class="col-12 col-md-12 form-group mb-3">
-                <label class="form-label" >Actividad economica </label>
+                <label class="form-label">Actividad economica </label>
                 <select class="form-select" id="ciiuactividad_id" name="ciiuactividad_id" required>
-                    <option  selected disabled >Seleccione una sección</option>
+                    <option selected disabled>Seleccione una sección</option>
                 </select>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-12 col-md-12 mb-3">
                 <hr>
@@ -134,20 +149,20 @@
             </div>
 
             <div class="col-12 col-md-6 form-group mb-3">
-                <label class="form-label" >URL del Sitio Web (Opcional)</label>
-                <input type="text" class="form-control" placeholder="URL del Sitio Web" name="website"/>
+                <label class="form-label">URL del Sitio Web (Opcional)</label>
+                <input type="text" class="form-control" placeholder="URL del Sitio Web" name="website" />
             </div>
             <div class="col-12 col-md-6 form-group mb-3">
-                <label class="form-label" >Instagram (Opcional)</label>
-                <input type="text" class="form-control" placeholder="Instagram" name="social_instagram"/>
+                <label class="form-label">Instagram (Opcional)</label>
+                <input type="text" class="form-control" placeholder="Instagram" name="social_instagram" />
             </div>
             <div class="col-12 col-md-6 form-group mb-3">
-                <label class="form-label" >Facebook (Opcional)</label>
-                <input type="text" class="form-control" placeholder="Facebook" name="social_facebook"/>
+                <label class="form-label">Facebook (Opcional)</label>
+                <input type="text" class="form-control" placeholder="Facebook" name="social_facebook" />
             </div>
             <div class="col-12 col-md-6 form-group mb-3">
-                <label class="form-label" >LinkedIn (Opcional)</label>
-                <input type="text" class="form-control" placeholder="LinkedIn" name="social_linkedin"/>
+                <label class="form-label">LinkedIn (Opcional)</label>
+                <input type="text" class="form-control" placeholder="LinkedIn" name="social_linkedin" />
             </div>
 
         </div>
@@ -157,36 +172,152 @@
                 <button type="submit" id="infoUnidadBtn" class="button button-primary"> CONTINUAR </button>
                 <button type="button" id="infoUnidadVolver" class="button button-secundary mt-3"> VOLVER </button>
             </div>
-        </div>        
+        </div>
 
     </form>
 </section>
 
 
 <script>
-    $(document).ready(function () {
+    function mostrarError(campo, mensaje) {
+        quitarError(campo);
+        campo.after('<div class="invalid-feedback d-block">' + mensaje + '</div>');
+    }
 
-        $('#infoUnidadForm').on('submit', function (e) {
+    function quitarError(campo) {
+        campo.next('.invalid-feedback').remove();
+    }
+
+
+    $(document).ready(function() {
+
+        /* ============================
+           VALIDACIÓN CELULAR
+        ============================ */
+
+        $('#mobile').on('input', function() {
+            // Eliminar todo lo que no sea número
+            this.value = this.value.replace(/\D/g, '');
+
+            // Limitar a 15 dígitos (E.164 máximo)
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+        $('#mobile').on('change', function() {
+            let value = $(this).val();
+
+            if (value.length !== 10) {
+                alert("El celular debe contener exactamente 10 dígitos.");
+                $(this).val("");
+            }
+        });
+
+
+
+        /* ============================
+           VALIDACIÓN WHATSAPP (E.164)
+        ============================ */
+
+        $('#telephone').on('input', function() {
+
+            let value = this.value;
+
+            // Permitir solo números y +
+            value = value.replace(/[^\d+]/g, '');
+
+            // Asegurar que solo haya un +
+            if (value.indexOf('+') > 0) {
+                value = value.replace(/\+/g, '');
+                value = '+' + value;
+            }
+
+            // Si empieza con número, agregar +
+            if (value.length === 1 && value !== '+') {
+                value = '+' + value.replace(/\D/g, '');
+            }
+
+            // Eliminar todo excepto el primer +
+            value = value.replace(/(?!^\+)\D/g, '');
+
+            // Limitar longitud total (15 dígitos sin contar +)
+            if (value.startsWith('+')) {
+                let numericPart = value.substring(1).slice(0, 15);
+                value = '+' + numericPart;
+            }
+
+            this.value = value;
+        });
+
+        $('#telephone').on('change', function() {
+            let value = $(this).val();
+
+            if (value !== '') {
+                if (!/^\+\d{11,15}$/.test(value)) {
+                    alert(
+                        "WhatsApp debe tener mínimo 12 dígitos incluyendo el prefijo. Ej: +573001234567"
+                    );
+                    $(this).val("");
+                }
+            }
+        });
+
+
+
+        $('#seccion').select2({
+            placeholder: 'Seleccione una sección'
+        });
+
+        $('#ciiuactividad_id').select2({
+            placeholder: 'Seleccione una actividad'
+        });
+
+
+
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+
+        $('#infoUnidadForm').on('submit', function(e) {
             e.preventDefault();
 
-            $("#contact_person").val( $("#name_legal_representative").val() );
-            $("#contact_email").val( $("#registration_email").val() );
-            $("#contact_phone").val( $("#mobile").val() +' '+ $("#telephone").val() );
+            let mobile = $('#mobile').val();
+            let whatsapp = $('#telephone').val();
+
+            // Celular
+            if (!/^\d{10}$/.test(mobile)) {
+                alert("El celular debe contener exactamente 10 dígitos.");
+                $('#mobile').focus();
+                e.preventDefault();
+                return false;
+            }
+
+            // WhatsApp
+            if (whatsapp !== '' && !/^\+\d{11,15}$/.test(whatsapp)) {
+                alert("WhatsApp debe tener mínimo 12 dígitos incluyendo el prefijo. Ej: +573001234567");
+                $('#telephone').focus();
+                e.preventDefault();
+                return false;
+            }
+
+            $("#contact_person").val($("#name_legal_representative").val());
+            $("#contact_email").val($("#registration_email").val());
+            $("#contact_phone").val($("#mobile").val() + ' ' + $("#telephone").val());
 
             $("#infoUnidad").slideUp();
             $("#contacto").slideDown();
         });
 
-        $('#infoUnidadVolver').on('click', function () {
+        $('#infoUnidadVolver').on('click', function() {
             $("#infoUnidad").slideUp();
 
             let tipoRegistroRUTAC = $('input[name="tipoRegistroRUTAC"]:checked').val();
 
-            if(tipoRegistroRUTAC === '5' || tipoRegistroRUTAC === '4' || tipoRegistroRUTAC === '3')
-            {
+            if (tipoRegistroRUTAC === '5' || tipoRegistroRUTAC === '4' || tipoRegistroRUTAC === '3') {
                 $("#matriculaFormal").slideDown();
-            }
-            else{
+            } else {
                 $("#tipoRegistro").slideDown();
             }
 
@@ -197,22 +328,23 @@
             initselect('/municipios/listado', id, '#municipality_id');
         });
 
-        $('#sector_id').on('change', function () {
+        $('#sector_id').on('change', function() {
             // Limpiar los selects de sección y actividad
             $('#seccion').html('<option value="">Seleccione un sector</option>');
             $('#ciiuactividad_id').html('<option value="">Seleccione una sección</option>');
-            
+
             // Obtener el ID del sector seleccionado y cargar las secciones correspondientes
             let id = $(this).val();
             if (id) {
-                initselect('/secciones/listado', id, '#seccion');
+                initselect2('/secciones/listado', id, '#seccion');
             }
         });
 
-        $('#seccion').on('change', function () {
+        $('#seccion').on('change', function() {
             let id = $(this).val();
-            initselect('/actividades/listado', id, '#ciiuactividad_id');
+            initselect2('/actividades/listado', id, '#ciiuactividad_id');
         });
 
     });
-</script><?php /**PATH C:\Users\jpllinas\Documents\DesarrolloWEB\VPS-RUTAC\APP\rutadecrecimiento\resources\views/website/register/parciales/infoUnidad.blade.php ENDPATH**/ ?>
+</script>
+<?php /**PATH C:\Users\jpllinas\Documents\DesarrolloWEB\VPS-RUTAC\APP\rutadecrecimiento\resources\views/website/register/parciales/infoUnidad.blade.php ENDPATH**/ ?>
