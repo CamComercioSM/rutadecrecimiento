@@ -101,41 +101,21 @@
 </footer>
 
 
+
+<div id="widget-whatsapp-raiz"></div>
 <script>
-    var url = 'https://wati-integration-prod-service.clare.ai/v2/watiWidget.js?30967';
-    var s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.async = true;
-    s.src = url;
-    var options = {
-        "enabled": true,
-        "chatButtonSetting": {
-            "backgroundColor": "#00e785",
-            "ctaText": "Escríbenos 24/7",
-            "borderRadius": "25",
-            "marginLeft": "0",
-            "marginRight": "20",
-            "marginBottom": "20",
-            "ctaIconWATI": false,
-            "position": "left"
-        },
-        "brandSetting": {
-            "brandName": "RutaC CamComercoSM",
-            "brandSubTitle": "undefined",
-            "brandImg": "https://cdnsicam.net/img/rutac/rutac-whatsapp-cuadrado.png",
-            "welcomeText": "Bienvenid@s, ¿Cómo podemos ayudarte?\n",
-            "messageText": "Hola, me gustaria saber mas de ......... [www.rutadecrecimiento.com]",
-            "backgroundColor": "#00e785",
-            "ctaText": "Escríbenos 24/7",
-            "borderRadius": "25",
-            "autoShow": true,
-            "phoneNumber": "573218150243"
-        }
+    window.CONFIGURACION_WIDGET_WHATSAPP = {
+        telefono: "573218150243",
+        posicion: "izquierda-abajo",           // ver lista de posiciones más abajo
+        textoBoton: "¿necesitas ayuda?",
+        mensajePredeterminado: "Hola, necesito más informacion de.....",
+        nombreMarca: "RutaC CamComercoSM",
+        subtituloMarca: "Asesor Ruta C",
+        textoBienvenida: "¡Hola! Cuéntanos en qué podemos apoyarte 😊",
+        abrirAutomaticamente: false,
+        imagenMarca: "https://cdnsicam.net/img/logo-2026-activa-tu-crecimiento.png",
+        // cualquier campo que omitas usa el valor por defecto del widget
     };
-    s.onload = function() {
-        CreateWhatsappChatWidget(options);
-    };
-    var x = document.getElementsByTagName('script')[0];
-    x.parentNode.insertBefore(s, x);
 </script>
+<script src="https://cdnsicam.net/js/whatsapp-widget.js"></script>
 <?php /**PATH C:\Users\jpllinas\Documents\DesarrolloWEB\VPS-RUTAC\APP\rutadecrecimiento\resources\views/website/layouts/footer.blade.php ENDPATH**/ ?>
