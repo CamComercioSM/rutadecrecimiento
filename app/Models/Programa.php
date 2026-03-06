@@ -50,6 +50,39 @@ class Programa extends Model
         return $this->belongsToMany(Etapa::class, 'programas_etapas', 'programa_id', 'etapa_id');
     }
 
+    /**
+     * Requisitos (preguntas) del programa (aplican a todas sus convocatorias).
+     * Pivot: programas_requisitos (programa_id, requisito_id, orden).
+     */
+    public function requisitos(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            InscripcionesRequisitos::class,
+            'programas_requisitos',
+            'programa_id',
+            'requisito_id'
+        )
+            ->whereNull('inscripciones_requisitos.indicador_id')
+            ->withPivot('orden')
+            ->orderByPivot('orden');
+    }
+
+    /**
+     * Requisitos-indicadores del programa (aplican a todas sus convocatorias).
+     */
+    public function requisitosIndicadores(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            InscripcionesRequisitos::class,
+            'programas_requisitos',
+            'programa_id',
+            'requisito_id'
+        )
+            ->whereNotNull('inscripciones_requisitos.indicador_id')
+            ->withPivot('orden')
+            ->orderByPivot('orden');
+    }
+
     public static $es_virtual = [
         '0' => 'Presencial',
         '1' => 'Virtual',

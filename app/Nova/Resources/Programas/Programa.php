@@ -4,10 +4,13 @@ namespace App\Nova\Resources\Programas;
 
 use App\Nova\Resources\Generales\Etapa;
 use App\Nova\Resources\Resource;
+use App\Nova\Resources\Programas\InscripcionesRequisitos;
+use App\Nova\Resources\Programas\InscripcionesRequisitosIndicadores;
 use Benjacho\BelongsToManyField\BelongsToManyField;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
@@ -73,6 +76,22 @@ class Programa extends Resource
                         ];
                     });
                 }),
+
+            \Laravel\Nova\Fields\BelongsToMany::make('Requisitos - indicadores (programa)', 'requisitosIndicadores', InscripcionesRequisitosIndicadores::class)
+                ->fields(function () {
+                    return [
+                        Number::make('Orden', 'orden')->min(0),
+                    ];
+                })
+                ->help('Preguntas que aplican a todas las convocatorias de este programa.'),
+
+            \Laravel\Nova\Fields\BelongsToMany::make('Requisitos (programa)', 'requisitos', InscripcionesRequisitos::class)
+                ->fields(function () {
+                    return [
+                        Number::make('Orden', 'orden')->min(0),
+                    ];
+                })
+                ->help('Preguntas que aplican a todas las convocatorias de este programa.'),
 
             HasMany::make('Convocatorias', 'convocatorias', ProgramaConvocatoria::class),
         ];
