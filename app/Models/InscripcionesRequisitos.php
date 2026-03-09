@@ -19,6 +19,7 @@ class InscripcionesRequisitos extends Model
         'preguntatipo_id',
         'preguntadimension_id',
         'requisito_titulo',
+        'requisito_ayuda',
         'requisito_porcentaje',
     ];
 
@@ -62,7 +63,8 @@ class InscripcionesRequisitos extends Model
             'requisito_id',
             'convocatoria_id', 
         )->withPivot('referencia') 
-        ->wherePivot('convocatoria_id', $convocatoria_id);
+        ->wherePivot('convocatoria_id', $convocatoria_id)
+        ->orderByPivot('orden');
     }
 
     const CREATED_AT = 'fecha_creacion';
