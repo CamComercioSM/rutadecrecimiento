@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\CommonService;
 use App\Http\Services\UnidadProductivaService;
+use App\Http\Services\WhatsAppPlantillaService;
+use App\Http\Services\WatiService;
 use App\Models\Diagnostico;
 use App\Models\DiagnosticoPregunta;
 use App\Models\DiagnosticoRespuesta;
@@ -168,6 +170,9 @@ class DiagnosticoController extends Controller
                 );
             }
         }
+
+        // Envío automático WhatsApp usando API interna (enviarPlantillaWhatsAPP)
+        WhatsAppPlantillaService::enviarDiagnosticoFinalizado($unidadProductiva);
 
         return redirect()->route('company.dashboard');
     }

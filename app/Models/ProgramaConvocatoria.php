@@ -70,22 +70,25 @@ class ProgramaConvocatoria extends Model
     public function requisitos()
     {
         return $this->belongsToMany(
-            InscripcionesRequisitos::class, 
-            'convocatorias_requisitos', 
-            'convocatoria_id', 
+            InscripcionesRequisitos::class,
+            'convocatorias_requisitos',
+            'convocatoria_id',
             'requisito_id')
-            ->whereNull('indicador_id');
+            ->withPivot('orden')
+            ->whereNull('inscripciones_requisitos.indicador_id')
+            ->orderByPivot('orden');
     }
 
     public function requisitosIndicadores()
     {
         return $this->belongsToMany(
-            InscripcionesRequisitos::class, 
-            'convocatorias_requisitos', 
-            'convocatoria_id', 
+            InscripcionesRequisitos::class,
+            'convocatorias_requisitos',
+            'convocatoria_id',
             'requisito_id')
-            ->withPivot('referencia')     
-            ->whereNotNull('indicador_id'); 
+            ->withPivot('referencia', 'orden')
+            ->whereNotNull('inscripciones_requisitos.indicador_id')
+            ->orderByPivot('orden');
     }
 
     public static $es_virtual = [

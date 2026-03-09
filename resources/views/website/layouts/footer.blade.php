@@ -47,11 +47,15 @@
                 <ul>
                     <li class="textl">
                         <span class="font-s-small">Más información en</span>
-                        @if (isset($footer->whatsapp) && !empty($footer->whatsapp))
-                            <span class="block font-s-small"> <a class="font-s-small"
-                                    href="https://wa.me/{{ $footer->whatsapp }}?text=Me%20gustar%C3%ADa%20saber%20........."><img
-                                        src="{{ asset('img/icons/whatsapp.png') }}" alt="WhatsApp"
-                                        style="max-width: 32px; float: left;" /></a> WhatsApp {{ $footer->whatsapp }}
+                        @php $whatsapp = optional($footer)->whatsapp ?? null; @endphp
+                        @if (!empty($whatsapp))
+                            <span class="block font-s-small">
+                                <a class="font-s-small"
+                                   href="https://wa.me/{{ $whatsapp }}?text=Me%20gustar%C3%ADa%20saber%20.........">
+                                    <img src="{{ asset('img/icons/whatsapp.png') }}" alt="WhatsApp"
+                                         style="max-width: 32px; float: left;" />
+                                </a>
+                                WhatsApp {{ $whatsapp }}
                             </span>
                         @endif
                         @if (isset($footer->footer_ally_page) && !empty($footer->footer_ally_page))

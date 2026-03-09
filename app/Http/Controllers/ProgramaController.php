@@ -13,6 +13,7 @@ use App\Models\ConvocatoriaInscripcion;
 use App\Models\ConvocatoriaRespuesta;
 use App\Models\InscripcionesRequisitos;
 use App\Models\RequisitosOpciones;
+use Illuminate\Support\Facades\Schema;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramaController extends Controller {
@@ -154,10 +155,8 @@ class ProgramaController extends Controller {
             }
         }
 
-        $indicadores = $program->requisitosIndicadores()->get();
-        $requisitos = $program->requisitos()->get();
-
-        $variables = $indicadores->merge($requisitos);
+        // Cargar requisitos del programa (aplican a todas las convocatorias) y de la convocatoria
+        $variables = $this->obtenerVariablesInscripcion($program);
 
         if (count($variables) == 0) {
             return redirect()->back()->with('error', 'No hay variables vinculadas al programa');
@@ -219,10 +218,7 @@ class ProgramaController extends Controller {
             $inscripcion->save();
         }
 
-        $indicadores = $program->requisitosIndicadores()->get();
-        $requisitos = $program->requisitos()->get();
-
-        $variables = $indicadores->merge($requisitos);
+        $variables = $this->obtenerVariablesInscripcion($program);
         $fechaMenos1Mes = now()->subMonth();
 
         if ($inscripcion != null && $inscripcion->activarPreguntas != true) {
@@ -372,5 +368,51 @@ class ProgramaController extends Controller {
         // 3️⃣ Devolver la combinación de ambos conjuntos
         // ---------------------------------------------------
         return $programs_recommend1->merge($programs_recommend2);
+    }
+
+    /**
+     * Obtiene las variables (requisitos + indicadores) para la inscripción:
+     * primero las del programa (solo las que NO están en la convocatoria) en su orden,
+     * luego TODAS las de la convocatoria en su orden. Así el orden de la convocatoria se respeta.
+     *
+     * @param  \App\Models\ProgramaConvocatoria  $program  Convocatoria (incluye programa_id)
+     * @return \Illuminate\Support\Collection
+     */
+    private function obtenerVariablesInscripcion(ProgramaConvocatoria $program)
+    {
+        // Convocatoria: juntar indicadores y requisitos y ordenar por el mismo campo orden (0, 1, 2, ... 16)
+        $convocatoriaIndicadores = $program->requisitosIndicadores()->get();
+        $convocatoriaRequisitos = $program->requisitos()->get();
+        $convocatoriaTodas = $convocatoriaIndicadores->merge($convocatoriaRequisitos)
+            ->sortBy(fn ($r) => (int) ($r->pivot->orden ?? 999))
+            ->values();
+
+        $convocatoriaIds = $convocatoriaTodas->pluck('requisito_id')->unique()->values();
+
+        $variables = collect();
+
+        // 1. Programa: solo los que NO están en la convocatoria (en su orden)
+        if (Schema::hasTable('programas_requisitos') && $program->programa_id) {
+            $programa = $program->programa;
+            if ($programa) {
+                $programa->requisitosIndicadores()->get()
+                    ->each(function ($r) use (&$variables, $convocatoriaIds) {
+                        if (!$convocatoriaIds->contains($r->requisito_id)) {
+                            $variables->push($r);
+                        }
+                    });
+                $programa->requisitos()->get()
+                    ->each(function ($r) use (&$variables, $convocatoriaIds) {
+                        if (!$convocatoriaIds->contains($r->requisito_id)) {
+                            $variables->push($r);
+                        }
+                    });
+            }
+        }
+
+        // 2. Convocatoria: una sola lista ordenada por pivot.orden (0, 1, 2, ... 16, ...)
+        $variables = $variables->merge($convocatoriaTodas);
+
+        return $variables->values();
     }
 }
