@@ -52,7 +52,7 @@
 
             <div class="col-12 col-md-12 form-group mb-3">
                 <label class="form-label">Descripción</label>
-                <textarea class="form-control" name="description" id="description" placeholder="Descripción"></textarea>
+                <textarea class="form-control" name="description" id="description" placeholder="Descripción" required ></textarea>
             </div>
 
         </div>
