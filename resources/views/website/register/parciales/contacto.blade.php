@@ -43,6 +43,7 @@
                 <option value="">Seleccione una opción</option>
                 <option value="MASCULINO" >MASCULINO</option>
                 <option value="FEMENINO" >FEMENINO</option>
+                <option value="OTRO" >PREFIERO NO DECIRLO</option>
             </select>
         </div>
 

@@ -265,7 +265,7 @@
                 'department_id', 'municipality_id',
                 'business_name', 'registration_number', 'nit_registrado', 'name_legal_representative',
                 'razon_social',
-                'registration_date', 'address', 'registration_email'
+                'registration_date', 'registration_email'
             ];
 
             if (sw) {

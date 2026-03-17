@@ -304,7 +304,7 @@
 
             $("#contact_person").val($("#name_legal_representative").val());
             $("#contact_email").val($("#registration_email").val());
-            $("#contact_phone").val($("#mobile").val() + ' ' + $("#telephone").val());
+            $("#contact_phone").val($("#telephone").val());
 
             $("#infoUnidad").slideUp();
             $("#contacto").slideDown();
