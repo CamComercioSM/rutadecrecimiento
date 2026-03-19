@@ -81,7 +81,7 @@
 
             <div class="col-12 col-md-12 form-group mb-3">
                 <label class="form-label">Dirección</label>
-                <input type="text" class="form-control" name="address" id="address" placeholder="Dirección"
+                <input type="text" class="form-control " name="address" id="address" placeholder="Dirección"
                     required />
             </div>
         </div>
