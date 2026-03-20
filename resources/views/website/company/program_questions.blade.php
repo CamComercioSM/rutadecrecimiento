@@ -1,126 +1,170 @@
 @extends('website.layouts.main')
-@section('header-class','without-header')
-@section('title','Ruta C')
-@section('description','')
+@section('header-class', 'without-header')
+@section('title', 'Ruta C')
+@section('description', '')
 @section('content')
 
-@include('website.company.aviso_validaciondatos')
+    @include('website.company.aviso_validaciondatos')
 
-<form id="preguntas_diagnostico_programa" method="post" action="{{route('company.application.save')}}">
-    <input type="hidden" name="program" value="{{$program->convocatoria_id}}" />
-    @csrf
-    <div id="diagnostic">
-        <div class="wrap">
-            @if(count($variables) > 0)
-                
-                @if($volverApreguntar)
-                    <section id="step-1">
-                        <h1 class="size-l color-2 font-w-700">Gracias por su participación en el programa {{$program->nombre}}</h1>
-                        <p class="mt-5">A continuación lo invitamos a completar algunas preguntas de profundización.</p>
-                        <button type="button" id="start-proccess" class="button button-primary button-small mt-20 margin-center">Iniciar preguntas</button>
-                    </section>
-                @else
-                    <section id="step-1">
-                        <h1 class="size-l color-2 font-w-700">Proceso de solicitud {{$program->nombre}}</h1>
-                        <p class="mt-5">A continuación debera completar algunas preguntas de profundización para poder aplicar al programa</p>
-                        <button type="button" id="start-proccess" class="button button-primary button-small mt-20 margin-center">Iniciar preguntas</button>
-                        <a class="button button-third button-small mt-10 margin-center" href="{{route('company.program.show', [$program->convocatoria_id])}}">Cancelar proceso</a>
-                    </section>
-                @endif                
+    <form id="preguntas_diagnostico_programa" method="post" action="{{ route('company.application.save') }}">
+        <input type="hidden" name="program" value="{{ $program->convocatoria_id }}" />
+        @csrf
+        <div id="diagnostic">
+            <div class="wrap">
+                @if (count($variables) > 0)
 
-                @foreach($variables as $variable)
-                    <section id="variable-{{$variable->requisito_id}}" class="variable hidden">
-                        <h2 class="color-2 font-w-700">{{$variable->requisito_titulo}}</h2>
-                        
-                        @if($variable->preguntatipo_id == 1)
-                            <ul style="padding:0">
-                                @foreach($variable->opciones()->get() as $item)
-                                <li>
-                                    <label class="radio">
-                                        <input type="radio" name="variable-{{$variable->requisito_id}}" value="{{$item->opcionrequisito_id}}"/>
-                                        <div class="info font-w-500">
-                                            {{$item->opcion_variable_response}}
-                                        </div>
-                                    </label>
-                                </li>
-                                @endforeach
-                            </ul>
-                        @elseif($variable->preguntatipo_id == 2)
-                            <input class="mt-10 textc" type="number" placeholder="Ingrese un valor" name="variable-{{$variable->requisito_id}}" value="" />
-                        @else
-                        @endif
+                    @if ($volverApreguntar)
+                        <section id="step-1">
+                            <h1 class="size-l color-2 font-w-700">Gracias por su participación en el programa
+                                {{ $program->nombre }}</h1>
+                            <p class="mt-5">A continuación lo invitamos a completar algunas preguntas de profundización.
+                            </p>
+                            <button type="button" id="start-proccess"
+                                class="button button-primary button-small mt-20 margin-center">Iniciar preguntas</button>
+                        </section>
+                    @else
+                        <section id="step-1">
+                            <h1 class="size-l color-2 font-w-700">Proceso de solicitud {{ $program->nombre }}</h1>
+                            <p class="mt-5">A continuación debera completar algunas preguntas de profundización para poder
+                                aplicar al programa</p>
+                            <button type="button" id="start-proccess"
+                                class="button button-primary button-small mt-20 margin-center">Iniciar preguntas</button>
+                            <a class="button button-third button-small mt-10 margin-center"
+                                href="{{ route('company.program.show', [$program->convocatoria_id]) }}">Cancelar proceso</a>
+                        </section>
+                    @endif
 
-                        <button type="button" class="button button-primary mt-20 button-next">Continuar</button>
-                        <button type="button" class="button button-secundary mt-10 button-back">Regresar</button>
+                    @foreach ($variables as $variable)
+                        <section id="variable-{{ $variable->requisito_id }}" class="variable hidden">
+                            <h2 class="color-2 font-w-700">{{ $variable->requisito_titulo }}</h2>
+                            <div class="fw-bold_" style="font-size: 75%;color: grey;">_{{ $variable->requisito_ayuda }}
+                            </div>
 
-                    </section>
-                @endforeach
-            @endif
+                            @if ($variable->preguntatipo_id == 1)
+                                <ul style="padding:0">
+                                    @foreach ($variable->opciones()->get() as $item)
+                                        <li>
+                                            <label class="radio">
+                                                <input type="radio" name="variable-{{ $variable->requisito_id }}"
+                                                    value="{{ $item->opcionrequisito_id }}" />
+                                                <div class="info font-w-500">
+                                                    {{ $item->opcion_variable_response }}
+                                                </div>
+                                            </label>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @elseif($variable->preguntatipo_id == 2)
+                                <input class="mt-10 textc input-numero" type="text" placeholder="Ingrese un valor"
+                                    name="variable-{{ $variable->requisito_id }}" data-raw="" required
+                                    inputmode="numeric" />
+                            @else
+                            @endif
+
+                            <button type="button" class="button button-primary mt-20 button-next">Continuar</button>
+                            <button type="button" class="button button-secundary mt-10 button-back">Regresar</button>
+
+                        </section>
+                    @endforeach
+                @endif
+            </div>
         </div>
-    </div>
-</form>            
+    </form>
 
-@if(count($variables) > 0)
-    <script>
-        $(document).ready(function () {
-                $('#start-proccess').click(function () {
-                        $("#step-1").slideUp();
-                        $("#variable-{{$variables->first()->requisito_id}}").slideDown();
+    @if (count($variables) > 0)
+        <script>
+            $(document).ready(function() {
+                $('#start-proccess').click(function() {
+                    $("#step-1").slideUp();
+                    $("#variable-{{ $variables->first()->requisito_id }}").slideDown();
                 });
 
-                $('.button-next').click(function () {
-                        $variable = $(this).parent().attr('id');
-                        let valor = $("#" + $variable).find('input[name='+$variable+']');
-                        let seleccionado = false;
+                $('.button-next').click(function() {
+                    $variable = $(this).parent().attr('id');
+                    let valor = $("#" + $variable).find('input[name=' + $variable + ']');
+                    let seleccionado = false;
 
-                        if (valor.is('input[type="radio"]')) {
-                            seleccionado =  valor.filter(':checked').length > 0;
-                        }
-                        else{
-                            seleccionado = valor.val().trim() !== "";
-                        }
+                    if (valor.is('input[type="radio"]')) {
+                        seleccionado = valor.filter(':checked').length > 0;
+                    } else {
+                        seleccionado = valor.val().trim() !== "";
+                    }
 
-                        if (seleccionado) 
-                        {
-                            $("#" + $variable).slideUp();
-
-                            $next_variable = $(this).parent().next().attr('id');
-                            console.log($next_variable);
-
-                            if ($next_variable != undefined) {
-                                $("#" + $next_variable).slideDown();
-                            } else {
-                                $('form').submit();
-                            }
-                        }
-                        else{
-                            modalValidacionDatosDiagnostico.show();
-                        }
-                });
-
-                $('.button-back').click(function () {
-                        $variable = $(this).parent().attr('id');
+                    if (seleccionado) {
                         $("#" + $variable).slideUp();
 
-                        $before_variable = $(this).parent().prev().attr('id');
-                        console.log($before_variable);
+                        $next_variable = $(this).parent().next().attr('id');
+                        console.log($next_variable);
 
-                        $("#" + $before_variable).slideDown();
+                        if ($next_variable != undefined) {
+                            $("#" + $next_variable).slideDown();
+                        } else {
+                            $('form').submit();
+                        }
+                    } else {
+                        modalValidacionDatosDiagnostico.show();
+                    }
+                });
+
+                $('.button-back').click(function() {
+                    $variable = $(this).parent().attr('id');
+                    $("#" + $variable).slideUp();
+
+                    $before_variable = $(this).parent().prev().attr('id');
+                    console.log($before_variable);
+
+                    $("#" + $before_variable).slideDown();
                 });
 
                 $('form').on('keydown', function(event) {
                     if (event.key === 'Enter' || event.keyCode === 13) {
                         event.preventDefault();
-                        return false;  
+                        return false;
                     }
                 });
-        });
-    </script>
-@else
-    <script>
-        $(document).ready(function () {        
-            $('#preguntas_diagnostico_programa').submit();      
-        });
-    </script>
-@endif
+
+                $('form').on('submit', function() {
+                    $('.input-numero').each(function() {
+                        let limpio = $(this).attr('data-raw');
+                        $(this).val(limpio);
+                    });
+                });
+
+            });
+
+            $(document).on('keypress', '.input-numero', function(e) {
+                if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+
+            // FORMATEO CON PUNTOS DE MILES
+            $(document).on('input', '.input-numero', function() {
+
+                let valor = $(this).val();
+
+                // Eliminar todo lo que no sea número
+                valor = valor.replace(/\D/g, '');
+
+                // Guardar valor limpio
+                $(this).attr('data-raw', valor);
+
+                if (valor === '') {
+                    $(this).val('');
+                    return;
+                }
+
+                // Formatear con puntos (es-CO)
+                let formateado = parseInt(valor, 10).toLocaleString('es-CO');
+
+                $(this).val(formateado);
+            });
+        </script>
+    @else
+        <script>
+            $(document).ready(function() {
+                $('#preguntas_diagnostico_programa').submit();
+            });
+        </script>
+    @endif
 @endsection

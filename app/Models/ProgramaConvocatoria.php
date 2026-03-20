@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class ProgramaConvocatoria extends Model
-{
+class ProgramaConvocatoria extends Model {
     use SoftDeletes;
 
     protected $table = 'programas_convocatorias';
@@ -53,13 +52,11 @@ class ProgramaConvocatoria extends Model
     /**
      * Relación con el modelo Programa.
      */
-    public function programa(): BelongsTo
-    {
+    public function programa(): BelongsTo {
         return $this->belongsTo(Programa::class, 'programa_id', 'programa_id');
     }
 
-    public function sector(): BelongsTo
-    {
+    public function sector(): BelongsTo {
         return $this->belongsTo(Sector::class, 'sector_id', 'sector_id');
     }
 
@@ -67,25 +64,25 @@ class ProgramaConvocatoria extends Model
         return $this->hasMany(ConvocatoriaInscripcion::class, 'convocatoria_id', 'convocatoria_id');
     }
 
-    public function requisitos()
-    {
+    public function requisitos() {
         return $this->belongsToMany(
             InscripcionesRequisitos::class,
             'convocatorias_requisitos',
             'convocatoria_id',
-            'requisito_id')
+            'requisito_id'
+        )
             ->withPivot('orden')
             ->whereNull('inscripciones_requisitos.indicador_id')
-            ->orderByPivot('orden');
+            ->orderBy('convocatorias_requisitos.orden', 'ASC');
     }
 
-    public function requisitosIndicadores()
-    {
+    public function requisitosIndicadores() {
         return $this->belongsToMany(
             InscripcionesRequisitos::class,
             'convocatorias_requisitos',
             'convocatoria_id',
-            'requisito_id')
+            'requisito_id'
+        )
             ->withPivot('referencia', 'orden')
             ->whereNotNull('inscripciones_requisitos.indicador_id')
             ->orderByPivot('orden');

@@ -57,7 +57,7 @@ class InscripcionesRequisitos extends Model
 
     public function requisitosConvocatoria($convocatoria_id)
     {
-        return $this->belongsToMany(
+        $resp = $this->belongsToMany(
             ProgramaConvocatoria::class, 
             'convocatorias_requisitos',
             'requisito_id',
@@ -65,6 +65,10 @@ class InscripcionesRequisitos extends Model
         )->withPivot('referencia') 
         ->wherePivot('convocatoria_id', $convocatoria_id)
         ->orderByPivot('orden');
+
+        dd($resp->get());
+
+        return $resp;
     }
 
     const CREATED_AT = 'fecha_creacion';
