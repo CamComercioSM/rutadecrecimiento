@@ -28,3 +28,4 @@ public_html/public/videos/testimonio-2.mp4
 /cgi-bin
 .user.ini
 php.ini
+.env

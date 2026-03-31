@@ -21,6 +21,7 @@ class InscripcionesRequisitos extends Model
         'requisito_titulo',
         'requisito_ayuda',
         'requisito_porcentaje',
+        'orden',
     ];
 
     // Relaciones
@@ -65,9 +66,6 @@ class InscripcionesRequisitos extends Model
         )->withPivot('referencia') 
         ->wherePivot('convocatoria_id', $convocatoria_id)
         ->orderByPivot('orden');
-
-        dd($resp->get());
-
         return $resp;
     }
 
