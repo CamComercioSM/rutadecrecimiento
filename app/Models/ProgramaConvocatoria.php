@@ -9,10 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProgramaConvocatoria extends Model {
     use SoftDeletes;
-
     protected $table = 'programas_convocatorias';
     protected $primaryKey = 'convocatoria_id';
-
     // Campos que se pueden asignar masivamente
     protected $fillable = [
         'programa_id',
@@ -38,7 +36,6 @@ class ProgramaConvocatoria extends Model {
         'con_matricula',
         'sector_id',
     ];
-
     protected $casts = [
         'fecha_apertura_convocatoria' => 'date',
         'fecha_cierre_convocatoria' => 'date',
@@ -73,7 +70,7 @@ class ProgramaConvocatoria extends Model {
         )
             ->withPivot('orden')
             ->whereNull('inscripciones_requisitos.indicador_id')
-            ->orderBy('convocatorias_requisitos.orden', 'ASC');
+            ->orderByPivot('convocatorias_requisitos.orden', 'ASC');
     }
 
     public function requisitosIndicadores() {
