@@ -32,9 +32,10 @@ class ProgramaController extends Controller {
 
         $programas_otros = ProgramaConvocatoria::with('programa')
             ->whereHas('programa', function ($query) use ($unidadProductiva) {
-                $query->whereDoesntHave('etapas', function ($q) use ($unidadProductiva) {
-                    $q->where('etapas.etapa_id', $unidadProductiva->etapa_id);
-                });
+                $query->where('visibilidad', 'PUBLICO')
+                    ->whereDoesntHave('etapas', function ($q) use ($unidadProductiva) {
+                        $q->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                    });
             })
             ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
             ->where('fecha_cierre_convocatoria', '>=', $fechaActual)->get();
@@ -330,8 +331,11 @@ class ProgramaController extends Controller {
                 });
 
                 // Filtrar por etapa en tabla de relación programas_etapas
-                $query->whereHas('programa.etapas', function ($subQuery) use ($unidadProductiva) {
-                    $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                $query->whereHas('programa', function ($q) use ($unidadProductiva) {
+                    $q->where('visibilidad', 'PUBLICO')
+                        ->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
+                            $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                        });
                 });
             })
             ->with('programa')
@@ -357,9 +361,13 @@ class ProgramaController extends Controller {
                 });
 
                 // Filtrar por etapa (ej: Descubrimiento)
-                $query->whereHas('programa.etapas', function ($subQuery) use ($unidadProductiva) {
-                    $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                $query->whereHas('programa', function ($q) use ($unidadProductiva) {
+                    $q->where('visibilidad', 'PUBLICO')
+                        ->whereHas('etapas', function ($subQuery) use ($unidadProductiva) {
+                            $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                        });
                 });
+                
             })
             ->with('programa')
             ->get();
@@ -378,13 +386,12 @@ class ProgramaController extends Controller {
      * @param  \App\Models\ProgramaConvocatoria  $program  Convocatoria (incluye programa_id)
      * @return \Illuminate\Support\Collection
      */
-    private function obtenerVariablesInscripcion(ProgramaConvocatoria $program)
-    {
+    private function obtenerVariablesInscripcion(ProgramaConvocatoria $program) {
         // Convocatoria: juntar indicadores y requisitos y ordenar por el mismo campo orden (0, 1, 2, ... 16)
         $convocatoriaIndicadores = $program->requisitosIndicadores()->get();
         $convocatoriaRequisitos = $program->requisitos()->get();
         $convocatoriaTodas = $convocatoriaIndicadores->merge($convocatoriaRequisitos)
-            ->sortBy(fn ($r) => (int) ($r->pivot->orden ?? 999))
+            ->sortBy(fn($r) => (int) ($r->pivot->orden ?? 999))
             ->values();
 
         $convocatoriaIds = $convocatoriaTodas->pluck('requisito_id')->unique()->values();
