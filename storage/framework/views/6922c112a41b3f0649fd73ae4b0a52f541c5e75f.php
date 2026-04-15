@@ -81,7 +81,7 @@
 
             <div class="col-12 col-md-12 form-group mb-3">
                 <label class="form-label">Dirección</label>
-                <input type="text" class="form-control" name="address" id="address" placeholder="Dirección"
+                <input type="text" class="form-control " name="address" id="address" placeholder="Dirección"
                     required />
             </div>
         </div>
@@ -336,13 +336,13 @@
             // Obtener el ID del sector seleccionado y cargar las secciones correspondientes
             let id = $(this).val();
             if (id) {
-                initselect2('/secciones/listado', id, '#seccion');
+                initselect('/secciones/listado', id, '#seccion');
             }
         });
 
         $('#seccion').on('change', function() {
             let id = $(this).val();
-            initselect2('/actividades/listado', id, '#ciiuactividad_id');
+            initselect('/actividades/listado', id, '#ciiuactividad_id');
         });
 
     });

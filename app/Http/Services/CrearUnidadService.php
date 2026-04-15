@@ -13,7 +13,7 @@ class CrearUnidadService {
         $comercial_activity = substr($values->ciiu1, 1);
         $activity = CiiuActividad::where('ciiuActividadCODIGO', $comercial_activity)->first();
 
-        //dd($values);
+        //dd($values, $activity);
 
         $data = [
             'business_name' => $values->nombre,

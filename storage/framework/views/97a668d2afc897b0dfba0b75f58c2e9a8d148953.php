@@ -121,6 +121,9 @@
         }
 
         function initSelect2(url, id, selector, idInit = null) {
+
+            return initselect(url, id, selector, idInit);
+
             if (id) {
 
                 // Si ya está inicializado como select2 lo destruimos
