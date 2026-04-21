@@ -90,4 +90,78 @@ class ProgramaConvocatoria extends Model {
         '1' => 'Virtual',
         '2' => 'Presencial y virtual'
     ];
+
+
+
+
+    // ================================
+    // 🔹 PROGRAMAS INSCRITOS
+    // ================================
+    public static function inscritos($unidadProductiva, $fechaActual) {
+        return self::with('programa')
+            ->whereHas('inscripciones', function ($query) use ($unidadProductiva) {
+                $query->where('unidadproductiva_id', $unidadProductiva->unidadproductiva_id);
+            })
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->get();
+    }
+
+    // ================================
+    // 🔹 PROGRAMAS RECOMENDADOS
+    // ================================
+    public static function recomendados($unidadProductiva, $fechaActual) {
+        return self::query()
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->where(function ($query) use ($unidadProductiva) {
+
+                // Sector
+                $query->where(function ($q) use ($unidadProductiva) {
+                    $q->where('programas_convocatorias.sector_id', $unidadProductiva->sector_id)
+                        ->orWhereNull('programas_convocatorias.sector_id');
+                });
+
+                // Etapas
+                $query->whereHas('programa.etapas', function ($subQuery) use ($unidadProductiva) {
+                    $subQuery->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                });
+            })
+            ->with('programa')
+            ->get();
+    }
+
+    // ================================
+    // 🔹 PROGRAMAS OTROS (NO APLICAN)
+    // ================================
+    public static function otros($unidadProductiva, $fechaActual) {
+        return self::with('programa')
+            ->whereHas('programa', function ($query) use ($unidadProductiva) {
+                $query->where('visibilidad', 'PUBLICO')
+                    ->whereDoesntHave('etapas', function ($q) use ($unidadProductiva) {
+                        $q->where('etapas.etapa_id', $unidadProductiva->etapa_id);
+                    });
+            })
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->get();
+    }
+
+    // ================================
+    // 🔹 TODOS LOS PROGRAMAS ACTIVOS
+    // ================================
+    public static function activos($fechaActual) {
+        return self::query()
+            ->join('programas', 'programas.programa_id', '=', 'programas_convocatorias.programa_id')
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->get();
+    }
+    public static function activosPublicos($fechaActual) {
+        return self::query()
+            ->join('programas', 'programas.programa_id', '=', 'programas_convocatorias.programa_id')
+            ->where('programas.visibilidad', 'PUBLICO')
+            ->where('fecha_apertura_convocatoria', '<=', $fechaActual)
+            ->where('fecha_cierre_convocatoria', '>=', $fechaActual)
+            ->get();
+    }
 }
