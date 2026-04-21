@@ -170,6 +170,9 @@
             $('#seccion').attr('required', true);
             $('#ciiuactividad_id').attr('required', true);
 
+            
+            $('#mobile').show();            
+            $('#telephone').show();
             $('#datosSector').show();
             $('#datosContacto').show();
 
@@ -237,13 +240,12 @@
             $('#seccion').attr('required', false);
             $('#ciiuactividad_id').attr('required', false);
 
-            $(".tituloSegunTipo").html("Idea de Negocio");
+            $(".tituloSegunTipo").html("Negocio");
             $("#infoUnidad").slideDown();
         }
 
         function abrirFormularioIdea() {
-            $('#campoTipoOrganizacion').hide();
-            $('#datosContacto').hide();
+            $('#campoTipoOrganizacion').hide();            
             $('#datosSector').hide();
 
             $('#address').attr('required', false);

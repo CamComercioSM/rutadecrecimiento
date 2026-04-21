@@ -207,6 +207,7 @@ class RegistroController extends Controller {
           return redirect()->back()
           ->with('error', 'No PASATE EL FILTRO DE SEGURIDAD ANTIROBOTS. Intentalo nuevamente');
          */
+        
 
         if ($this->existeUnidad($request->nit_registrado, $request->business_name)) {
             return ['success' => false, 'mensaje' => self::MENSAJE_EXISTE_UNIDAD];
@@ -246,7 +247,7 @@ class RegistroController extends Controller {
     // validar si existe la unidad productiva
     private function existeUnidad($nit, $name): bool {
         $query = UnidadProductiva::where(function ($q) use ($name, $nit) {
-            $q->where('business_name', 'like', "%$name%");
+            $q->where('business_name', '=', "$name");
 
             if (!empty($nit)) {
                 $q->orWhere('nit', 'like', "%$nit%");

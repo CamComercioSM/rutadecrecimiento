@@ -129,14 +129,14 @@
 
             <div class="col-12 col-md-6 form-group mb-3">
                 <label class="form-label">Sección </label>
-                <select class="form-select" id="seccion" name="seccion" required>
+                <select class="form-select" id="seccion" name="seccion" required style="width: 100%;">
                     <option selected disabled>Seleccione un sector</option>
                 </select>
             </div>
 
             <div class="col-12 col-md-12 form-group mb-3">
                 <label class="form-label">Actividad economica </label>
-                <select class="form-select" id="ciiuactividad_id" name="ciiuactividad_id" required>
+                <select class="form-select" id="ciiuactividad_id" name="ciiuactividad_id" required  style="width: 100%;" >
                     <option selected disabled>Seleccione una sección</option>
                 </select>
             </div>
@@ -324,11 +324,16 @@
         });
 
         $('#department_id').on('change', function() {
+            $('#screenLoader').removeClass('d-none');
             let id = $(this).val();
             initselect('/municipios/listado', id, '#municipality_id');
+            $('#screenLoader').addClass('d-none');
         });
 
         $('#sector_id').on('change', function() {
+            
+            $('#screenLoader').removeClass('d-none');
+
             // Limpiar los selects de sección y actividad
             $('#seccion').html('<option value="">Seleccione un sector</option>');
             $('#ciiuactividad_id').html('<option value="">Seleccione una sección</option>');
@@ -336,13 +341,16 @@
             // Obtener el ID del sector seleccionado y cargar las secciones correspondientes
             let id = $(this).val();
             if (id) {
-                initselect('/secciones/listado', id, '#seccion');
+                initselect('/secciones/listado', id, '#seccion');                
             }
+            $('#screenLoader').addClass('d-none');
         });
 
         $('#seccion').on('change', function() {
+            $('#screenLoader').removeClass('d-none');
             let id = $(this).val();
             initselect('/actividades/listado', id, '#ciiuactividad_id');
+            $('#screenLoader').addClass('d-none');
         });
 
     });

@@ -105,7 +105,7 @@ class CrearUnidadService {
 
         $company->fill([
             'camara_comercio' => $request->camara_comercio,
-            'nit' => $request->nit_registrado ?? "-",
+            'nit' => $request->nit_registrado ?? uniqid(),
             'business_name' => $request->business_name,
             'description' => $request->description,
             'registration_number' => $request->registration_number,
